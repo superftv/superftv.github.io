@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>FTP & Live TV</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      min-height: 100%;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    body {
+      margin: 0; padding: 0;
+      background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+      color: white;
+      transition: background 0.3s, color 0.3s;
+      background-url: url('maxim-cp-bg.jpg') no-repeat center center fixed;
+      background-size: cover;
+    }
+    body.dark-mode {
+      background: #121212;
+      color: #f0f0f0;
+    }
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    #particles-js {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+    .dashboard {
+      position: relative;
+      z-index: 1;
+      padding: 30px 15px;
+      text-align: center;
+    }
+    .section-title {
+      font-size: 24px;
+      margin: 30px 0 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+    .link-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 15px;
+      max-width: 950px;
+      margin: 0 auto;
+    }
+    .link-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 12px;
+      color: #fff;
+      backdrop-filter: blur(6px);
+      font-size: 15px;
+      box-shadow: 0 8px 10px rgba(0, 0, 0, 0.3);
+      position: relative;
+      min-height: 100px;
+    }
+    .link-card i.fa-play-circle {
+      color: #4CAF50;
+      transition: color 0.3s;
+      font-size: 60px;
+    }
+    .link-card i.fa-tv {
+      color: #FF9800;
+      transition: color 0.3s;
+      font-size: 60px;
+    }
+    .link-card a {
+      color: white;
+      text-decoration: none;
+    }
+    .edit-btn {
+      position: absolute;
+      top: 8px;
+      right: 10px;
+      background: #fff;
+      color: #000;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .modal, .login-modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+    .modal-content {
+      background: #fff;
+      color: #000;
+      padding: 20px;
+      border-radius: 10px;
+      width: 300px;
+    }
+    .modal-content input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+    }
+    .modal-content button {
+      padding: 8px 12px;
+      margin-right: 10px;
+      cursor: pointer;
+    }
+    #btnCancelLogin {
+      background: #ebebeb;
+      color: #000;
+    }
+    .theme-toggle {
+      position: fixed;
+      left: 20px;
+      bottom: 20px;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 2px solid white;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 1000;
+      transition: background 0.3s, transform 0.2s;
+    }
+    .theme-toggle:hover {
+      background: rgba(255, 255, 255, 0.25);
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body>
+  <div id="particles-js"></div>
+  
+  <div class="dashboard">
+    <div class="section-title"><i class="fas fa-film"></i> FTP</div>
+    <div class="link-grid" id="ftp-section"></div>
+    
+    <div class="section-title"><i class="fas fa-tv"></i> Live TV</div>
+    <div class="link-grid" id="tv-section"></div>
+    
+    <div class="dashboard-controls" id="adminControls" style="display: none; margin-top: 20px;">
+      <button onclick="toggleEditIcons()" style="padding: 6px 12px; font-weight: bold;">Show Edit</button>
+    </div>
+  </div>
+
+  <div class="theme-toggle" onclick="toggleTheme()">
+    <i class="fas fa-sun" id="themeIcon"></i>
+  </div>
+
+  <!-- Edit Modal -->
+  <div class="modal" id="editModal" style="display: none;">
+    <div class="modal-content">
+      <h3>Edit Link</h3>
+      <input type="text" id="editTitle" placeholder="Name">
+      <input type="text" id="editURL" placeholder="URL">
+      <button onclick="saveEdit()">Save</button>
+      <button onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+
+  <!-- Login Modal -->
+  <div class="login-modal" id="loginModal" style="display: none;">
+    <div class="modal-content">
+      <h3>Admin Login</h3>
+      <input type="password" id="adminPass" placeholder="Enter Admin Password">
+      <button onclick="checkLogin()">Login</button>
+      <button id="btnCancelLogin">Cancel</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <script>
+    let ftpLinks = [];
+    let tvLinks = [];
+
+    async function fetchLinks() {
+      try {
+        const response = await fetch('http://10.10.10.10/api/links');
+        const data = await response.json();
+        ftpLinks = data.ftp;
+        tvLinks = data.tv;
+        renderLinks();
+      } catch (err) {
+        console.error('Error fetching links:', err);
+      }
+    }
+
+    let currentEdit = { type: '', index: -1 };
+    let isAdmin = false, showEditIcons = false, autoHideTimer;
+
+    function renderLinks() {
+      const ftpc = document.getElementById('ftp-section');
+      const tvc = document.getElementById('tv-section');
+      ftpc.innerHTML = ''; tvc.innerHTML = '';
+      ftpLinks.forEach((l, i) => ftpc.innerHTML += genCard(l.title, l.url, 'ftp', i));
+      tvLinks.forEach((l, i) => tvc.innerHTML += genCard(l.title, l.url, 'tv', i));
+    }
+
+    function genCard(title, url, type, idx) {
+      return `
+        <div class="link-card">
+          <a href="${url}" target="_blank">
+            <i class="${type === 'ftp' ? 'fas fa-play-circle' : 'fas fa-tv'}"></i>
+            ${title}
+          </a>
+          ${isAdmin && showEditIcons ? <div class="edit-btn" onclick="openModal('${type}',${idx})">Edit</div> : ''}
+        </div>
+      `;
+    }
+
+    function openModal(type, index) {
+      currentEdit = { type, index };
+      const data = (type === 'ftp' ? ftpLinks : tvLinks)[index];
+      document.getElementById('editTitle').value = data.title;
+      document.getElementById('editURL').value = data.url;
+      document.getElementById('editModal').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('editModal').style.display = 'none';
+    }
+
+    async function saveEdit() {
+      const nt = document.getElementById('editTitle').value.trim();
+      const nu = document.getElementById('editURL').value.trim();
+      if (nt === '' || nu === '') {
+        alert('Please fill in both fields!');
+        return;
+      }
+
+      if (currentEdit.type === 'ftp') ftpLinks[currentEdit.index] = { title: nt, url: nu };
+      else tvLinks[currentEdit.index] = { title: nt, url: nu };
+
+      try {
+        const response = await fetch('http://10.10.10.10/api/links', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ftp: ftpLinks, tv: tvLinks })
+        });
+        const resData = await response.json();
+        if (resData.ok) {
+          closeModal();
+          renderLinks();
+          alert('Link saved and updated in links.json!');
+        }
+      } catch (err) {
+        console.error('Error saving links:', err);
+        alert('Failed to save to server!');
+      }
+    }
+
+    function checkLogin() {
+      const pass = document.getElementById('adminPass').value;
+      if (pass === 'admin123') {
+        isAdmin = true;
+        document.getElementById('loginModal').style.display = 'none';
+        document.getElementById('adminControls').style.display = 'block';
+        renderLinks();
+      } else {
+        alert('Wrong password!');
+      }
+    }
+
+    function toggleEditIcons() {
+      showEditIcons = !showEditIcons;
+      document.querySelector('#adminControls button').textContent = showEditIcons ? 'Hide Edit' : 'Show Edit';
+      renderLinks();
+      if (showEditIcons) {
+        clearTimeout(autoHideTimer);
+        autoHideTimer = setTimeout(() => {
+          showEditIcons = false;
+          document.querySelector('#adminControls button').textContent = 'Show Edit';
+          renderLinks();
+        }, 60000);
+      }
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle('dark-mode');
+      document.getElementById('themeIcon').classList.toggle('fa-moon');
+      document.getElementById('themeIcon').classList.toggle('fa-sun');
+    }
+
+    document.addEventListener('keydown', e => {
+      if (e.shiftKey && e.key.toLowerCase() === 'a') {
+        document.getElementById('loginModal').style.display = 'flex';
+      }
+    });
+
+    document.getElementById('btnCancelLogin').addEventListener('click', () => {
+      document.getElementById('loginModal').style.display = 'none';
+      document.getElementById('adminPass').value = '';
+    });
+
+    window.onload = fetchLinks;
+
+    particlesJS('particles-js', {
+      particles: {
+        number: { value: 250, density: { enable: true, value_area: 800 } },
+        color: { value: '#ffffff' },
+        shape: { type: 'circle' },
+        opacity: { value: 0.5, random: true },
+        size: { value: 3, random: true },
+        line_linked: { enable: true, distance: 100, color: '#ffffff', opacity: 0.4, width: 1.2 },
+        move: { enable: true, speed: 1.5 }
+      },
+      interactivity: { events: { onhover: { enable: true, mode: 'grab' }, onclick: { enable: false } } },
+      retina_detect: true
+    });
+  </script>
+</body>
+</html>
