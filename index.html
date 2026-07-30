@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -203,12 +202,21 @@
     let ftpLinks = [];
     let tvLinks = [];
 
+    const FTP_API_HOST = '10.10.10.10';
+    const TV_API_HOST = '172.28.28.54';
+
     async function fetchLinks() {
       try {
-        const response = await fetch('http://10.10.10.10/api/links');
-        const data = await response.json();
-        ftpLinks = data.ftp;
-        tvLinks = data.tv;
+        // Fetch FTP links from FTP host
+        const ftpResponse = await fetch(`http://${FTP_API_HOST}/api/links`);
+        const ftpData = await ftpResponse.json();
+        ftpLinks = ftpData.ftp || [];
+
+        // Fetch TV links specifically from 172.28.28.54
+        const tvResponse = await fetch(`http://${TV_API_HOST}/api/links`);
+        const tvData = await tvResponse.json();
+        tvLinks = tvData.tv || [];
+
         renderLinks();
       } catch (err) {
         console.error('Error fetching links:', err);
@@ -227,13 +235,18 @@
     }
 
     function genCard(title, url, type, idx) {
+      // Ensure target URL has protocol
+      const formattedUrl = url.startsWith('http://') || url.startsWith('https://') 
+        ? url 
+        : `http://${url}`;
+
       return `
         <div class="link-card">
-          <a href="${url}" target="_blank">
+          <a href="${formattedUrl}" target="_blank">
             <i class="${type === 'ftp' ? 'fas fa-play-circle' : 'fas fa-tv'}"></i>
             ${title}
           </a>
-          ${isAdmin && showEditIcons ? <div class="edit-btn" onclick="openModal('${type}',${idx})">Edit</div> : ''}
+          ${isAdmin && showEditIcons ? `<div class="edit-btn" onclick="openModal('${type}',${idx})">Edit</div>` : ''}
         </div>
       `;
     }
@@ -258,11 +271,14 @@
         return;
       }
 
-      if (currentEdit.type === 'ftp') ftpLinks[currentEdit.index] = { title: nt, url: nu };
+      const isTv = currentEdit.type === 'tv';
+      const targetHost = isTv ? TV_API_HOST : FTP_API_HOST;
+
+      if (!isTv) ftpLinks[currentEdit.index] = { title: nt, url: nu };
       else tvLinks[currentEdit.index] = { title: nt, url: nu };
 
       try {
-        const response = await fetch('http://172.28.28.54/api/links', {
+        const response = await fetch(`http://${targetHost}/api/links`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ ftp: ftpLinks, tv: tvLinks })
@@ -271,7 +287,7 @@
         if (resData.ok) {
           closeModal();
           renderLinks();
-          alert('Link saved and updated in links.json!');
+          alert('Link saved and updated on server!');
         }
       } catch (err) {
         console.error('Error saving links:', err);
