@@ -69,20 +69,24 @@
       box-shadow: 0 8px 10px rgba(0, 0, 0, 0.3);
       position: relative;
       min-height: 100px;
-      transition: transform 0.2s;
+      transition: transform 0.2s, background 0.2s;
+      cursor: pointer;
     }
     .link-card:hover {
       transform: translateY(-3px);
+      background: rgba(0, 0, 0, 0.6);
     }
     .link-card i.fa-play-circle {
       color: #4CAF50;
       transition: color 0.3s;
       font-size: 60px;
+      pointer-events: none;
     }
     .link-card i.fa-tv {
       color: #FF9800;
       transition: color 0.3s;
       font-size: 60px;
+      pointer-events: none;
     }
     .link-card a {
       color: white;
@@ -92,6 +96,7 @@
       align-items: center;
       gap: 8px;
       width: 100%;
+      height: 100%;
     }
     .edit-btn {
       position: absolute;
@@ -217,7 +222,6 @@
     const FTP_API_HOST = '172.19.178.180';
     const TV_API_HOST = '172.28.28.54';
 
-    // ডিফল্ট লিঙ্ক (যদি API থেকে ডেটা না আসে তবে এগুলো সরাসরি কাজ করবে)
     let ftpLinks = [
       { title: "FTP Server", url: `http://${FTP_API_HOST}/` }
     ];
@@ -227,23 +231,23 @@
 
     async function fetchLinks() {
       try {
-        const ftpResponse = await fetch(`http://${FTP_API_HOST}/api/links`);
+        const ftpResponse = await fetch(`http://${FTP_API_HOST}/api/links`, { signal: AbortSignal.timeout(3000) });
         if (ftpResponse.ok) {
           const ftpData = await ftpResponse.json();
           if (ftpData.ftp && ftpData.ftp.length > 0) ftpLinks = ftpData.ftp;
         }
       } catch (err) {
-        console.error('Error fetching FTP links:', err);
+        console.warn('FTP API not responding, using default IP.');
       }
 
       try {
-        const tvResponse = await fetch(`http://${TV_API_HOST}/api/links`);
+        const tvResponse = await fetch(`http://${TV_API_HOST}/api/links`, { signal: AbortSignal.timeout(3000) });
         if (tvResponse.ok) {
           const tvData = await tvResponse.json();
           if (tvData.tv && tvData.tv.length > 0) tvLinks = tvData.tv;
         }
       } catch (err) {
-        console.error('Error fetching TV links:', err);
+        console.warn('TV API not responding, using default IP.');
       }
 
       renderLinks();
@@ -263,23 +267,30 @@
     }
 
     function genCard(title, url, type, idx) {
-      const formattedUrl = (url && (url.startsWith('http://') || url.startsWith('https://')))
-        ? url 
-        : `http://${url}`;
+      let formattedUrl = url || '';
+      if (!formattedUrl.startsWith('http://') && !formattedUrl.startsWith('https://')) {
+        formattedUrl = `http://${formattedUrl}`;
+      }
 
-      // target="_blank" দেওয়া হয়েছে যাতে নতুন ট্যাবে ওপেন হয়
       return `
-        <div class="link-card">
-          <a href="${formattedUrl}" target="_blank" rel="noopener noreferrer">
+        <div class="link-card" onclick="openTargetUrl(event, '${formattedUrl}')">
+          <a href="${formattedUrl}" target="_blank" rel="noopener noreferrer" onclick="event.preventDefault();">
             <i class="${type === 'ftp' ? 'fas fa-play-circle' : 'fas fa-tv'}"></i>
             <div>${title}</div>
           </a>
-          ${isAdmin && showEditIcons ? `<div class="edit-btn" onclick="openModal('${type}',${idx})">Edit</div>` : ''}
+          ${isAdmin && showEditIcons ? `<div class="edit-btn" onclick="openModal(event, '${type}', ${idx})">Edit</div>` : ''}
         </div>
       `;
     }
 
-    function openModal(type, index) {
+    function openTargetUrl(event, url) {
+      // যদি এডিট বাটনে ক্লিক করা হয়, তবে যেন লিঙ্ক না খোলে
+      if (event.target.classList.contains('edit-btn')) return;
+      window.open(url, '_blank');
+    }
+
+    function openModal(event, type, index) {
+      event.stopPropagation();
       currentEdit = { type, index };
       const data = (type === 'ftp' ? ftpLinks : tvLinks)[index];
       if (data) {
