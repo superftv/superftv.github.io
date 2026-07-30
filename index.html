@@ -13,9 +13,7 @@
     }
     body {
       margin: 0; padding: 0;
-      background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-      background-size: 400% 400%;
-      animation: gradientBG 15s ease infinite;
+      background: #000000; /* Pure Black Background */
       color: white;
       transition: background 0.3s, color 0.3s;
       display: flex;
@@ -23,13 +21,8 @@
       justify-content: space-between;
     }
     body.dark-mode {
-      background: #121212;
+      background: #000000;
       color: #f0f0f0;
-    }
-    @keyframes gradientBG {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
     }
     #particles-js {
       position: fixed;
@@ -64,12 +57,13 @@
       align-items: center;
       justify-content: center;
       padding: 16px;
-      background: rgba(0, 0, 0, 0.4);
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
       border-radius: 12px;
       color: #fff;
       backdrop-filter: blur(6px);
       font-size: 15px;
-      box-shadow: 0 8px 10px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 8px 10px rgba(0, 0, 0, 0.5);
       position: relative;
       min-height: 100px;
       transition: transform 0.2s, background 0.2s;
@@ -77,7 +71,7 @@
     }
     .link-card:hover {
       transform: translateY(-3px);
-      background: rgba(0, 0, 0, 0.6);
+      background: rgba(255, 255, 255, 0.15);
     }
     .link-card i.fa-play-circle { color: #4CAF50; font-size: 60px; pointer-events: none; }
     .link-card i.fa-folder-open { color: #FFC107; font-size: 60px; pointer-events: none; }
@@ -110,24 +104,27 @@
     .modal, .login-modal {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.8);
+      background: rgba(0, 0, 0, 0.85);
       display: flex;
       justify-content: center;
       align-items: center;
       z-index: 999;
     }
     .modal-content {
-      background: #fff;
-      color: #000;
+      background: #1e1e1e;
+      color: #fff;
       padding: 20px;
       border-radius: 10px;
       width: 300px;
+      border: 1px solid #333;
     }
     .modal-content input {
       width: 100%;
       padding: 8px;
       margin-bottom: 10px;
-      border: 1px solid #ccc;
+      border: 1px solid #444;
+      background: #2a2a2a;
+      color: #fff;
       border-radius: 4px;
     }
     .modal-content button {
@@ -139,7 +136,7 @@
       font-weight: bold;
     }
     .modal-content button:first-of-type { background: #4CAF50; color: white; }
-    #btnCancelLogin { background: #ebebeb; color: #000; }
+    #btnCancelLogin { background: #444; color: #fff; }
     .theme-toggle {
       position: fixed;
       left: 20px; bottom: 20px;
@@ -161,9 +158,10 @@
       text-align: center;
       padding: 15px 10px;
       font-size: 14px;
-      background: rgba(0, 0, 0, 0.2);
+      background: rgba(0, 0, 0, 0.8);
       backdrop-filter: blur(4px);
       margin-top: 30px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
     }
     .developer-footer span { font-weight: bold; color: #00e676; }
   </style>
@@ -203,18 +201,18 @@
   <!-- Edit Modal -->
   <div class="modal" id="editModal" style="display: none;">
     <div class="modal-content">
-      <h3>Edit Link</h3>
+      <h3 style="margin-bottom: 15px;">Edit Link</h3>
       <input type="text" id="editTitle" placeholder="Name">
       <input type="text" id="editURL" placeholder="URL">
       <button onclick="saveEdit()">Save</button>
-      <button onclick="closeModal()" id="btnCancelEdit" style="background: #ccc; color: #000;">Cancel</button>
+      <button onclick="closeModal()" id="btnCancelEdit" style="background: #555; color: #fff;">Cancel</button>
     </div>
   </div>
 
   <!-- Login Modal -->
   <div class="login-modal" id="loginModal" style="display: none;">
     <div class="modal-content">
-      <h3>Admin Login</h3>
+      <h3 style="margin-bottom: 15px;">Admin Login</h3>
       <input type="password" id="adminPass" placeholder="Enter Admin Password">
       <button onclick="checkLogin()">Login</button>
       <button id="btnCancelLogin">Cancel</button>
@@ -397,7 +395,7 @@
         shape: { type: 'circle' },
         opacity: { value: 0.5, random: true },
         size: { value: 3, random: true },
-        line_linked: { enable: true, distance: 100, color: '#ffffff', opacity: 0.4, width: 1.2 },
+        line_linked: { enable: true, distance: 100, color: '#ffffff', opacity: 0.3, width: 1.2 },
         move: { enable: true, speed: 1.5 }
       },
       interactivity: { events: { onhover: { enable: true, mode: 'grab' } } },
@@ -405,6 +403,7 @@
     });
   </script>
 </body>
+</html>
 </html>
     });
   </script>
