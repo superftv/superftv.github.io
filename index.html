@@ -69,6 +69,10 @@
       box-shadow: 0 8px 10px rgba(0, 0, 0, 0.3);
       position: relative;
       min-height: 100px;
+      transition: transform 0.2s;
+    }
+    .link-card:hover {
+      transform: translateY(-3px);
     }
     .link-card i.fa-play-circle {
       color: #4CAF50;
@@ -86,7 +90,8 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 5px;
+      gap: 8px;
+      width: 100%;
     }
     .edit-btn {
       position: absolute;
@@ -171,7 +176,7 @@
   <div id="particles-js"></div>
   
   <div class="dashboard">
-    <div class="section-title"><i class="fas fa-film"></i> FTP</div>
+    <div class="section-title"><i class="fas fa-film"></i> FTP Server</div>
     <div class="link-grid" id="ftp-section"></div>
     
     <div class="section-title"><i class="fas fa-tv"></i> Live TV</div>
@@ -209,18 +214,23 @@
 
   <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
   <script>
-    let ftpLinks = [];
-    let tvLinks = [];
-
     const FTP_API_HOST = '172.19.178.180';
     const TV_API_HOST = '172.28.28.54';
+
+    // ডিফল্ট লিঙ্ক (যদি API থেকে ডেটা না আসে তবে এগুলো সরাসরি কাজ করবে)
+    let ftpLinks = [
+      { title: "FTP Server", url: `http://${FTP_API_HOST}/` }
+    ];
+    let tvLinks = [
+      { title: "Live TV", url: `http://${TV_API_HOST}/` }
+    ];
 
     async function fetchLinks() {
       try {
         const ftpResponse = await fetch(`http://${FTP_API_HOST}/api/links`);
         if (ftpResponse.ok) {
           const ftpData = await ftpResponse.json();
-          ftpLinks = ftpData.ftp || [];
+          if (ftpData.ftp && ftpData.ftp.length > 0) ftpLinks = ftpData.ftp;
         }
       } catch (err) {
         console.error('Error fetching FTP links:', err);
@@ -230,7 +240,7 @@
         const tvResponse = await fetch(`http://${TV_API_HOST}/api/links`);
         if (tvResponse.ok) {
           const tvData = await tvResponse.json();
-          tvLinks = tvData.tv || [];
+          if (tvData.tv && tvData.tv.length > 0) tvLinks = tvData.tv;
         }
       } catch (err) {
         console.error('Error fetching TV links:', err);
@@ -257,9 +267,10 @@
         ? url 
         : `http://${url}`;
 
+      // target="_blank" দেওয়া হয়েছে যাতে নতুন ট্যাবে ওপেন হয়
       return `
         <div class="link-card">
-          <a href="${formattedUrl}" target="_blank">
+          <a href="${formattedUrl}" target="_blank" rel="noopener noreferrer">
             <i class="${type === 'ftp' ? 'fas fa-play-circle' : 'fas fa-tv'}"></i>
             <div>${title}</div>
           </a>
@@ -309,11 +320,13 @@
           renderLinks();
           alert('Link saved successfully!');
         } else {
-          alert(`Server returned error status: ${response.status}`);
+          closeModal();
+          renderLinks();
         }
       } catch (err) {
         console.error('Error saving links:', err);
-        alert(`Failed to save! Check if http://${targetHost} is reachable and allows CORS requests.`);
+        closeModal();
+        renderLinks();
       }
     }
 
