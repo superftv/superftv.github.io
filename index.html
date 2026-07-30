@@ -18,6 +18,9 @@
       animation: gradientBG 15s ease infinite;
       color: white;
       transition: background 0.3s, color 0.3s;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
     }
     body.dark-mode {
       background: #121212;
@@ -37,7 +40,7 @@
     .dashboard {
       position: relative;
       z-index: 1;
-      padding: 30px 15px;
+      padding: 30px 15px 10px;
       text-align: center;
     }
     .section-title {
@@ -181,6 +184,22 @@
       background: rgba(255, 255, 255, 0.25);
       transform: scale(1.1);
     }
+    /* Developer Footer Style */
+    .developer-footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 15px 10px;
+      font-size: 14px;
+      letter-spacing: 0.5px;
+      background: rgba(0, 0, 0, 0.2);
+      backdrop-filter: blur(4px);
+      margin-top: 30px;
+    }
+    .developer-footer span {
+      font-weight: bold;
+      color: #00e676;
+    }
   </style>
 </head>
 <body>
@@ -204,6 +223,11 @@
   <div class="theme-toggle" onclick="toggleTheme()">
     <i class="fas fa-sun" id="themeIcon"></i>
   </div>
+
+  <!-- Developer Footer -->
+  <footer class="developer-footer">
+    Developed by <span>Antu</span>
+  </footer>
 
   <!-- Edit Modal -->
   <div class="modal" id="editModal" style="display: none;">
