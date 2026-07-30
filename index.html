@@ -262,7 +262,7 @@
       else tvLinks[currentEdit.index] = { title: nt, url: nu };
 
       try {
-        const response = await fetch('http://10.10.10.10/api/links', {
+        const response = await fetch('http://172.28.28.54/api/links', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ ftp: ftpLinks, tv: tvLinks })
