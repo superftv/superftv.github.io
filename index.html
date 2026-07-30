@@ -81,6 +81,7 @@
     }
     .link-card i.fa-play-circle { color: #4CAF50; font-size: 60px; pointer-events: none; }
     .link-card i.fa-folder-open { color: #FFC107; font-size: 60px; pointer-events: none; }
+    .link-card i.fa-film { color: #E91E63; font-size: 60px; pointer-events: none; }
     .link-card i.fa-tv { color: #FF9800; font-size: 60px; pointer-events: none; }
     .link-card i.fa-desktop { color: #00BCD4; font-size: 60px; pointer-events: none; }
     .link-card a {
@@ -171,11 +172,14 @@
   <div id="particles-js"></div>
   
   <div class="dashboard">
-    <div class="section-title"><i class="fas fa-film"></i> FTP Server 1</div>
+    <div class="section-title"><i class="fas fa-play-circle"></i> FTP Server 1</div>
     <div class="link-grid" id="ftp-section"></div>
 
     <div class="section-title"><i class="fas fa-folder-open"></i> FTP Server 2</div>
     <div class="link-grid" id="ftp2-section"></div>
+
+    <div class="section-title"><i class="fas fa-film"></i> FTP Server 3</div>
+    <div class="link-grid" id="ftp3-section"></div>
     
     <div class="section-title"><i class="fas fa-tv"></i> Live TV 1</div>
     <div class="link-grid" id="tv-section"></div>
@@ -221,30 +225,35 @@
   <script>
     const FTP_API_HOST = '10.10.10.10';
     const FTP2_API_HOST = '172.16.50.4'; 
+    const FTP3_API_HOST = '172.19.178.179';
     const TV_API_HOST = '172.28.28.54';
-    const TV2_API_HOST = '172.16.50.4';
+    const TV2_API_HOST = '172.19.178.180';
 
     let ftpLinks = [{ title: "FTP Server 1", url: `http://${FTP_API_HOST}/` }];
     let ftp2Links = [{ title: "FTP Server 2", url: `http://${FTP2_API_HOST}/` }];
+    let ftp3Links = [{ title: "FTP Server 3", url: `http://${FTP3_API_HOST}/` }];
     let tvLinks = [{ title: "Live TV 1", url: `http://${TV_API_HOST}/` }];
     let tv2Links = [{ title: "Live TV 2", url: `http://${TV2_API_HOST}/` }];
 
     let currentEdit = { type: '', index: -1 };
-    let isAdmin = false, showEditIcons = false, autoHideTimer;
+    let isAdmin = false, showEditIcons = false;
 
     function renderLinks() {
       const ftpc = document.getElementById('ftp-section');
       const ftp2c = document.getElementById('ftp2-section');
+      const ftp3c = document.getElementById('ftp3-section');
       const tvc = document.getElementById('tv-section');
       const tv2c = document.getElementById('tv2-section');
       
       ftpc.innerHTML = ''; 
       ftp2c.innerHTML = ''; 
+      ftp3c.innerHTML = ''; 
       tvc.innerHTML = '';
       tv2c.innerHTML = '';
       
       ftpLinks.forEach((l, i) => { ftpc.innerHTML += genCard(l.title, l.url, 'ftp', i); });
       ftp2Links.forEach((l, i) => { ftp2c.innerHTML += genCard(l.title, l.url, 'ftp2', i); });
+      ftp3Links.forEach((l, i) => { ftp3c.innerHTML += genCard(l.title, l.url, 'ftp3', i); });
       tvLinks.forEach((l, i) => { tvc.innerHTML += genCard(l.title, l.url, 'tv', i); });
       tv2Links.forEach((l, i) => { tv2c.innerHTML += genCard(l.title, l.url, 'tv2', i); });
     }
@@ -257,6 +266,7 @@
 
       let iconClass = 'fas fa-play-circle';
       if (type === 'ftp2') iconClass = 'fas fa-folder-open';
+      if (type === 'ftp3') iconClass = 'fas fa-film';
       if (type === 'tv') iconClass = 'fas fa-tv';
       if (type === 'tv2') iconClass = 'fas fa-desktop';
 
@@ -279,25 +289,22 @@
     async function tryFetchAPI(url, callback) {
       try {
         const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 1000); // ১ সেকেন্ডের মধ্যে না পেলে স্কিপ করবে
+        const timeoutId = setTimeout(() => controller.abort(), 1000);
         const res = await fetch(url, { signal: controller.signal });
         clearTimeout(timeoutId);
         if (res.ok) {
           const data = await res.json();
           callback(data);
         }
-      } catch (err) {
-        // API অফলাইন থাকলেও কোনো সমস্যা নেই, ডিফল্ট কার্ড দেখাবে
-      }
+      } catch (err) {}
     }
 
     async function fetchLinks() {
-      // প্রথমে ডিফল্ট লিঙ্কগুলো রেন্ডার করে ফেলা হচ্ছে
       renderLinks();
 
-      // এরপর ব্যাকগ্রাউন্ডে চেক করবে যদি কোনো API সক্রিয় থাকে
       await tryFetchAPI(`http://${FTP_API_HOST}/api/links`, data => { if(data.ftp) ftpLinks = data.ftp; });
       await tryFetchAPI(`http://${FTP2_API_HOST}/api/links`, data => { if(data.ftp2) ftp2Links = data.ftp2; });
+      await tryFetchAPI(`http://${FTP3_API_HOST}/api/links`, data => { if(data.ftp3) ftp3Links = data.ftp3; });
       await tryFetchAPI(`http://${TV_API_HOST}/api/links`, data => { if(data.tv) tvLinks = data.tv; });
       await tryFetchAPI(`http://${TV2_API_HOST}/api/links`, data => { if(data.tv2) tv2Links = data.tv2; });
 
@@ -310,6 +317,7 @@
       let data;
       if (type === 'ftp') data = ftpLinks[index];
       else if (type === 'ftp2') data = ftp2Links[index];
+      else if (type === 'ftp3') data = ftp3Links[index];
       else if (type === 'tv') data = tvLinks[index];
       else if (type === 'tv2') data = tv2Links[index];
 
@@ -332,6 +340,7 @@
       let targetHost = FTP_API_HOST;
       if (currentEdit.type === 'ftp') ftpLinks[currentEdit.index] = { title: nt, url: nu };
       else if (currentEdit.type === 'ftp2') { ftp2Links[currentEdit.index] = { title: nt, url: nu }; targetHost = FTP2_API_HOST; }
+      else if (currentEdit.type === 'ftp3') { ftp3Links[currentEdit.index] = { title: nt, url: nu }; targetHost = FTP3_API_HOST; }
       else if (currentEdit.type === 'tv') { tvLinks[currentEdit.index] = { title: nt, url: nu }; targetHost = TV_API_HOST; }
       else if (currentEdit.type === 'tv2') { tv2Links[currentEdit.index] = { title: nt, url: nu }; targetHost = TV2_API_HOST; }
 
@@ -339,7 +348,7 @@
         await fetch(`http://${targetHost}/api/links`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ ftp: ftpLinks, ftp2: ftp2Links, tv: tvLinks, tv2: tv2Links })
+          body: JSON.stringify({ ftp: ftpLinks, ftp2: ftp2Links, ftp3: ftp3Links, tv: tvLinks, tv2: tv2Links })
         });
       } catch (err) {}
       
