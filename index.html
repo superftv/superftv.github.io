@@ -1,27 +1,5 @@
+
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>FTP & Live TV Portal</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body {
-      min-height: 100%;
-      font-family: 'Segoe UI', sans-serif;
-    }
-    body {
-      margin: 0; padding: 0;
-      background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-      background-size: 400% 400%;
-      animation: gradientBG 15s ease infinite;
-      color: white;
-      transition: background 0.3s, color 0.3s;
-      display: flex;
-      flex-direction: column;
-      just…
-[21:30, 7/30/2026] Ariyan Er Ma: <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -250,10 +228,10 @@
     const TV2_API_HOST = '172.16.50.4';
 
     // ডিফল্টভাবে প্রতিটি সার্ভারের লিংক নিশ্চিত করা হলো
-    let ftpLinks = [{ title: "FTP Server 1", url: http://${FTP_API_HOST}/ }];
-    let ftp2Links = [{ title: "FTP Server 2", url: http://${FTP2_API_HOST}/ }];
-    let tvLinks = [{ title: "Live TV 1", url: http://${TV_API_HOST}/ }];
-    let tv2Links = [{ title: "Live TV 2", url: http://${TV2_API_HOST}/ }];
+    let ftpLinks = [{ title: "FTP Server 1", url: `http://${FTP_API_HOST}/` }];
+    let ftp2Links = [{ title: "FTP Server 2", url: `http://${FTP2_API_HOST}/` }];
+    let tvLinks = [{ title: "Live TV 1", url: `http://${TV_API_HOST}/` }];
+    let tv2Links = [{ title: "Live TV 2", url: `http://${TV2_API_HOST}/` }];
 
     let currentEdit = { type: '', index: -1 };
     let isAdmin = false, showEditIcons = false;
@@ -278,7 +256,7 @@
     function genCard(title, url, type, idx) {
       let formattedUrl = url || '';
       if (!formattedUrl.startsWith('http://') && !formattedUrl.startsWith('https://')) {
-        formattedUrl = http://${formattedUrl};
+        formattedUrl = `http://${formattedUrl}`;
       }
 
       let iconClass = 'fas fa-play-circle';
@@ -292,7 +270,7 @@
             <i class="${iconClass}"></i>
             <div>${title}</div>
           </a>
-          ${isAdmin && showEditIcons ? <div class="edit-btn" onclick="openModal(event, '${type}', ${idx})">Edit</div> : ''}
+          ${isAdmin && showEditIcons ? `<div class="edit-btn" onclick="openModal(event, '${type}', ${idx})">Edit</div>` : ''}
         </div>
       `;
     }
@@ -314,7 +292,7 @@
       };
 
       try {
-        const res = await fetchWithTimeout(http://${FTP2_API_HOST}/api/links);
+        const res = await fetchWithTimeout(`http://${FTP2_API_HOST}/api/links`);
         if (res.ok) {
           const data = await res.json();
           if (data.ftp2 && data.ftp2.length > 0) ftp2Links = data.ftp2;
@@ -324,7 +302,7 @@
       }
 
       try {
-        const res = await fetchWithTimeout(http://${TV2_API_HOST}/api/links);
+        const res = await fetchWithTimeout(`http://${TV2_API_HOST}/api/links`);
         if (res.ok) {
           const data = await res.json();
           if (data.tv2 && data.tv2.length > 0) tv2Links = data.tv2;
