@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,6 +12,7 @@
       font-family: 'Segoe UI', sans-serif;
     }
     body {
+      margin: 0; padding: 0;
       background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
       background-size: 400% 400%;
       animation: gradientBG 15s ease infinite;
@@ -44,13 +44,12 @@
       text-align: center;
     }
     .section-title {
-      font-size: 22px;
-      margin: 25px 0 15px;
+      font-size: 24px;
+      margin: 30px 0 20px;
       display: flex;
       justify-content: center;
       align-items: center;
       gap: 10px;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
     }
     .link-grid {
       display: grid;
@@ -72,7 +71,7 @@
       font-size: 15px;
       box-shadow: 0 8px 10px rgba(0, 0, 0, 0.3);
       position: relative;
-      min-height: 110px;
+      min-height: 100px;
       transition: transform 0.2s, background 0.2s;
       cursor: pointer;
     }
@@ -80,12 +79,10 @@
       transform: translateY(-3px);
       background: rgba(0, 0, 0, 0.6);
     }
-    .link-card i { font-size: 50px; margin-bottom: 8px; pointer-events: none; }
-    .link-card i.fa-play-circle { color: #4CAF50; }
-    .link-card i.fa-folder-open { color: #FFC107; }
-    .link-card i.fa-tv { color: #FF9800; }
-    .link-card i.fa-desktop { color: #00BCD4; }
-    
+    .link-card i.fa-play-circle { color: #4CAF50; font-size: 60px; pointer-events: none; }
+    .link-card i.fa-folder-open { color: #FFC107; font-size: 60px; pointer-events: none; }
+    .link-card i.fa-tv { color: #FF9800; font-size: 60px; pointer-events: none; }
+    .link-card i.fa-desktop { color: #00BCD4; font-size: 60px; pointer-events: none; }
     .link-card a {
       color: white;
       text-decoration: none;
@@ -174,7 +171,7 @@
   <div id="particles-js"></div>
   
   <div class="dashboard">
-    <div class="section-title"><i class="fas fa-play-circle"></i> FTP Server 1</div>
+    <div class="section-title"><i class="fas fa-film"></i> FTP Server 1</div>
     <div class="link-grid" id="ftp-section"></div>
 
     <div class="section-title"><i class="fas fa-folder-open"></i> FTP Server 2</div>
@@ -227,14 +224,13 @@
     const TV_API_HOST = '172.28.28.54';
     const TV2_API_HOST = '172.16.50.4';
 
-    // ডিফল্টভাবে প্রতিটি সার্ভারের লিংক নিশ্চিত করা হলো
     let ftpLinks = [{ title: "FTP Server 1", url: `http://${FTP_API_HOST}/` }];
     let ftp2Links = [{ title: "FTP Server 2", url: `http://${FTP2_API_HOST}/` }];
     let tvLinks = [{ title: "Live TV 1", url: `http://${TV_API_HOST}/` }];
     let tv2Links = [{ title: "Live TV 2", url: `http://${TV2_API_HOST}/` }];
 
     let currentEdit = { type: '', index: -1 };
-    let isAdmin = false, showEditIcons = false;
+    let isAdmin = false, showEditIcons = false, autoHideTimer;
 
     function renderLinks() {
       const ftpc = document.getElementById('ftp-section');
@@ -280,38 +276,31 @@
       window.open(url, '_blank');
     }
 
-    async function loadData() {
-      // ১. পেজ লোডের সাথেই সাথে কার্ডগুলো স্ক্রিনে দেখাবে
+    async function tryFetchAPI(url, callback) {
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 1000); // ১ সেকেন্ডের মধ্যে না পেলে স্কিপ করবে
+        const res = await fetch(url, { signal: controller.signal });
+        clearTimeout(timeoutId);
+        if (res.ok) {
+          const data = await res.json();
+          callback(data);
+        }
+      } catch (err) {
+        // API অফলাইন থাকলেও কোনো সমস্যা নেই, ডিফল্ট কার্ড দেখাবে
+      }
+    }
+
+    async function fetchLinks() {
+      // প্রথমে ডিফল্ট লিঙ্কগুলো রেন্ডার করে ফেলা হচ্ছে
       renderLinks();
 
-      // ২. ব্যাকগ্রাউন্ডে API রিকোয়েস্ট পাঠানো হবে (যদি থাকে)
-      const fetchWithTimeout = (url) => {
-        const controller = new AbortController();
-        setTimeout(() => controller.abort(), 1200); // ১.২ সেকেন্ডে না পেলে বাতিল হবে
-        return fetch(url, { signal: controller.signal });
-      };
+      // এরপর ব্যাকগ্রাউন্ডে চেক করবে যদি কোনো API সক্রিয় থাকে
+      await tryFetchAPI(`http://${FTP_API_HOST}/api/links`, data => { if(data.ftp) ftpLinks = data.ftp; });
+      await tryFetchAPI(`http://${FTP2_API_HOST}/api/links`, data => { if(data.ftp2) ftp2Links = data.ftp2; });
+      await tryFetchAPI(`http://${TV_API_HOST}/api/links`, data => { if(data.tv) tvLinks = data.tv; });
+      await tryFetchAPI(`http://${TV2_API_HOST}/api/links`, data => { if(data.tv2) tv2Links = data.tv2; });
 
-      try {
-        const res = await fetchWithTimeout(`http://${FTP2_API_HOST}/api/links`);
-        if (res.ok) {
-          const data = await res.json();
-          if (data.ftp2 && data.ftp2.length > 0) ftp2Links = data.ftp2;
-        }
-      } catch (e) {
-        console.log("FTP2 API unavailable, using default card.");
-      }
-
-      try {
-        const res = await fetchWithTimeout(`http://${TV2_API_HOST}/api/links`);
-        if (res.ok) {
-          const data = await res.json();
-          if (data.tv2 && data.tv2.length > 0) tv2Links = data.tv2;
-        }
-      } catch (e) {
-        console.log("TV2 API unavailable, using default card.");
-      }
-
-      // API থেকে কোনো ডাটা আসলে তা আপডেট করে রেন্ডার করবে
       renderLinks();
     }
 
@@ -335,16 +324,25 @@
       document.getElementById('editModal').style.display = 'none';
     }
 
-    function saveEdit() {
+    async function saveEdit() {
       const nt = document.getElementById('editTitle').value.trim();
       const nu = document.getElementById('editURL').value.trim();
       if (!nt || !nu) return alert('Fill all fields!');
 
+      let targetHost = FTP_API_HOST;
       if (currentEdit.type === 'ftp') ftpLinks[currentEdit.index] = { title: nt, url: nu };
-      else if (currentEdit.type === 'ftp2') ftp2Links[currentEdit.index] = { title: nt, url: nu };
-      else if (currentEdit.type === 'tv') tvLinks[currentEdit.index] = { title: nt, url: nu };
-      else if (currentEdit.type === 'tv2') tv2Links[currentEdit.index] = { title: nt, url: nu };
+      else if (currentEdit.type === 'ftp2') { ftp2Links[currentEdit.index] = { title: nt, url: nu }; targetHost = FTP2_API_HOST; }
+      else if (currentEdit.type === 'tv') { tvLinks[currentEdit.index] = { title: nt, url: nu }; targetHost = TV_API_HOST; }
+      else if (currentEdit.type === 'tv2') { tv2Links[currentEdit.index] = { title: nt, url: nu }; targetHost = TV2_API_HOST; }
 
+      try {
+        await fetch(`http://${targetHost}/api/links`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ftp: ftpLinks, ftp2: ftp2Links, tv: tvLinks, tv2: tv2Links })
+        });
+      } catch (err) {}
+      
       closeModal();
       renderLinks();
     }
@@ -381,11 +379,11 @@
       document.getElementById('loginModal').style.display = 'none';
     });
 
-    window.onload = loadData;
+    window.onload = fetchLinks;
 
     particlesJS('particles-js', {
       particles: {
-        number: { value: 80, density: { enable: true, value_area: 800 } },
+        number: { value: 100, density: { enable: true, value_area: 800 } },
         color: { value: '#ffffff' },
         shape: { type: 'circle' },
         opacity: { value: 0.5, random: true },
