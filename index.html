@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>FTP & Live TV</title>
+  <title>FTP & Live TV Portal</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
@@ -84,6 +84,12 @@
     }
     .link-card i.fa-tv {
       color: #FF9800;
+      transition: color 0.3s;
+      font-size: 60px;
+      pointer-events: none;
+    }
+    .link-card i.fa-desktop {
+      color: #00BCD4;
       transition: color 0.3s;
       font-size: 60px;
       pointer-events: none;
@@ -186,6 +192,9 @@
     
     <div class="section-title"><i class="fas fa-tv"></i> Live TV</div>
     <div class="link-grid" id="tv-section"></div>
+
+    <div class="section-title"><i class="fas fa-desktop"></i> Live TV 2</div>
+    <div class="link-grid" id="tv2-section"></div>
     
     <div class="dashboard-controls" id="adminControls" style="display: none; margin-top: 20px;">
       <button id="btnToggleEdit" onclick="toggleEditIcons()" style="padding: 8px 16px; font-weight: bold; cursor: pointer; border-radius: 4px; border: none; background: #fff; color: #000;">Show Edit</button>
@@ -219,8 +228,9 @@
 
   <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
   <script>
-    const FTP_API_HOST = '172.19.178.180';
+    const FTP_API_HOST = '10.10.10.10';
     const TV_API_HOST = '172.28.28.54';
+    const TV2_API_HOST = '172.19.178.180';
 
     let ftpLinks = [
       { title: "FTP Server", url: `http://${FTP_API_HOST}/` }
@@ -228,10 +238,13 @@
     let tvLinks = [
       { title: "Live TV", url: `http://${TV_API_HOST}/` }
     ];
+    let tv2Links = [
+      { title: "Live TV 2", url: `http://${TV2_API_HOST}/` }
+    ];
 
     async function fetchLinks() {
       try {
-        const ftpResponse = await fetch(`http://${FTP_API_HOST}/api/links`, { signal: AbortSignal.timeout(3000) });
+        const ftpResponse = await fetch(`http://${FTP_API_HOST}/api/links`, { signal: AbortSignal.timeout(2000) });
         if (ftpResponse.ok) {
           const ftpData = await ftpResponse.json();
           if (ftpData.ftp && ftpData.ftp.length > 0) ftpLinks = ftpData.ftp;
@@ -241,13 +254,23 @@
       }
 
       try {
-        const tvResponse = await fetch(`http://${TV_API_HOST}/api/links`, { signal: AbortSignal.timeout(3000) });
+        const tvResponse = await fetch(`http://${TV_API_HOST}/api/links`, { signal: AbortSignal.timeout(2000) });
         if (tvResponse.ok) {
           const tvData = await tvResponse.json();
           if (tvData.tv && tvData.tv.length > 0) tvLinks = tvData.tv;
         }
       } catch (err) {
         console.warn('TV API not responding, using default IP.');
+      }
+
+      try {
+        const tv2Response = await fetch(`http://${TV2_API_HOST}/api/links`, { signal: AbortSignal.timeout(2000) });
+        if (tv2Response.ok) {
+          const tv2Data = await tv2Response.json();
+          if (tv2Data.tv2 && tv2Data.tv2.length > 0) tv2Links = tv2Data.tv2;
+        }
+      } catch (err) {
+        console.warn('TV 2 API not responding, using default IP.');
       }
 
       renderLinks();
@@ -259,11 +282,15 @@
     function renderLinks() {
       const ftpc = document.getElementById('ftp-section');
       const tvc = document.getElementById('tv-section');
+      const tv2c = document.getElementById('tv2-section');
+      
       ftpc.innerHTML = ''; 
       tvc.innerHTML = '';
+      tv2c.innerHTML = '';
       
       ftpLinks.forEach((l, i) => { ftpc.innerHTML += genCard(l.title, l.url, 'ftp', i); });
       tvLinks.forEach((l, i) => { tvc.innerHTML += genCard(l.title, l.url, 'tv', i); });
+      tv2Links.forEach((l, i) => { tv2c.innerHTML += genCard(l.title, l.url, 'tv2', i); });
     }
 
     function genCard(title, url, type, idx) {
@@ -272,10 +299,14 @@
         formattedUrl = `http://${formattedUrl}`;
       }
 
+      let iconClass = 'fas fa-play-circle';
+      if (type === 'tv') iconClass = 'fas fa-tv';
+      if (type === 'tv2') iconClass = 'fas fa-desktop';
+
       return `
         <div class="link-card" onclick="openTargetUrl(event, '${formattedUrl}')">
           <a href="${formattedUrl}" target="_blank" rel="noopener noreferrer" onclick="event.preventDefault();">
-            <i class="${type === 'ftp' ? 'fas fa-play-circle' : 'fas fa-tv'}"></i>
+            <i class="${iconClass}"></i>
             <div>${title}</div>
           </a>
           ${isAdmin && showEditIcons ? `<div class="edit-btn" onclick="openModal(event, '${type}', ${idx})">Edit</div>` : ''}
@@ -284,7 +315,6 @@
     }
 
     function openTargetUrl(event, url) {
-      // যদি এডিট বাটনে ক্লিক করা হয়, তবে যেন লিঙ্ক না খোলে
       if (event.target.classList.contains('edit-btn')) return;
       window.open(url, '_blank');
     }
@@ -292,7 +322,12 @@
     function openModal(event, type, index) {
       event.stopPropagation();
       currentEdit = { type, index };
-      const data = (type === 'ftp' ? ftpLinks : tvLinks)[index];
+      
+      let data;
+      if (type === 'ftp') data = ftpLinks[index];
+      else if (type === 'tv') data = tvLinks[index];
+      else if (type === 'tv2') data = tv2Links[index];
+
       if (data) {
         document.getElementById('editTitle').value = data.title || '';
         document.getElementById('editURL').value = data.url || '';
@@ -313,32 +348,23 @@
         return;
       }
 
-      const isTv = currentEdit.type === 'tv';
-      const targetHost = isTv ? TV_API_HOST : FTP_API_HOST;
-
-      if (!isTv) ftpLinks[currentEdit.index] = { title: nt, url: nu };
-      else tvLinks[currentEdit.index] = { title: nt, url: nu };
+      let targetHost = FTP_API_HOST;
+      if (currentEdit.type === 'ftp') ftpLinks[currentEdit.index] = { title: nt, url: nu };
+      else if (currentEdit.type === 'tv') { tvLinks[currentEdit.index] = { title: nt, url: nu }; targetHost = TV_API_HOST; }
+      else if (currentEdit.type === 'tv2') { tv2Links[currentEdit.index] = { title: nt, url: nu }; targetHost = TV2_API_HOST; }
 
       try {
-        const response = await fetch(`http://${targetHost}/api/links`, {
+        await fetch(`http://${targetHost}/api/links`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ ftp: ftpLinks, tv: tvLinks })
+          body: JSON.stringify({ ftp: ftpLinks, tv: tvLinks, tv2: tv2Links })
         });
-        
-        if (response.ok) {
-          closeModal();
-          renderLinks();
-          alert('Link saved successfully!');
-        } else {
-          closeModal();
-          renderLinks();
-        }
       } catch (err) {
         console.error('Error saving links:', err);
-        closeModal();
-        renderLinks();
       }
+      
+      closeModal();
+      renderLinks();
     }
 
     function checkLogin() {
