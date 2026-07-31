@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+
+      <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -85,6 +86,7 @@
     .link-card i.fa-play-circle { color: #4CAF50; font-size: 60px; pointer-events: none; }
     .link-card i.fa-folder-open { color: #FFC107; font-size: 60px; pointer-events: none; }
     .link-card i.fa-film { color: #E91E63; font-size: 60px; pointer-events: none; }
+    .link-card i.fa-photo-video { color: #9C27B0; font-size: 60px; pointer-events: none; }
     .link-card i.fa-tv { color: #FF9800; font-size: 60px; pointer-events: none; }
     .link-card i.fa-desktop { color: #00BCD4; font-size: 60px; pointer-events: none; }
     .link-card a {
@@ -186,6 +188,9 @@
 
     <div class="section-title"><i class="fas fa-film"></i> FTP Server 3</div>
     <div class="link-grid" id="ftp3-section"></div>
+
+    <div class="section-title"><i class="fas fa-photo-video"></i> FTP Server 4</div>
+    <div class="link-grid" id="ftp4-section"></div>
     
     <div class="section-title"><i class="fas fa-tv"></i> Live TV 1</div>
     <div class="link-grid" id="tv-section"></div>
@@ -233,12 +238,14 @@
     const FTP_API_HOST = '10.10.10.10';
     const FTP2_API_HOST = '172.16.50.4'; 
     const FTP3_API_HOST = '172.19.178.179';
+    const FTP4_API_HOST = '10.16.100.244';
     const TV_API_HOST = '172.28.28.54';
     const TV2_API_HOST = '172.19.178.180';
 
     let ftpLinks = [{ title: "FTP Server 1", url: `http://${FTP_API_HOST}/` }];
     let ftp2Links = [{ title: "FTP Server 2", url: `http://${FTP2_API_HOST}/` }];
     let ftp3Links = [{ title: "FTP Server 3", url: `http://${FTP3_API_HOST}/` }];
+    let ftp4Links = [{ title: "FTP Server 4", url: `http://${FTP4_API_HOST}/dashboard.php?session=c2c3e6c0aa01b1c155cec1fbab1bc6c47883390af1b4cb470ee461ff53665061` }];
     let tvLinks = [{ title: "Live TV 1", url: `http://${TV_API_HOST}/` }];
     let tv2Links = [{ title: "Live TV 2", url: `http://${TV2_API_HOST}/` }];
 
@@ -249,18 +256,21 @@
       const ftpc = document.getElementById('ftp-section');
       const ftp2c = document.getElementById('ftp2-section');
       const ftp3c = document.getElementById('ftp3-section');
+      const ftp4c = document.getElementById('ftp4-section');
       const tvc = document.getElementById('tv-section');
       const tv2c = document.getElementById('tv2-section');
       
       ftpc.innerHTML = ''; 
       ftp2c.innerHTML = ''; 
       ftp3c.innerHTML = ''; 
+      ftp4c.innerHTML = '';
       tvc.innerHTML = '';
       tv2c.innerHTML = '';
       
       ftpLinks.forEach((l, i) => { ftpc.innerHTML += genCard(l.title, l.url, 'ftp', i); });
       ftp2Links.forEach((l, i) => { ftp2c.innerHTML += genCard(l.title, l.url, 'ftp2', i); });
       ftp3Links.forEach((l, i) => { ftp3c.innerHTML += genCard(l.title, l.url, 'ftp3', i); });
+      ftp4Links.forEach((l, i) => { ftp4c.innerHTML += genCard(l.title, l.url, 'ftp4', i); });
       tvLinks.forEach((l, i) => { tvc.innerHTML += genCard(l.title, l.url, 'tv', i); });
       tv2Links.forEach((l, i) => { tv2c.innerHTML += genCard(l.title, l.url, 'tv2', i); });
     }
@@ -274,6 +284,7 @@
       let iconClass = 'fas fa-play-circle';
       if (type === 'ftp2') iconClass = 'fas fa-folder-open';
       if (type === 'ftp3') iconClass = 'fas fa-film';
+      if (type === 'ftp4') iconClass = 'fas fa-photo-video';
       if (type === 'tv') iconClass = 'fas fa-tv';
       if (type === 'tv2') iconClass = 'fas fa-desktop';
 
@@ -312,6 +323,7 @@
       await tryFetchAPI(`http://${FTP_API_HOST}/api/links`, data => { if(data.ftp) ftpLinks = data.ftp; });
       await tryFetchAPI(`http://${FTP2_API_HOST}/api/links`, data => { if(data.ftp2) ftp2Links = data.ftp2; });
       await tryFetchAPI(`http://${FTP3_API_HOST}/api/links`, data => { if(data.ftp3) ftp3Links = data.ftp3; });
+      await tryFetchAPI(`http://${FTP4_API_HOST}/api/links`, data => { if(data.ftp4) ftp4Links = data.ftp4; });
       await tryFetchAPI(`http://${TV_API_HOST}/api/links`, data => { if(data.tv) tvLinks = data.tv; });
       await tryFetchAPI(`http://${TV2_API_HOST}/api/links`, data => { if(data.tv2) tv2Links = data.tv2; });
 
@@ -325,6 +337,7 @@
       if (type === 'ftp') data = ftpLinks[index];
       else if (type === 'ftp2') data = ftp2Links[index];
       else if (type === 'ftp3') data = ftp3Links[index];
+      else if (type === 'ftp4') data = ftp4Links[index];
       else if (type === 'tv') data = tvLinks[index];
       else if (type === 'tv2') data = tv2Links[index];
 
@@ -348,6 +361,7 @@
       if (currentEdit.type === 'ftp') ftpLinks[currentEdit.index] = { title: nt, url: nu };
       else if (currentEdit.type === 'ftp2') { ftp2Links[currentEdit.index] = { title: nt, url: nu }; targetHost = FTP2_API_HOST; }
       else if (currentEdit.type === 'ftp3') { ftp3Links[currentEdit.index] = { title: nt, url: nu }; targetHost = FTP3_API_HOST; }
+      else if (currentEdit.type === 'ftp4') { ftp4Links[currentEdit.index] = { title: nt, url: nu }; targetHost = FTP4_API_HOST; }
       else if (currentEdit.type === 'tv') { tvLinks[currentEdit.index] = { title: nt, url: nu }; targetHost = TV_API_HOST; }
       else if (currentEdit.type === 'tv2') { tv2Links[currentEdit.index] = { title: nt, url: nu }; targetHost = TV2_API_HOST; }
 
@@ -355,7 +369,7 @@
         await fetch(`http://${targetHost}/api/links`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ ftp: ftpLinks, ftp2: ftp2Links, ftp3: ftp3Links, tv: tvLinks, tv2: tv2Links })
+          body: JSON.stringify({ ftp: ftpLinks, ftp2: ftp2Links, ftp3: ftp3Links, ftp4: ftp4Links, tv: tvLinks, tv2: tv2Links })
         });
       } catch (err) {}
       
@@ -415,4 +429,5 @@
   </script>
 </body>
 </html>
-</html>
+
+      
