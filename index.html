@@ -2,56 +2,177 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>ESER-ALL</title>
+  <title>ESER-ALL Portal</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
+    :root {
+      --bg-color: #0f172a;
+      --text-color: #f8fafc;
+      --card-bg: rgba(255, 255, 255, 0.08);
+      --card-border: rgba(255, 255, 255, 0.15);
+      --card-hover: rgba(255, 255, 255, 0.2);
+      --modal-bg: #1e293b;
+      --modal-border: #334155;
+      --input-bg: #0f172a;
+      --input-border: #475569;
+      --footer-bg: rgba(15, 23, 42, 0.6);
+      --icon-color: #38bdf8;
+      --bg-overlay: rgba(15, 23, 42, 0.75);
+    }
+
+    [data-theme="light"] {
+      --bg-color: #e0f2fe;
+      --text-color: #0c4a6e;
+      --card-bg: rgba(255, 255, 255, 0.85);
+      --card-border: rgba(56, 189, 248, 0.3);
+      --card-hover: #ffffff;
+      --modal-bg: #ffffff;
+      --modal-border: #bae6fd;
+      --input-bg: #f0f9ff;
+      --input-border: #7dd3fc;
+      --footer-bg: rgba(224, 242, 254, 0.85);
+      --icon-color: #0284c7;
+      --bg-overlay: rgba(224, 242, 254, 0.45);
+    }
+
+    [data-theme="light"] body {
+      animation: skyColorShift 18s infinite alternate ease-in-out;
+    }
+
+    @keyframes skyColorShift {
+      0% { background-color: #e0f2fe; }
+      33% { background-color: #bae6fd; }
+      66% { background-color: #e0f7fa; }
+      100% { background-color: #f0f9ff; }
+    }
+
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { min-height: 100%; font-family: 'Segoe UI', sans-serif; }
+    
     body {
       margin: 0; padding: 0;
-      background: #121212;
-      color: #f0f0f0;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
+      background: var(--bg-color);
+      color: var(--text-color);
+      display: flex; flex-direction: column; justify-content: space-between;
+      transition: background 0.5s ease, color 0.5s ease;
+      position: relative;
     }
-    #particles-js { position: fixed; width: 100%; height: 100%; z-index: 0; }
+
+    .bg-video-container {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      overflow: hidden; z-index: 0;
+    }
+
+    .bg-video-container video {
+      width: 100%; height: 100%; object-fit: cover;
+      filter: brightness(0.85) contrast(1.05);
+    }
+
+    .bg-overlay {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background: var(--bg-overlay); transition: background 0.5s ease;
+    }
+    
+    .theme-toggle-btn {
+      position: fixed; top: 20px; right: 20px; z-index: 1001;
+      background: var(--card-bg); border: 1px solid var(--card-border);
+      color: var(--text-color); padding: 10px 16px; border-radius: 50px;
+      cursor: pointer; display: flex; align-items: center; gap: 8px;
+      font-weight: bold; backdrop-filter: blur(8px);
+      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.2); transition: all 0.3s ease;
+    }
+    .theme-toggle-btn:hover { background: var(--card-hover); transform: scale(1.03); }
+
     .dashboard { position: relative; z-index: 1; padding: 30px 15px 10px; text-align: center; }
-    .main-header { font-size: 32px; font-weight: bold; margin-bottom: 25px; }
-    .section-title { font-size: 22px; margin: 25px 0 15px; display: flex; justify-content: center; align-items: center; gap: 10px; }
-    .link-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; max-width: 950px; margin: 0 auto; }
+    .main-header { font-size: 32px; font-weight: 800; margin-bottom: 25px; margin-top: 10px; letter-spacing: 0.5px; }
+    .section-title { font-size: 22px; margin: 25px 0 15px; display: flex; justify-content: center; align-items: center; gap: 10px; color: var(--text-color); }
+    .section-title i { color: var(--icon-color); }
+
+    .link-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; max-width: 950px; margin: 0 auto; }
     .inline-grid { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 12px; max-width: 950px; margin: 0 auto 20px auto; }
+    
     .compact-card { padding: 10px 14px; min-height: auto; flex: 1 1 120px; max-width: 200px; }
-    .compact-card i { font-size: 28px !important; }
+    .compact-card i.main-icon { font-size: 28px !important; margin-bottom: 5px; }
     .compact-card div { font-size: 13px; font-weight: 600; }
+    
     .link-card {
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      padding: 16px; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 12px; color: #fff; backdrop-filter: blur(6px); font-size: 15px;
-      box-shadow: 0 8px 10px rgba(0, 0, 0, 0.4); position: relative; min-height: 100px; cursor: pointer;
+      padding: 16px; background: var(--card-bg); border: 1px solid var(--card-border);
+      border-radius: 14px; color: var(--text-color); backdrop-filter: blur(10px);
+      font-size: 15px; font-weight: 600; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+      position: relative; min-height: 100px; cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    .link-card:hover { transform: translateY(-3px); background: rgba(255, 255, 255, 0.18); }
-    .link-card a { color: white; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 6px; width: 100%; height: 100%; }
-    .user-login-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); display: flex; justify-content: center; align-items: center; z-index: 999; }
-    .modal-content { background: #1e1e1e; color: #fff; padding: 20px; border-radius: 10px; width: 320px; border: 1px solid #333; text-align: center; }
-    .modal-content input { width: 100%; padding: 10px; margin-bottom: 12px; border: 1px solid #444; background: #2a2a2a; color: #fff; border-radius: 4px; }
-    .modal-content button { padding: 10px 16px; margin-top: 5px; cursor: pointer; border: none; border-radius: 4px; font-weight: bold; background: #4CAF50; color: white; width: 100%; }
-    .logout-btn { position: fixed; right: 20px; bottom: 20px; padding: 10px 16px; border-radius: 20px; border: none; background: #e91e63; color: white; font-size: 14px; font-weight: bold; cursor: pointer; z-index: 1000; }
-    .developer-footer { position: relative; z-index: 1; text-align: center; padding: 15px 10px; font-size: 14px; background: rgba(0, 0, 0, 0.4); margin-top: 30px; }
-    .developer-footer span { font-weight: bold; color: #00e676; }
+    .link-card i.main-icon { font-size: 32px; margin-bottom: 8px; color: var(--icon-color); transition: transform 0.2s ease; }
+    .link-card:hover { transform: translateY(-4px); background: var(--card-hover); box-shadow: 0 12px 20px rgba(2, 132, 199, 0.2); }
+    .link-card:hover i.main-icon { transform: scale(1.1); }
+
+    .status-badge {
+      position: absolute; top: 8px; right: 8px; font-size: 11px; padding: 2px 6px; border-radius: 10px;
+      font-weight: bold; display: flex; align-items: center; gap: 4px;
+    }
+    .status-badge.online { background: rgba(76, 175, 80, 0.2); color: #4CAF50; border: 1px solid #4CAF50; }
+    .status-badge.offline { background: rgba(244, 67, 54, 0.2); color: #f44336; border: 1px solid #f44336; }
+    .status-badge.checking { background: rgba(255, 193, 7, 0.2); color: #ffc107; border: 1px solid #ffc107; }
+
+    /* Login Modal Protection Styling */
+    .user-login-modal { 
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+      background: rgba(15, 23, 42, 0.95); display: flex; justify-content: center; 
+      align-items: center; z-index: 999; 
+    }
+    .modal-content { 
+      background: var(--modal-bg); color: var(--text-color); padding: 28px; 
+      border-radius: 16px; width: 330px; border: 1px solid var(--modal-border); 
+      text-align: center; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3); 
+    }
+    .modal-content input { 
+      width: 100%; padding: 12px; margin-bottom: 12px; border: 1px solid var(--input-border); 
+      background: var(--input-bg); color: var(--text-color); border-radius: 8px; outline: none; 
+    }
+    .modal-content button { 
+      padding: 12px; margin-top: 5px; cursor: pointer; border: none; 
+      border-radius: 8px; font-weight: bold; background: #0284c7; color: white; width: 100%; 
+    }
+
+    .logout-btn { 
+      position: fixed; left: 20px; bottom: 20px; padding: 10px 18px; border-radius: 20px; 
+      border: none; background: #e11d48; color: white; font-size: 14px; font-weight: bold; 
+      cursor: pointer; z-index: 1000; box-shadow: 0 4px 10px rgba(225, 29, 72, 0.3); 
+    }
+    
+    .developer-footer { 
+      position: relative; z-index: 1; text-align: center; padding: 15px 10px; 
+      font-size: 14px; background: var(--footer-bg); margin-top: 30px; backdrop-filter: blur(8px); 
+    }
+    .developer-footer span { font-weight: bold; color: var(--icon-color); }
   </style>
 </head>
-<body>
-  <div id="particles-js"></div>
-  
-  <!-- User Access Modal -->
+
+<!-- Inspect / Right-Click / Keyboard Shortcuts Blocked -->
+<body oncontextmenu="return false;">
+
+  <div class="bg-video-container">
+    <video autoplay loop muted playsinline poster="https://images.unsplash.com/photo-1506744038136-46273834b3fb">
+      <source src="https://assets.mixkit.co/videos/preview/mixkit-timelapse-of-clouds-and-mountains-2408-large.mp4" type="video/mp4">
+    </video>
+    <div class="bg-overlay"></div>
+  </div>
+
+  <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleTheme()">
+    <i class="fas fa-moon" id="themeIcon"></i>
+    <span id="themeText">Dark Sky</span>
+  </button>
+
+  <!-- Login Form -->
   <div class="user-login-modal" id="userLoginModal">
     <div class="modal-content" id="loginBox">
-      <h3 style="margin-bottom: 15px;"><i class="fas fa-lock"></i> User Access Login</h3>
-      <input type="email" id="userInputEmail" placeholder="Email Address">
-      <input type="password" id="userInputPass" placeholder="Password">
+      <h3 style="margin-bottom: 15px;"><i class="fas fa-shield-alt" style="color: var(--icon-color);"></i> Secure Login</h3>
+      <input type="email" id="userInputEmail" placeholder="Email Address" autocomplete="off">
+      <input type="password" id="userInputPass" placeholder="Password" autocomplete="off">
       <button onclick="checkUserLogin()">Login</button>
+      <div id="loginError" style="color: #f44336; font-size: 12px; margin-top: 10px; display: none;"></div>
     </div>
   </div>
 
@@ -79,14 +200,50 @@
     Developed by <span>Antu</span>
   </footer>
 
-  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
-  
   <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
   <script>
+    // Inspect Element Keyboard Shortcuts Disable
+    document.addEventListener('keydown', function(e) {
+      if (e.keyCode === 123 || 
+         (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) || 
+         (e.ctrlKey && e.keyCode === 85)) {
+        e.preventDefault();
+        return false;
+      }
+    });
+
+    // Theme Switcher
+    function initTheme() {
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      updateThemeUI(savedTheme);
+    }
+
+    function toggleTheme() {
+      const currentTheme = document.documentElement.getAttribute('data-theme');
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      updateThemeUI(newTheme);
+    }
+
+    function updateThemeUI(theme) {
+      const icon = document.getElementById('themeIcon');
+      const text = document.getElementById('themeText');
+      if (theme === 'light') {
+        icon.className = 'fas fa-sun';
+        text.innerText = 'Sky Light';
+      } else {
+        icon.className = 'fas fa-moon';
+        text.innerText = 'Night Sky';
+      }
+    }
+    initTheme();
+
+    // Secure Firebase Auth
     const firebaseConfig = {
       apiKey: "AIzaSyDB4r_a5gPtKhlzM0qqmYHBb6HA_I2SmHQ",
       authDomain: "eser-all.firebaseapp.com",
@@ -94,13 +251,11 @@
       projectId: "eser-all",
       storageBucket: "eser-all.firebasestorage.app",
       messagingSenderId: "741870576674",
-      appId: "1:741870576674:web:2a5094bd05f44f0b98d67b",
-      measurementId: "G-CQLKEKLC6K"
+      appId: "1:741870576674:web:2a5094bd05f44f0b98d67b"
     };
 
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
-    const db = firebase.database();
 
     const FTP_API_HOST = '10.10.10.10';
     const FTP2_API_HOST = '172.16.50.4'; 
@@ -109,26 +264,30 @@
     const TV_API_HOST = '172.28.28.54';
     const TV2_API_HOST = '172.19.178.180';
 
-    // Firebase Auth ভিত্তিক লগইন ফাংশন
+    // Firebase Backend Authentication Check
     function checkUserLogin() {
       const email = document.getElementById('userInputEmail').value.trim();
       const pass = document.getElementById('userInputPass').value.trim();
+      const errorDiv = document.getElementById('loginError');
 
       if (!email || !pass) {
-        alert('Please enter both Email and Password!');
+        errorDiv.innerText = "Please enter both email & password.";
+        errorDiv.style.display = "block";
         return;
       }
 
+      // Secure Server-side authentication
       auth.signInWithEmailAndPassword(email, pass)
-        .then((userCredential) => {
+        .then(() => {
+          errorDiv.style.display = "none";
           showDashboard();
         })
         .catch((error) => {
-          alert('Login Failed: ' + error.message);
+          errorDiv.innerText = "Invalid Login Credentials!";
+          errorDiv.style.display = "block";
         });
     }
 
-    // অটো সেশন চেক (Firebase Auth)
     auth.onAuthStateChanged((user) => {
       if (user) {
         showDashboard();
@@ -152,25 +311,11 @@
       });
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
-      if (typeof particlesJS !== 'undefined') {
-        particlesJS('particles-js', {
-          particles: {
-            number: { value: 50 },
-            color: { value: '#ffffff' },
-            shape: { type: 'circle' },
-            opacity: { value: 0.3 },
-            size: { value: 3 },
-            move: { enable: true, speed: 2 }
-          }
-        });
-      }
-    });
-
     let ftpLinks = [{ title: "FTP Server 1", url: `http://${FTP_API_HOST}/` }];
     let ftp2Links = [{ title: "FTP Server 2", url: `http://${FTP2_API_HOST}/` }];
     let ftp3Links = [{ title: "FTP Server 3", url: `http://${FTP3_API_HOST}/` }];
     let ftp4Links = [{ title: "FTP Server 4", url: `http://${FTP4_API_HOST}/` }];
+    
     let tvLinks = [{ title: "Live TV 1", url: `http://${TV_API_HOST}/` }];
     let tv2Links = [{ title: "Live TV 2", url: `http://${TV2_API_HOST}/` }];
     let tv3Links = [{ title: "Live TV 3", url: "https://toffeelive.com" }];
@@ -184,7 +329,7 @@
 
     let eduLinks = [
       { title: "ঢাকা বিশ্ববিদ্যালয়", url: "http://duadmission.eis.du.ac.bd" },
-      { title: "জাতীয় বিশ্ববিদ্যালয় रिजल्ट", url: "http://results.nu.ac.bd/" }
+      { title: "জাতীয় বিশ্ববিদ্যালয় রেজাল্ট", url: "http://results.nu.ac.bd/" }
     ];
 
     function renderLinks() {
@@ -193,34 +338,78 @@
       const govc = document.getElementById('gov-section');
       const educ = document.getElementById('edu-section');
       
-      ftpAllContainer.innerHTML = ''; tvAllContainer.innerHTML = ''; govc.innerHTML = ''; educ.innerHTML = '';
+      ftpAllContainer.innerHTML = ''; 
+      tvAllContainer.innerHTML = ''; 
+      govc.innerHTML = ''; 
+      educ.innerHTML = '';
       
-      ftpLinks.forEach((l) => { ftpAllContainer.innerHTML += genCard(l.title, l.url, 'ftp', true); });
-      ftp2Links.forEach((l) => { ftpAllContainer.innerHTML += genCard(l.title, l.url, 'ftp2', true); });
-      ftp3Links.forEach((l) => { ftpAllContainer.innerHTML += genCard(l.title, l.url, 'ftp3', true); });
-      ftp4Links.forEach((l) => { ftpAllContainer.innerHTML += genCard(l.title, l.url, 'ftp4', true); });
+      let cardIdIndex = 0;
 
-      tvLinks.forEach((l) => { tvAllContainer.innerHTML += genCard(l.title, l.url, 'tv', true); });
-      tv2Links.forEach((l) => { tvAllContainer.innerHTML += genCard(l.title, l.url, 'tv2', true); });
-      tv3Links.forEach((l) => { tvAllContainer.innerHTML += genCard(l.title, l.url, 'tv3', true); });
-      tv4Links.forEach((l) => { tv4Container.innerHTML += genCard(l.title, l.url, 'tv4', true); });
+      ftpLinks.concat(ftp2Links, ftp3Links, ftp4Links).forEach((l) => { 
+        cardIdIndex++;
+        ftpAllContainer.innerHTML += genCard(l.title, l.url, 'ftp', true, `card-${cardIdIndex}`);
+        checkServerPing(l.url, `card-${cardIdIndex}`);
+      });
 
-      govLinks.forEach((l) => { govc.innerHTML += genCard(l.title, l.url, 'gov', false); });
-      eduLinks.forEach((l) => { educ.innerHTML += genCard(l.title, l.url, 'edu', false); });
+      tvLinks.concat(tv2Links, tv3Links, tv4Links).forEach((l) => { 
+        cardIdIndex++;
+        tvAllContainer.innerHTML += genCard(l.title, l.url, 'tv', true, `card-${cardIdIndex}`);
+        checkServerPing(l.url, `card-${cardIdIndex}`);
+      });
+
+      govLinks.forEach((l) => { 
+        govc.innerHTML += genCard(l.title, l.url, 'gov', false); 
+      });
+
+      eduLinks.forEach((l) => { 
+        educ.innerHTML += genCard(l.title, l.url, 'edu', false); 
+      });
     }
 
-    function genCard(title, url, type, isCompact = false) {
-      let iconClass = 'fas fa-play-circle';
+    function genCard(title, url, type, isCompact = false, id = '') {
+      let iconClass = 'fas fa-globe';
+      if (type === 'ftp') iconClass = 'fas fa-server';
+      if (type === 'tv') iconClass = 'fas fa-tv';
       if (type === 'gov') iconClass = 'fas fa-landmark';
       if (type === 'edu') iconClass = 'fas fa-graduation-cap';
+      
       const compactClass = isCompact ? 'compact-card' : '';
+      const statusBadge = (type === 'ftp' || type === 'tv') 
+        ? `<div class="status-badge checking" id="badge-${id}"><i class="fas fa-circle-notch fa-spin"></i> Testing</div>` 
+        : '';
 
       return `
-        <div class="link-card ${compactClass}" onclick="window.open('${url}', '_blank')">
-          <i class="${iconClass}"></i>
+        <div class="link-card ${compactClass}" id="${id}" onclick="window.open('${url}', '_blank')">
+          ${statusBadge}
+          <i class="${iconClass} main-icon"></i>
           <div>${title}</div>
         </div>
       `;
+    }
+
+    function checkServerPing(url, cardId) {
+      const badge = document.getElementById(`badge-${cardId}`);
+      if (!badge) return;
+
+      const img = new Image();
+      const timer = setTimeout(() => {
+        badge.className = 'status-badge offline';
+        badge.innerHTML = '<i class="fas fa-wifi"></i> Offline';
+      }, 3500);
+
+      img.onload = function() {
+        clearTimeout(timer);
+        badge.className = 'status-badge online';
+        badge.innerHTML = '<i class="fas fa-wifi"></i> Online';
+      };
+
+      img.onerror = function() {
+        clearTimeout(timer);
+        badge.className = 'status-badge online';
+        badge.innerHTML = '<i class="fas fa-wifi"></i> Online';
+      };
+
+      img.src = url + 'favicon.ico?' + new Date().getTime();
     }
   </script>
 </body>
