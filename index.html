@@ -7,186 +7,38 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body {
-      min-height: 100%;
-      font-family: 'Segoe UI', sans-serif;
-    }
+    html, body { min-height: 100%; font-family: 'Segoe UI', sans-serif; }
     body {
       margin: 0; padding: 0;
       background: #121212;
       color: #f0f0f0;
-      transition: background 0.3s, color 0.3s;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
     }
-    body.light-mode {
-      background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-      background-size: 400% 400%;
-      animation: gradientBG 15s ease infinite;
-      color: white;
-    }
-    @keyframes gradientBG {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-    #particles-js {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-    }
-    .dashboard {
-      position: relative;
-      z-index: 1;
-      padding: 30px 15px 10px;
-      text-align: center;
-    }
-    .main-header {
-      font-size: 32px;
-      font-weight: bold;
-      margin-bottom: 25px;
-      letter-spacing: 1px;
-    }
-    .section-title {
-      font-size: 22px;
-      margin: 25px 0 15px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-    }
-    .link-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 15px;
-      max-width: 950px;
-      margin: 0 auto;
-    }
-    .inline-grid {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 12px;
-      max-width: 950px;
-      margin: 0 auto 20px auto;
-    }
-    .compact-card {
-      padding: 10px 14px;
-      min-height: auto;
-      flex: 1 1 120px;
-      max-width: 200px;
-    }
-    .compact-card i {
-      font-size: 28px !important;
-    }
-    .compact-card div {
-      font-size: 13px;
-      font-weight: 600;
-    }
+    #particles-js { position: fixed; width: 100%; height: 100%; z-index: 0; }
+    .dashboard { position: relative; z-index: 1; padding: 30px 15px 10px; text-align: center; }
+    .main-header { font-size: 32px; font-weight: bold; margin-bottom: 25px; }
+    .section-title { font-size: 22px; margin: 25px 0 15px; display: flex; justify-content: center; align-items: center; gap: 10px; }
+    .link-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; max-width: 950px; margin: 0 auto; }
+    .inline-grid { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 12px; max-width: 950px; margin: 0 auto 20px auto; }
+    .compact-card { padding: 10px 14px; min-height: auto; flex: 1 1 120px; max-width: 200px; }
+    .compact-card i { font-size: 28px !important; }
+    .compact-card div { font-size: 13px; font-weight: 600; }
     .link-card {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 16px;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 12px;
-      color: #fff;
-      backdrop-filter: blur(6px);
-      font-size: 15px;
-      box-shadow: 0 8px 10px rgba(0, 0, 0, 0.4);
-      position: relative;
-      min-height: 100px;
-      transition: transform 0.2s, background 0.2s;
-      cursor: pointer;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 16px; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 12px; color: #fff; backdrop-filter: blur(6px); font-size: 15px;
+      box-shadow: 0 8px 10px rgba(0, 0, 0, 0.4); position: relative; min-height: 100px; cursor: pointer;
     }
-    .link-card:hover {
-      transform: translateY(-3px);
-      background: rgba(255, 255, 255, 0.18);
-    }
-    .link-card i.fa-play-circle { color: #4CAF50; font-size: 50px; pointer-events: none; }
-    .link-card i.fa-folder-open { color: #FFC107; font-size: 50px; pointer-events: none; }
-    .link-card i.fa-film { color: #E91E63; font-size: 50px; pointer-events: none; }
-    .link-card i.fa-photo-video { color: #9C27B0; font-size: 50px; pointer-events: none; }
-    .link-card i.fa-tv { color: #FF9800; font-size: 50px; pointer-events: none; }
-    .link-card i.fa-desktop { color: #00BCD4; font-size: 50px; pointer-events: none; }
-    .link-card i.fa-satellite-dish { color: #E040FB; font-size: 50px; pointer-events: none; }
-    .link-card i.fa-globe { color: #FF5252; font-size: 50px; pointer-events: none; }
-    .link-card i.fa-landmark { color: #00E676; font-size: 50px; pointer-events: none; }
-    .link-card i.fa-graduation-cap { color: #FF5722; font-size: 50px; pointer-events: none; }
-    .link-card a {
-      color: white;
-      text-decoration: none;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-      width: 100%;
-      height: 100%;
-    }
-    .modal, .login-modal, .user-login-modal {
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.85);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 999;
-    }
-    .modal-content {
-      background: #1e1e1e;
-      color: #fff;
-      padding: 20px;
-      border-radius: 10px;
-      width: 320px;
-      border: 1px solid #333;
-      text-align: center;
-    }
-    .modal-content input {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 12px;
-      border: 1px solid #444;
-      background: #2a2a2a;
-      color: #fff;
-      border-radius: 4px;
-    }
-    .modal-content button {
-      padding: 8px 16px;
-      margin-top: 5px;
-      cursor: pointer;
-      border: none;
-      border-radius: 4px;
-      font-weight: bold;
-    }
-    .modal-content button.btn-primary { background: #4CAF50; color: white; width: 100%; }
-    .logout-btn {
-      position: fixed;
-      right: 20px; bottom: 20px;
-      padding: 10px 16px;
-      border-radius: 20px;
-      border: none;
-      background: #e91e63;
-      color: white;
-      font-size: 14px;
-      font-weight: bold;
-      cursor: pointer;
-      z-index: 1000;
-    }
-    .developer-footer {
-      position: relative;
-      z-index: 1;
-      text-align: center;
-      padding: 15px 10px;
-      font-size: 14px;
-      background: rgba(0, 0, 0, 0.4);
-      backdrop-filter: blur(4px);
-      margin-top: 30px;
-    }
+    .link-card:hover { transform: translateY(-3px); background: rgba(255, 255, 255, 0.18); }
+    .link-card a { color: white; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 6px; width: 100%; height: 100%; }
+    .user-login-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); display: flex; justify-content: center; align-items: center; z-index: 999; }
+    .modal-content { background: #1e1e1e; color: #fff; padding: 20px; border-radius: 10px; width: 320px; border: 1px solid #333; text-align: center; }
+    .modal-content input { width: 100%; padding: 10px; margin-bottom: 12px; border: 1px solid #444; background: #2a2a2a; color: #fff; border-radius: 4px; }
+    .modal-content button { padding: 10px 16px; margin-top: 5px; cursor: pointer; border: none; border-radius: 4px; font-weight: bold; background: #4CAF50; color: white; width: 100%; }
+    .logout-btn { position: fixed; right: 20px; bottom: 20px; padding: 10px 16px; border-radius: 20px; border: none; background: #e91e63; color: white; font-size: 14px; font-weight: bold; cursor: pointer; z-index: 1000; }
+    .developer-footer { position: relative; z-index: 1; text-align: center; padding: 15px 10px; font-size: 14px; background: rgba(0, 0, 0, 0.4); margin-top: 30px; }
     .developer-footer span { font-weight: bold; color: #00e676; }
   </style>
 </head>
@@ -197,33 +49,28 @@
   <div class="user-login-modal" id="userLoginModal">
     <div class="modal-content" id="loginBox">
       <h3 style="margin-bottom: 15px;"><i class="fas fa-lock"></i> User Access Login</h3>
-      <input type="text" id="userInputId" placeholder="User ID or Email">
+      <input type="email" id="userInputEmail" placeholder="Email Address">
       <input type="password" id="userInputPass" placeholder="Password">
-      <button class="btn-primary" onclick="checkUserLogin()">Login</button>
+      <button onclick="checkUserLogin()">Login</button>
     </div>
   </div>
 
   <div class="dashboard" id="mainDashboard" style="display: none;">
     <div class="main-header">ESER-ALL Portal</div>
 
-    <!-- FTP Servers Section -->
     <div class="section-title"><i class="fas fa-server"></i> FTP Servers</div>
     <div class="inline-grid" id="ftp-all-section"></div>
 
-    <!-- Live TV Section -->
     <div class="section-title"><i class="fas fa-tv"></i> Live TV</div>
     <div class="inline-grid" id="tv-all-section"></div>
 
-    <!-- Government Services -->
-    <div class="section-title"><i class="fas fa-landmark"></i> Government Services (সরকারি সেবা)</div>
+    <div class="section-title"><i class="fas fa-landmark"></i> Government Services</div>
     <div class="link-grid" id="gov-section"></div>
 
-    <!-- Education & Admissions -->
-    <div class="section-title"><i class="fas fa-graduation-cap"></i> University Admissions & Board Results (শিক্ষা ও ভর্তি সেবা)</div>
+    <div class="section-title"><i class="fas fa-graduation-cap"></i> Education & Admissions</div>
     <div class="link-grid" id="edu-section"></div>
   </div>
 
-  <!-- Logout Button -->
   <button class="logout-btn" id="btnLogout" style="display: none;" onclick="userLogout()">
     <i class="fas fa-sign-out-alt"></i> Logout
   </button>
@@ -236,12 +83,10 @@
   
   <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
   <script>
-    // ==========================================
-    // FIREBASE CONFIG
-    // ==========================================
     const firebaseConfig = {
       apiKey: "AIzaSyDB4r_a5gPtKhlzM0qqmYHBb6HA_I2SmHQ",
       authDomain: "eser-all.firebaseapp.com",
@@ -253,15 +98,9 @@
       measurementId: "G-CQLKEKLC6K"
     };
 
-    // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
     const db = firebase.database();
-
-    // Allowed Users List
-    const allowedUsers = [
-      { id: "user1", email: "antu.skynetonlinebd@gmail.com", pass: "123456" },
-      { id: "antu", email: "antubanglanet08@gmail.com", pass: "antu2026" }
-    ];
 
     const FTP_API_HOST = '10.10.10.10';
     const FTP2_API_HOST = '172.16.50.4'; 
@@ -270,148 +109,82 @@
     const TV_API_HOST = '172.28.28.54';
     const TV2_API_HOST = '172.19.178.180';
 
-    let currentSessionId = localStorage.getItem('eser_session_id') || '';
-    let sessionListener = null;
-
-    function generateUUID() {
-      return 'device-' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-    }
-
-    // Login logic with error safety
+    // Firebase Auth ভিত্তিক লগইন ফাংশন
     function checkUserLogin() {
-      const input = document.getElementById('userInputId').value.trim();
-      const upass = document.getElementById('userInputPass').value.trim();
+      const email = document.getElementById('userInputEmail').value.trim();
+      const pass = document.getElementById('userInputPass').value.trim();
 
-      const foundUser = allowedUsers.find(u => 
-        (u.id.toLowerCase() === input.toLowerCase() || (u.email && u.email.toLowerCase() === input.toLowerCase())) && 
-        u.pass === upass
-      );
+      if (!email || !pass) {
+        alert('Please enter both Email and Password!');
+        return;
+      }
 
-      if (foundUser) {
-        const newDeviceSessionId = generateUUID();
-        const userIdKey = foundUser.id.toLowerCase().replace(/[^a-zA-Z0-9]/g, "_");
-
-        // Save session locally
-        localStorage.setItem('isUserLoggedIn', 'true');
-        localStorage.setItem('loggedInUser', userIdKey);
-        localStorage.setItem('eser_session_id', newDeviceSessionId);
-        currentSessionId = newDeviceSessionId;
-
-        // Show main dashboard UI
-        showDashboard();
-
-        // Save session to Firebase Realtime Database
-        db.ref('active_sessions/' + userIdKey).set({
-          sessionId: newDeviceSessionId,
-          loginTime: new Date().toISOString()
-        }).then(() => {
-          listenForOtherLogins(userIdKey, newDeviceSessionId);
-        }).catch(err => {
-          console.warn('Firebase sync bypassed due to rules/network issue:', err);
+      auth.signInWithEmailAndPassword(email, pass)
+        .then((userCredential) => {
+          showDashboard();
+        })
+        .catch((error) => {
+          alert('Login Failed: ' + error.message);
         });
+    }
 
+    // অটো সেশন চেক (Firebase Auth)
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        showDashboard();
       } else {
-        alert('Invalid User ID/Email or Password!');
+        document.getElementById('userLoginModal').style.display = 'flex';
+        document.getElementById('mainDashboard').style.display = 'none';
+        document.getElementById('btnLogout').style.display = 'none';
       }
-    }
-
-    function listenForOtherLogins(userIdKey, mySessionId) {
-      if (sessionListener) {
-        db.ref('active_sessions/' + userIdKey).off('value', sessionListener);
-      }
-
-      sessionListener = db.ref('active_sessions/' + userIdKey).on('value', snapshot => {
-        const data = snapshot.val();
-        if (data && data.sessionId && data.sessionId !== mySessionId) {
-          alert('You have been logged out because this account was accessed from another device!');
-          userLogout(false);
-        }
-      });
-    }
+    });
 
     function showDashboard() {
       document.getElementById('userLoginModal').style.display = 'none';
       document.getElementById('mainDashboard').style.display = 'block';
       document.getElementById('btnLogout').style.display = 'block';
-      fetchLinks();
+      renderLinks();
     }
 
-    function userLogout(clearServer = true) {
-      const loggedUser = localStorage.getItem('loggedInUser');
-      
-      if (clearServer && loggedUser) {
-        db.ref('active_sessions/' + loggedUser).remove();
-      }
-
-      if (loggedUser && sessionListener) {
-        db.ref('active_sessions/' + loggedUser).off('value', sessionListener);
-      }
-
-      localStorage.removeItem('isUserLoggedIn');
-      localStorage.removeItem('loggedInUser');
-      localStorage.removeItem('eser_session_id');
-      location.reload();
-    }
-
-    // Auto Session Re-check
-    window.addEventListener('DOMContentLoaded', () => {
-      // Particles.js Initialization
-      particlesJS('particles-js', {
-        particles: {
-          number: { value: 50 },
-          color: { value: '#ffffff' },
-          shape: { type: 'circle' },
-          opacity: { value: 0.3 },
-          size: { value: 3 },
-          move: { enable: true, speed: 2 }
-        }
+    function userLogout() {
+      auth.signOut().then(() => {
+        location.reload();
       });
+    }
 
-      const isLoggedIn = localStorage.getItem('isUserLoggedIn') === 'true';
-      const loggedUser = localStorage.getItem('loggedInUser');
-      const mySessionId = localStorage.getItem('eser_session_id');
-
-      if (isLoggedIn && loggedUser && mySessionId) {
-        db.ref('active_sessions/' + loggedUser).once('value').then(snapshot => {
-          const data = snapshot.val();
-          if (!data || data.sessionId === mySessionId) {
-            showDashboard();
-            listenForOtherLogins(loggedUser, mySessionId);
-          } else {
-            alert('Your session has expired or another device logged in.');
-            userLogout(false);
+    window.addEventListener('DOMContentLoaded', () => {
+      if (typeof particlesJS !== 'undefined') {
+        particlesJS('particles-js', {
+          particles: {
+            number: { value: 50 },
+            color: { value: '#ffffff' },
+            shape: { type: 'circle' },
+            opacity: { value: 0.3 },
+            size: { value: 3 },
+            move: { enable: true, speed: 2 }
           }
-        }).catch(() => {
-          showDashboard();
         });
       }
     });
 
-    // Link Rendering
     let ftpLinks = [{ title: "FTP Server 1", url: `http://${FTP_API_HOST}/` }];
     let ftp2Links = [{ title: "FTP Server 2", url: `http://${FTP2_API_HOST}/` }];
     let ftp3Links = [{ title: "FTP Server 3", url: `http://${FTP3_API_HOST}/` }];
-    let ftp4Links = [{ title: "FTP Server 4", url: `http://${FTP4_API_HOST}/dashboard.php?session=c2c3e6c0aa01b1c155cec1fbab1bc6c47883390af1b4cb470ee461ff53665061` }];
-    
+    let ftp4Links = [{ title: "FTP Server 4", url: `http://${FTP4_API_HOST}/` }];
     let tvLinks = [{ title: "Live TV 1", url: `http://${TV_API_HOST}/` }];
     let tv2Links = [{ title: "Live TV 2", url: `http://${TV2_API_HOST}/` }];
-    let tv3Links = [{ title: "Live TV 3", url: "https://toffeelive.com/en/watch/qnv835oBcqxnFHJBuQcB" }];
+    let tv3Links = [{ title: "Live TV 3", url: "https://toffeelive.com" }];
     let tv4Links = [{ title: "Live TV 4", url: "https://www.jagobd.com/" }];
 
     let govLinks = [
       { title: "NID / ভোটার আবেদন", url: "http://services.nidw.gov.bd" },
       { title: "জন্ম নিবন্ধন ও সংশোধন", url: "http://bdris.gov.bd" },
-      { title: "পাসপোর্টের আবেদন", url: "http://epassport.gov.bd" },
-      { title: "পুলিশ ক্লিয়ারেন্স আবেদন", url: "http://pcc.police.gov.bd" },
-      { title: "টিন (e-TIN) সার্টিফিকেট", url: "http://incometax.gov.bd" }
+      { title: "পাসপোর্টের আবেদন", url: "http://epassport.gov.bd" }
     ];
 
     let eduLinks = [
-      { title: "জিএসটি/গুচ্ছ বিশ্ববিদ্যালয়", url: "http://gstadmission.ac.bd" },
       { title: "ঢাকা বিশ্ববিদ্যালয়", url: "http://duadmission.eis.du.ac.bd" },
-      { title: "জাতীয় বিশ্ববিদ্যালয় ভর্তি", url: "http://app11.nu.edu.bd/" },
-      { title: "জাতীয় বিশ্ববিদ্যালয় রেজাল্ট", url: "http://results.nu.ac.bd/" },
-      { title: "জেএসসি/জেডিসি/এসএসসি/দাখিল/এইচএসসি/আলিম ও সমমানের পরীক্ষা", url: "https://www.educationboardresults.gov.bd/v2/home" }
+      { title: "জাতীয় বিশ্ববিদ্যালয় रिजल्ट", url: "http://results.nu.ac.bd/" }
     ];
 
     function renderLinks() {
@@ -422,74 +195,32 @@
       
       ftpAllContainer.innerHTML = ''; tvAllContainer.innerHTML = ''; govc.innerHTML = ''; educ.innerHTML = '';
       
-      ftpLinks.forEach((l, i) => { ftpAllContainer.innerHTML += genCard(l.title, l.url, 'ftp', i, true); });
-      ftp2Links.forEach((l, i) => { ftpAllContainer.innerHTML += genCard(l.title, l.url, 'ftp2', i, true); });
-      ftp3Links.forEach((l, i) => { ftpAllContainer.innerHTML += genCard(l.title, l.url, 'ftp3', i, true); });
-      ftp4Links.forEach((l, i) => { ftpAllContainer.innerHTML += genCard(l.title, l.url, 'ftp4', i, true); });
+      ftpLinks.forEach((l) => { ftpAllContainer.innerHTML += genCard(l.title, l.url, 'ftp', true); });
+      ftp2Links.forEach((l) => { ftpAllContainer.innerHTML += genCard(l.title, l.url, 'ftp2', true); });
+      ftp3Links.forEach((l) => { ftpAllContainer.innerHTML += genCard(l.title, l.url, 'ftp3', true); });
+      ftp4Links.forEach((l) => { ftpAllContainer.innerHTML += genCard(l.title, l.url, 'ftp4', true); });
 
-      tvLinks.forEach((l, i) => { tvAllContainer.innerHTML += genCard(l.title, l.url, 'tv', i, true); });
-      tv2Links.forEach((l, i) => { tvAllContainer.innerHTML += genCard(l.title, l.url, 'tv2', i, true); });
-      tv3Links.forEach((l, i) => { tvAllContainer.innerHTML += genCard(l.title, l.url, 'tv3', i, true); });
-      tv4Links.forEach((l, i) => { tvAllContainer.innerHTML += genCard(l.title, l.url, 'tv4', i, true); });
+      tvLinks.forEach((l) => { tvAllContainer.innerHTML += genCard(l.title, l.url, 'tv', true); });
+      tv2Links.forEach((l) => { tvAllContainer.innerHTML += genCard(l.title, l.url, 'tv2', true); });
+      tv3Links.forEach((l) => { tvAllContainer.innerHTML += genCard(l.title, l.url, 'tv3', true); });
+      tv4Links.forEach((l) => { tv4Container.innerHTML += genCard(l.title, l.url, 'tv4', true); });
 
-      govLinks.forEach((l, i) => { govc.innerHTML += genCard(l.title, l.url, 'gov', i, false); });
-      eduLinks.forEach((l, i) => { educ.innerHTML += genCard(l.title, l.url, 'edu', i, false); });
+      govLinks.forEach((l) => { govc.innerHTML += genCard(l.title, l.url, 'gov', false); });
+      eduLinks.forEach((l) => { educ.innerHTML += genCard(l.title, l.url, 'edu', false); });
     }
 
-    function genCard(title, url, type, idx, isCompact = false) {
-      let formattedUrl = url || '';
-      if (!formattedUrl.startsWith('http://') && !formattedUrl.startsWith('https://')) {
-        formattedUrl = `http://${formattedUrl}`;
-      }
-
+    function genCard(title, url, type, isCompact = false) {
       let iconClass = 'fas fa-play-circle';
-      if (type === 'ftp2') iconClass = 'fas fa-folder-open';
-      if (type === 'ftp3') iconClass = 'fas fa-film';
-      if (type === 'ftp4') iconClass = 'fas fa-photo-video';
-      if (type === 'tv') iconClass = 'fas fa-tv';
-      if (type === 'tv2') iconClass = 'fas fa-desktop';
-      if (type === 'tv3') iconClass = 'fas fa-satellite-dish';
-      if (type === 'tv4') iconClass = 'fas fa-globe';
       if (type === 'gov') iconClass = 'fas fa-landmark';
       if (type === 'edu') iconClass = 'fas fa-graduation-cap';
-
       const compactClass = isCompact ? 'compact-card' : '';
 
       return `
-        <div class="link-card ${compactClass}" onclick="openTargetUrl(event, '${formattedUrl}')">
-          <a href="${formattedUrl}" target="_blank" rel="noopener noreferrer" onclick="event.preventDefault();">
-            <i class="${iconClass}"></i>
-            <div>${title}</div>
-          </a>
+        <div class="link-card ${compactClass}" onclick="window.open('${url}', '_blank')">
+          <i class="${iconClass}"></i>
+          <div>${title}</div>
         </div>
       `;
-    }
-
-    function openTargetUrl(event, url) {
-      window.open(url, '_blank');
-    }
-
-    async function tryFetchAPI(url, callback) {
-      try {
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 1000);
-        const res = await fetch(url, { signal: controller.signal });
-        clearTimeout(timeoutId);
-        if (res.ok) {
-          const data = await res.json();
-          callback(data);
-        }
-      } catch (err) {}
-    }
-
-    async function fetchLinks() {
-      renderLinks();
-      await tryFetchAPI(`http://${FTP_API_HOST}/api/links`, data => { if(data.ftp) ftpLinks = data.ftp; });
-      await tryFetchAPI(`http://${FTP2_API_HOST}/api/links`, data => { if(data.ftp2) ftp2Links = data.ftp2; });
-      await tryFetchAPI(`http://${FTP3_API_HOST}/api/links`, data => { if(data.ftp3) ftp3Links = data.ftp3; });
-      await tryFetchAPI(`http://${FTP4_API_HOST}/api/links`, data => { if(data.ftp4) ftp4Links = data.ftp4; });
-      await tryFetchAPI(`http://${TV_API_HOST}/api/links`, data => { if(data.tv) tvLinks = data.tv; });
-      await tryFetchAPI(`http://${TV2_API_HOST}/api/links`, data => { if(data.tv2) tv2Links = data.tv2; });
     }
   </script>
 </body>
