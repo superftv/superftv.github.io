@@ -116,7 +116,6 @@
     .status-badge.offline { background: rgba(244, 67, 54, 0.2); color: #f44336; border: 1px solid #f44336; }
     .status-badge.checking { background: rgba(255, 193, 7, 0.2); color: #ffc107; border: 1px solid #ffc107; }
 
-    /* Login Modal Protection Styling */
     .user-login-modal { 
       position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
       background: rgba(15, 23, 42, 0.95); display: flex; justify-content: center; 
@@ -150,7 +149,6 @@
   </style>
 </head>
 
-<!-- Inspect / Right-Click / Keyboard Shortcuts Blocked -->
 <body oncontextmenu="return false;">
 
   <div class="bg-video-container">
@@ -165,7 +163,6 @@
     <span id="themeText">Dark Sky</span>
   </button>
 
-  <!-- Login Form -->
   <div class="user-login-modal" id="userLoginModal">
     <div class="modal-content" id="loginBox">
       <h3 style="margin-bottom: 15px;"><i class="fas fa-shield-alt" style="color: var(--icon-color);"></i> Secure Login</h3>
@@ -190,6 +187,10 @@
 
     <div class="section-title"><i class="fas fa-graduation-cap"></i> Education & Admissions</div>
     <div class="link-grid" id="edu-section"></div>
+
+    <!-- New Section Added -->
+    <div class="section-title"><i class="fas fa-ticket-alt"></i> Online Ticket</div>
+    <div class="link-grid" id="ticket-section"></div>
   </div>
 
   <button class="logout-btn" id="btnLogout" style="display: none;" onclick="userLogout()">
@@ -200,12 +201,10 @@
     Developed by <span>Antu</span>
   </footer>
 
-  <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
 
   <script>
-    // Inspect Element Keyboard Shortcuts Disable
     document.addEventListener('keydown', function(e) {
       if (e.keyCode === 123 || 
          (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) || 
@@ -215,7 +214,6 @@
       }
     });
 
-    // Theme Switcher
     function initTheme() {
       const savedTheme = localStorage.getItem('theme') || 'light';
       document.documentElement.setAttribute('data-theme', savedTheme);
@@ -243,7 +241,6 @@
     }
     initTheme();
 
-    // Secure Firebase Auth
     const firebaseConfig = {
       apiKey: "AIzaSyDB4r_a5gPtKhlzM0qqmYHBb6HA_I2SmHQ",
       authDomain: "eser-all.firebaseapp.com",
@@ -264,7 +261,6 @@
     const TV_API_HOST = '172.28.28.54';
     const TV2_API_HOST = '172.19.178.180';
 
-    // Firebase Backend Authentication Check
     function checkUserLogin() {
       const email = document.getElementById('userInputEmail').value.trim();
       const pass = document.getElementById('userInputPass').value.trim();
@@ -276,7 +272,6 @@
         return;
       }
 
-      // Secure Server-side authentication
       auth.signInWithEmailAndPassword(email, pass)
         .then(() => {
           errorDiv.style.display = "none";
@@ -328,8 +323,15 @@
     ];
 
     let eduLinks = [
+      { title: "JSC/JDC/SSC/DAKHIL/HSC/ALIM", url: "https://www.educationboardresults.gov.bd/v2/home" },
       { title: "ঢাকা বিশ্ববিদ্যালয়", url: "http://duadmission.eis.du.ac.bd" },
       { title: "জাতীয় বিশ্ববিদ্যালয় রেজাল্ট", url: "http://results.nu.ac.bd/" }
+    ];
+
+    // New Ticket Array Added
+    let ticketLinks = [
+      { title: "Railway Ticket", url: "https://eticket.railway.gov.bd/" },
+      { title: "Biman Ticket", url: "https://gozayaan.com/?utm_promotion=true&utm_term&utm_campaign=Performance%20Max_Flight_ROAS&utm_source=adwords&utm_medium=ppc&hsa_acc=8659916254&hsa_cam=22853979343&hsa_grp&hsa_ad&hsa_src=x&hsa_tgt&hsa_kw&hsa_mt&hsa_net=adwords&hsa_ver=3&gad_source=1&gad_campaignid=22844330052&gbraid=0AAAAACrTFuEv8csNeaKU3IERtAss9k32S&gclid=CjwKCAjw1bvTBhBbEiwAzbP8L5tRSD76ChcFauA8Gm6WKE7tGn0qxQSOIOpI843a4BKU_uwFYrgYKxoCfzwQAvD_BwE" }
     ];
 
     function renderLinks() {
@@ -337,11 +339,13 @@
       const tvAllContainer = document.getElementById('tv-all-section');
       const govc = document.getElementById('gov-section');
       const educ = document.getElementById('edu-section');
+      const ticketc = document.getElementById('ticket-section');
       
       ftpAllContainer.innerHTML = ''; 
       tvAllContainer.innerHTML = ''; 
       govc.innerHTML = ''; 
       educ.innerHTML = '';
+      if (ticketc) ticketc.innerHTML = '';
       
       let cardIdIndex = 0;
 
@@ -364,6 +368,10 @@
       eduLinks.forEach((l) => { 
         educ.innerHTML += genCard(l.title, l.url, 'edu', false); 
       });
+
+      ticketLinks.forEach((l) => {
+        ticketc.innerHTML += genCard(l.title, l.url, 'ticket', false);
+      });
     }
 
     function genCard(title, url, type, isCompact = false, id = '') {
@@ -372,6 +380,17 @@
       if (type === 'tv') iconClass = 'fas fa-tv';
       if (type === 'gov') iconClass = 'fas fa-landmark';
       if (type === 'edu') iconClass = 'fas fa-graduation-cap';
+      
+      // Icon mapping for tickets
+      if (type === 'ticket') {
+        if (title.toLowerCase().includes('railway')) {
+          iconClass = 'fas fa-train';
+        } else if (title.toLowerCase().includes('biman')) {
+          iconClass = 'fas fa-plane';
+        } else {
+          iconClass = 'fas fa-ticket-alt';
+        }
+      }
       
       const compactClass = isCompact ? 'compact-card' : '';
       const statusBadge = (type === 'ftp' || type === 'tv') 
