@@ -1,9 +1,8 @@
-
-      <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>FTP & Live TV Portal</title>
+  <title>ESER-ALL</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
@@ -12,7 +11,6 @@
       min-height: 100%;
       font-family: 'Segoe UI', sans-serif;
     }
-    /* Default Dark Mode Styles */
     body {
       margin: 0; padding: 0;
       background: #121212;
@@ -22,7 +20,6 @@
       flex-direction: column;
       justify-content: space-between;
     }
-    /* Light Mode Class */
     body.light-mode {
       background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
       background-size: 400% 400%;
@@ -46,9 +43,15 @@
       padding: 30px 15px 10px;
       text-align: center;
     }
+    .main-header {
+      font-size: 32px;
+      font-weight: bold;
+      margin-bottom: 25px;
+      letter-spacing: 1px;
+    }
     .section-title {
-      font-size: 24px;
-      margin: 30px 0 20px;
+      font-size: 22px;
+      margin: 25px 0 15px;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -60,6 +63,28 @@
       gap: 15px;
       max-width: 950px;
       margin: 0 auto;
+    }
+    .inline-grid {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      max-width: 950px;
+      margin: 0 auto 20px auto;
+    }
+    .compact-card {
+      padding: 10px 14px;
+      min-height: auto;
+      flex: 1 1 120px;
+      max-width: 200px;
+    }
+    .compact-card i {
+      font-size: 28px !important;
+    }
+    .compact-card div {
+      font-size: 13px;
+      font-weight: 600;
     }
     .link-card {
       display: flex;
@@ -83,36 +108,27 @@
       transform: translateY(-3px);
       background: rgba(255, 255, 255, 0.18);
     }
-    .link-card i.fa-play-circle { color: #4CAF50; font-size: 60px; pointer-events: none; }
-    .link-card i.fa-folder-open { color: #FFC107; font-size: 60px; pointer-events: none; }
-    .link-card i.fa-film { color: #E91E63; font-size: 60px; pointer-events: none; }
-    .link-card i.fa-photo-video { color: #9C27B0; font-size: 60px; pointer-events: none; }
-    .link-card i.fa-tv { color: #FF9800; font-size: 60px; pointer-events: none; }
-    .link-card i.fa-desktop { color: #00BCD4; font-size: 60px; pointer-events: none; }
+    .link-card i.fa-play-circle { color: #4CAF50; font-size: 50px; pointer-events: none; }
+    .link-card i.fa-folder-open { color: #FFC107; font-size: 50px; pointer-events: none; }
+    .link-card i.fa-film { color: #E91E63; font-size: 50px; pointer-events: none; }
+    .link-card i.fa-photo-video { color: #9C27B0; font-size: 50px; pointer-events: none; }
+    .link-card i.fa-tv { color: #FF9800; font-size: 50px; pointer-events: none; }
+    .link-card i.fa-desktop { color: #00BCD4; font-size: 50px; pointer-events: none; }
+    .link-card i.fa-satellite-dish { color: #E040FB; font-size: 50px; pointer-events: none; }
+    .link-card i.fa-globe { color: #FF5252; font-size: 50px; pointer-events: none; }
+    .link-card i.fa-landmark { color: #00E676; font-size: 50px; pointer-events: none; }
+    .link-card i.fa-graduation-cap { color: #FF5722; font-size: 50px; pointer-events: none; }
     .link-card a {
       color: white;
       text-decoration: none;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       width: 100%;
       height: 100%;
     }
-    .edit-btn {
-      position: absolute;
-      top: 8px;
-      right: 10px;
-      background: #fff;
-      color: #000;
-      border-radius: 50%;
-      padding: 2px 8px;
-      font-size: 12px;
-      font-weight: bold;
-      cursor: pointer;
-      z-index: 10;
-    }
-    .modal, .login-modal {
+    .modal, .login-modal, .user-login-modal {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0, 0, 0, 0.85);
@@ -126,40 +142,38 @@
       color: #fff;
       padding: 20px;
       border-radius: 10px;
-      width: 300px;
+      width: 320px;
       border: 1px solid #333;
+      text-align: center;
     }
     .modal-content input {
       width: 100%;
-      padding: 8px;
-      margin-bottom: 10px;
+      padding: 10px;
+      margin-bottom: 12px;
       border: 1px solid #444;
       background: #2a2a2a;
       color: #fff;
       border-radius: 4px;
     }
     .modal-content button {
-      padding: 8px 12px;
-      margin-right: 10px;
+      padding: 8px 16px;
+      margin-top: 5px;
       cursor: pointer;
       border: none;
       border-radius: 4px;
       font-weight: bold;
     }
-    .modal-content button:first-of-type { background: #4CAF50; color: white; }
-    #btnCancelLogin { background: #444; color: #fff; }
-    .theme-toggle {
+    .modal-content button.btn-primary { background: #4CAF50; color: white; width: 100%; }
+    .logout-btn {
       position: fixed;
-      left: 20px; bottom: 20px;
-      width: 42px; height: 42px;
-      border-radius: 50%;
-      border: 2px solid white;
-      background: rgba(255, 255, 255, 0.1);
+      right: 20px; bottom: 20px;
+      padding: 10px 16px;
+      border-radius: 20px;
+      border: none;
+      background: #e91e63;
       color: white;
-      font-size: 18px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      font-size: 14px;
+      font-weight: bold;
       cursor: pointer;
       z-index: 1000;
     }
@@ -179,62 +193,76 @@
 <body>
   <div id="particles-js"></div>
   
-  <div class="dashboard">
-    <div class="section-title"><i class="fas fa-play-circle"></i> FTP Server 1</div>
-    <div class="link-grid" id="ftp-section"></div>
-
-    <div class="section-title"><i class="fas fa-folder-open"></i> FTP Server 2</div>
-    <div class="link-grid" id="ftp2-section"></div>
-
-    <div class="section-title"><i class="fas fa-film"></i> FTP Server 3</div>
-    <div class="link-grid" id="ftp3-section"></div>
-
-    <div class="section-title"><i class="fas fa-photo-video"></i> FTP Server 4</div>
-    <div class="link-grid" id="ftp4-section"></div>
-    
-    <div class="section-title"><i class="fas fa-tv"></i> Live TV 1</div>
-    <div class="link-grid" id="tv-section"></div>
-
-    <div class="section-title"><i class="fas fa-desktop"></i> Live TV 2</div>
-    <div class="link-grid" id="tv2-section"></div>
-    
-    <div class="dashboard-controls" id="adminControls" style="display: none; margin-top: 20px;">
-      <button id="btnToggleEdit" onclick="toggleEditIcons()" style="padding: 8px 16px; font-weight: bold; cursor: pointer; border-radius: 4px; border: none; background: #fff; color: #000;">Show Edit</button>
+  <!-- User Access Modal -->
+  <div class="user-login-modal" id="userLoginModal">
+    <div class="modal-content" id="loginBox">
+      <h3 style="margin-bottom: 15px;"><i class="fas fa-lock"></i> User Access Login</h3>
+      <input type="text" id="userInputId" placeholder="User ID or Email">
+      <input type="password" id="userInputPass" placeholder="Password">
+      <button class="btn-primary" onclick="checkUserLogin()">Login</button>
     </div>
   </div>
 
-  <!-- Theme Toggle Switch Button (Default Moon icon for Dark Mode) -->
-  <div class="theme-toggle" onclick="toggleTheme()">
-    <i class="fas fa-moon" id="themeIcon"></i>
+  <div class="dashboard" id="mainDashboard" style="display: none;">
+    <div class="main-header">ESER-ALL Portal</div>
+
+    <!-- FTP Servers Section -->
+    <div class="section-title"><i class="fas fa-server"></i> FTP Servers</div>
+    <div class="inline-grid" id="ftp-all-section"></div>
+
+    <!-- Live TV Section -->
+    <div class="section-title"><i class="fas fa-tv"></i> Live TV</div>
+    <div class="inline-grid" id="tv-all-section"></div>
+
+    <!-- Government Services -->
+    <div class="section-title"><i class="fas fa-landmark"></i> Government Services (সরকারি সেবা)</div>
+    <div class="link-grid" id="gov-section"></div>
+
+    <!-- Education & Admissions -->
+    <div class="section-title"><i class="fas fa-graduation-cap"></i> University Admissions & Board Results (শিক্ষা ও ভর্তি সেবা)</div>
+    <div class="link-grid" id="edu-section"></div>
   </div>
+
+  <!-- Logout Button -->
+  <button class="logout-btn" id="btnLogout" style="display: none;" onclick="userLogout()">
+    <i class="fas fa-sign-out-alt"></i> Logout
+  </button>
 
   <footer class="developer-footer">
     Developed by <span>Antu</span>
   </footer>
 
-  <!-- Edit Modal -->
-  <div class="modal" id="editModal" style="display: none;">
-    <div class="modal-content">
-      <h3 style="margin-bottom: 15px;">Edit Link</h3>
-      <input type="text" id="editTitle" placeholder="Name">
-      <input type="text" id="editURL" placeholder="URL">
-      <button onclick="saveEdit()">Save</button>
-      <button onclick="closeModal()" id="btnCancelEdit" style="background: #555; color: #fff;">Cancel</button>
-    </div>
-  </div>
-
-  <!-- Login Modal -->
-  <div class="login-modal" id="loginModal" style="display: none;">
-    <div class="modal-content">
-      <h3 style="margin-bottom: 15px;">Admin Login</h3>
-      <input type="password" id="adminPass" placeholder="Enter Admin Password">
-      <button onclick="checkLogin()">Login</button>
-      <button id="btnCancelLogin">Cancel</button>
-    </div>
-  </div>
-
   <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
   <script>
+    // ==========================================
+    // FIREBASE CONFIG
+    // ==========================================
+    const firebaseConfig = {
+      apiKey: "AIzaSyDB4r_a5gPtKhlzM0qqmYHBb6HA_I2SmHQ",
+      authDomain: "eser-all.firebaseapp.com",
+      databaseURL: "https://eser-all-default-rtdb.firebaseio.com",
+      projectId: "eser-all",
+      storageBucket: "eser-all.firebasestorage.app",
+      messagingSenderId: "741870576674",
+      appId: "1:741870576674:web:2a5094bd05f44f0b98d67b",
+      measurementId: "G-CQLKEKLC6K"
+    };
+
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
+    // Allowed Users List
+    const allowedUsers = [
+      { id: "user1", email: "antu.skynetonlinebd@gmail.com", pass: "123456" },
+      { id: "antu", email: "antubanglanet08@gmail.com", pass: "antu2026" }
+    ];
+
     const FTP_API_HOST = '10.10.10.10';
     const FTP2_API_HOST = '172.16.50.4'; 
     const FTP3_API_HOST = '172.19.178.179';
@@ -242,40 +270,173 @@
     const TV_API_HOST = '172.28.28.54';
     const TV2_API_HOST = '172.19.178.180';
 
+    let currentSessionId = localStorage.getItem('eser_session_id') || '';
+    let sessionListener = null;
+
+    function generateUUID() {
+      return 'device-' + Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    }
+
+    // Login logic with error safety
+    function checkUserLogin() {
+      const input = document.getElementById('userInputId').value.trim();
+      const upass = document.getElementById('userInputPass').value.trim();
+
+      const foundUser = allowedUsers.find(u => 
+        (u.id.toLowerCase() === input.toLowerCase() || (u.email && u.email.toLowerCase() === input.toLowerCase())) && 
+        u.pass === upass
+      );
+
+      if (foundUser) {
+        const newDeviceSessionId = generateUUID();
+        const userIdKey = foundUser.id.toLowerCase().replace(/[^a-zA-Z0-9]/g, "_");
+
+        // Save session locally
+        localStorage.setItem('isUserLoggedIn', 'true');
+        localStorage.setItem('loggedInUser', userIdKey);
+        localStorage.setItem('eser_session_id', newDeviceSessionId);
+        currentSessionId = newDeviceSessionId;
+
+        // Show main dashboard UI
+        showDashboard();
+
+        // Save session to Firebase Realtime Database
+        db.ref('active_sessions/' + userIdKey).set({
+          sessionId: newDeviceSessionId,
+          loginTime: new Date().toISOString()
+        }).then(() => {
+          listenForOtherLogins(userIdKey, newDeviceSessionId);
+        }).catch(err => {
+          console.warn('Firebase sync bypassed due to rules/network issue:', err);
+        });
+
+      } else {
+        alert('Invalid User ID/Email or Password!');
+      }
+    }
+
+    function listenForOtherLogins(userIdKey, mySessionId) {
+      if (sessionListener) {
+        db.ref('active_sessions/' + userIdKey).off('value', sessionListener);
+      }
+
+      sessionListener = db.ref('active_sessions/' + userIdKey).on('value', snapshot => {
+        const data = snapshot.val();
+        if (data && data.sessionId && data.sessionId !== mySessionId) {
+          alert('You have been logged out because this account was accessed from another device!');
+          userLogout(false);
+        }
+      });
+    }
+
+    function showDashboard() {
+      document.getElementById('userLoginModal').style.display = 'none';
+      document.getElementById('mainDashboard').style.display = 'block';
+      document.getElementById('btnLogout').style.display = 'block';
+      fetchLinks();
+    }
+
+    function userLogout(clearServer = true) {
+      const loggedUser = localStorage.getItem('loggedInUser');
+      
+      if (clearServer && loggedUser) {
+        db.ref('active_sessions/' + loggedUser).remove();
+      }
+
+      if (loggedUser && sessionListener) {
+        db.ref('active_sessions/' + loggedUser).off('value', sessionListener);
+      }
+
+      localStorage.removeItem('isUserLoggedIn');
+      localStorage.removeItem('loggedInUser');
+      localStorage.removeItem('eser_session_id');
+      location.reload();
+    }
+
+    // Auto Session Re-check
+    window.addEventListener('DOMContentLoaded', () => {
+      // Particles.js Initialization
+      particlesJS('particles-js', {
+        particles: {
+          number: { value: 50 },
+          color: { value: '#ffffff' },
+          shape: { type: 'circle' },
+          opacity: { value: 0.3 },
+          size: { value: 3 },
+          move: { enable: true, speed: 2 }
+        }
+      });
+
+      const isLoggedIn = localStorage.getItem('isUserLoggedIn') === 'true';
+      const loggedUser = localStorage.getItem('loggedInUser');
+      const mySessionId = localStorage.getItem('eser_session_id');
+
+      if (isLoggedIn && loggedUser && mySessionId) {
+        db.ref('active_sessions/' + loggedUser).once('value').then(snapshot => {
+          const data = snapshot.val();
+          if (!data || data.sessionId === mySessionId) {
+            showDashboard();
+            listenForOtherLogins(loggedUser, mySessionId);
+          } else {
+            alert('Your session has expired or another device logged in.');
+            userLogout(false);
+          }
+        }).catch(() => {
+          showDashboard();
+        });
+      }
+    });
+
+    // Link Rendering
     let ftpLinks = [{ title: "FTP Server 1", url: `http://${FTP_API_HOST}/` }];
     let ftp2Links = [{ title: "FTP Server 2", url: `http://${FTP2_API_HOST}/` }];
     let ftp3Links = [{ title: "FTP Server 3", url: `http://${FTP3_API_HOST}/` }];
     let ftp4Links = [{ title: "FTP Server 4", url: `http://${FTP4_API_HOST}/dashboard.php?session=c2c3e6c0aa01b1c155cec1fbab1bc6c47883390af1b4cb470ee461ff53665061` }];
+    
     let tvLinks = [{ title: "Live TV 1", url: `http://${TV_API_HOST}/` }];
     let tv2Links = [{ title: "Live TV 2", url: `http://${TV2_API_HOST}/` }];
+    let tv3Links = [{ title: "Live TV 3", url: "https://toffeelive.com/en/watch/qnv835oBcqxnFHJBuQcB" }];
+    let tv4Links = [{ title: "Live TV 4", url: "https://www.jagobd.com/" }];
 
-    let currentEdit = { type: '', index: -1 };
-    let isAdmin = false, showEditIcons = false;
+    let govLinks = [
+      { title: "NID / ভোটার আবেদন", url: "http://services.nidw.gov.bd" },
+      { title: "জন্ম নিবন্ধন ও সংশোধন", url: "http://bdris.gov.bd" },
+      { title: "পাসপোর্টের আবেদন", url: "http://epassport.gov.bd" },
+      { title: "পুলিশ ক্লিয়ারেন্স আবেদন", url: "http://pcc.police.gov.bd" },
+      { title: "টিন (e-TIN) সার্টিফিকেট", url: "http://incometax.gov.bd" }
+    ];
+
+    let eduLinks = [
+      { title: "জিএসটি/গুচ্ছ বিশ্ববিদ্যালয়", url: "http://gstadmission.ac.bd" },
+      { title: "ঢাকা বিশ্ববিদ্যালয়", url: "http://duadmission.eis.du.ac.bd" },
+      { title: "জাতীয় বিশ্ববিদ্যালয় ভর্তি", url: "http://app11.nu.edu.bd/" },
+      { title: "জাতীয় বিশ্ববিদ্যালয় রেজাল্ট", url: "http://results.nu.ac.bd/" },
+      { title: "জেএসসি/জেডিসি/এসএসসি/দাখিল/এইচএসসি/আলিম ও সমমানের পরীক্ষা", url: "https://www.educationboardresults.gov.bd/v2/home" }
+    ];
 
     function renderLinks() {
-      const ftpc = document.getElementById('ftp-section');
-      const ftp2c = document.getElementById('ftp2-section');
-      const ftp3c = document.getElementById('ftp3-section');
-      const ftp4c = document.getElementById('ftp4-section');
-      const tvc = document.getElementById('tv-section');
-      const tv2c = document.getElementById('tv2-section');
+      const ftpAllContainer = document.getElementById('ftp-all-section');
+      const tvAllContainer = document.getElementById('tv-all-section');
+      const govc = document.getElementById('gov-section');
+      const educ = document.getElementById('edu-section');
       
-      ftpc.innerHTML = ''; 
-      ftp2c.innerHTML = ''; 
-      ftp3c.innerHTML = ''; 
-      ftp4c.innerHTML = '';
-      tvc.innerHTML = '';
-      tv2c.innerHTML = '';
+      ftpAllContainer.innerHTML = ''; tvAllContainer.innerHTML = ''; govc.innerHTML = ''; educ.innerHTML = '';
       
-      ftpLinks.forEach((l, i) => { ftpc.innerHTML += genCard(l.title, l.url, 'ftp', i); });
-      ftp2Links.forEach((l, i) => { ftp2c.innerHTML += genCard(l.title, l.url, 'ftp2', i); });
-      ftp3Links.forEach((l, i) => { ftp3c.innerHTML += genCard(l.title, l.url, 'ftp3', i); });
-      ftp4Links.forEach((l, i) => { ftp4c.innerHTML += genCard(l.title, l.url, 'ftp4', i); });
-      tvLinks.forEach((l, i) => { tvc.innerHTML += genCard(l.title, l.url, 'tv', i); });
-      tv2Links.forEach((l, i) => { tv2c.innerHTML += genCard(l.title, l.url, 'tv2', i); });
+      ftpLinks.forEach((l, i) => { ftpAllContainer.innerHTML += genCard(l.title, l.url, 'ftp', i, true); });
+      ftp2Links.forEach((l, i) => { ftpAllContainer.innerHTML += genCard(l.title, l.url, 'ftp2', i, true); });
+      ftp3Links.forEach((l, i) => { ftpAllContainer.innerHTML += genCard(l.title, l.url, 'ftp3', i, true); });
+      ftp4Links.forEach((l, i) => { ftpAllContainer.innerHTML += genCard(l.title, l.url, 'ftp4', i, true); });
+
+      tvLinks.forEach((l, i) => { tvAllContainer.innerHTML += genCard(l.title, l.url, 'tv', i, true); });
+      tv2Links.forEach((l, i) => { tvAllContainer.innerHTML += genCard(l.title, l.url, 'tv2', i, true); });
+      tv3Links.forEach((l, i) => { tvAllContainer.innerHTML += genCard(l.title, l.url, 'tv3', i, true); });
+      tv4Links.forEach((l, i) => { tvAllContainer.innerHTML += genCard(l.title, l.url, 'tv4', i, true); });
+
+      govLinks.forEach((l, i) => { govc.innerHTML += genCard(l.title, l.url, 'gov', i, false); });
+      eduLinks.forEach((l, i) => { educ.innerHTML += genCard(l.title, l.url, 'edu', i, false); });
     }
 
-    function genCard(title, url, type, idx) {
+    function genCard(title, url, type, idx, isCompact = false) {
       let formattedUrl = url || '';
       if (!formattedUrl.startsWith('http://') && !formattedUrl.startsWith('https://')) {
         formattedUrl = `http://${formattedUrl}`;
@@ -287,20 +448,24 @@
       if (type === 'ftp4') iconClass = 'fas fa-photo-video';
       if (type === 'tv') iconClass = 'fas fa-tv';
       if (type === 'tv2') iconClass = 'fas fa-desktop';
+      if (type === 'tv3') iconClass = 'fas fa-satellite-dish';
+      if (type === 'tv4') iconClass = 'fas fa-globe';
+      if (type === 'gov') iconClass = 'fas fa-landmark';
+      if (type === 'edu') iconClass = 'fas fa-graduation-cap';
+
+      const compactClass = isCompact ? 'compact-card' : '';
 
       return `
-        <div class="link-card" onclick="openTargetUrl(event, '${formattedUrl}')">
+        <div class="link-card ${compactClass}" onclick="openTargetUrl(event, '${formattedUrl}')">
           <a href="${formattedUrl}" target="_blank" rel="noopener noreferrer" onclick="event.preventDefault();">
             <i class="${iconClass}"></i>
             <div>${title}</div>
           </a>
-          ${isAdmin && showEditIcons ? `<div class="edit-btn" onclick="openModal(event, '${type}', ${idx})">Edit</div>` : ''}
         </div>
       `;
     }
 
     function openTargetUrl(event, url) {
-      if (event.target.classList.contains('edit-btn')) return;
       window.open(url, '_blank');
     }
 
@@ -319,115 +484,14 @@
 
     async function fetchLinks() {
       renderLinks();
-
       await tryFetchAPI(`http://${FTP_API_HOST}/api/links`, data => { if(data.ftp) ftpLinks = data.ftp; });
       await tryFetchAPI(`http://${FTP2_API_HOST}/api/links`, data => { if(data.ftp2) ftp2Links = data.ftp2; });
       await tryFetchAPI(`http://${FTP3_API_HOST}/api/links`, data => { if(data.ftp3) ftp3Links = data.ftp3; });
       await tryFetchAPI(`http://${FTP4_API_HOST}/api/links`, data => { if(data.ftp4) ftp4Links = data.ftp4; });
       await tryFetchAPI(`http://${TV_API_HOST}/api/links`, data => { if(data.tv) tvLinks = data.tv; });
       await tryFetchAPI(`http://${TV2_API_HOST}/api/links`, data => { if(data.tv2) tv2Links = data.tv2; });
-
-      renderLinks();
     }
-
-    function openModal(event, type, index) {
-      event.stopPropagation();
-      currentEdit = { type, index };
-      let data;
-      if (type === 'ftp') data = ftpLinks[index];
-      else if (type === 'ftp2') data = ftp2Links[index];
-      else if (type === 'ftp3') data = ftp3Links[index];
-      else if (type === 'ftp4') data = ftp4Links[index];
-      else if (type === 'tv') data = tvLinks[index];
-      else if (type === 'tv2') data = tv2Links[index];
-
-      if (data) {
-        document.getElementById('editTitle').value = data.title || '';
-        document.getElementById('editURL').value = data.url || '';
-        document.getElementById('editModal').style.display = 'flex';
-      }
-    }
-
-    function closeModal() {
-      document.getElementById('editModal').style.display = 'none';
-    }
-
-    async function saveEdit() {
-      const nt = document.getElementById('editTitle').value.trim();
-      const nu = document.getElementById('editURL').value.trim();
-      if (!nt || !nu) return alert('Fill all fields!');
-
-      let targetHost = FTP_API_HOST;
-      if (currentEdit.type === 'ftp') ftpLinks[currentEdit.index] = { title: nt, url: nu };
-      else if (currentEdit.type === 'ftp2') { ftp2Links[currentEdit.index] = { title: nt, url: nu }; targetHost = FTP2_API_HOST; }
-      else if (currentEdit.type === 'ftp3') { ftp3Links[currentEdit.index] = { title: nt, url: nu }; targetHost = FTP3_API_HOST; }
-      else if (currentEdit.type === 'ftp4') { ftp4Links[currentEdit.index] = { title: nt, url: nu }; targetHost = FTP4_API_HOST; }
-      else if (currentEdit.type === 'tv') { tvLinks[currentEdit.index] = { title: nt, url: nu }; targetHost = TV_API_HOST; }
-      else if (currentEdit.type === 'tv2') { tv2Links[currentEdit.index] = { title: nt, url: nu }; targetHost = TV2_API_HOST; }
-
-      try {
-        await fetch(`http://${targetHost}/api/links`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ ftp: ftpLinks, ftp2: ftp2Links, ftp3: ftp3Links, ftp4: ftp4Links, tv: tvLinks, tv2: tv2Links })
-        });
-      } catch (err) {}
-      
-      closeModal();
-      renderLinks();
-    }
-
-    function checkLogin() {
-      if (document.getElementById('adminPass').value === 'admin123') {
-        isAdmin = true;
-        document.getElementById('loginModal').style.display = 'none';
-        document.getElementById('adminControls').style.display = 'block';
-        document.getElementById('adminPass').value = '';
-        renderLinks();
-      } else { alert('Wrong password!'); }
-    }
-
-    function toggleEditIcons() {
-      showEditIcons = !showEditIcons;
-      document.getElementById('btnToggleEdit').textContent = showEditIcons ? 'Hide Edit' : 'Show Edit';
-      renderLinks();
-    }
-
-    /* Toggle to Light Mode when clicked */
-    function toggleTheme() {
-      document.body.classList.toggle('light-mode');
-      const themeIcon = document.getElementById('themeIcon');
-      themeIcon.classList.toggle('fa-moon');
-      themeIcon.classList.toggle('fa-sun');
-    }
-
-    document.addEventListener('keydown', e => {
-      if (e.shiftKey && e.key.toLowerCase() === 'a') {
-        document.getElementById('loginModal').style.display = 'flex';
-      }
-    });
-
-    document.getElementById('btnCancelLogin').addEventListener('click', () => {
-      document.getElementById('loginModal').style.display = 'none';
-    });
-
-    window.onload = fetchLinks;
-
-    particlesJS('particles-js', {
-      particles: {
-        number: { value: 100, density: { enable: true, value_area: 800 } },
-        color: { value: '#ffffff' },
-        shape: { type: 'circle' },
-        opacity: { value: 0.5, random: true },
-        size: { value: 3, random: true },
-        line_linked: { enable: true, distance: 100, color: '#ffffff', opacity: 0.4, width: 1.2 },
-        move: { enable: true, speed: 1.5 }
-      },
-      interactivity: { events: { onhover: { enable: true, mode: 'grab' } } },
-      retina_detect: true
-    });
   </script>
 </body>
 </html>
-
       
