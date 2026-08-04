@@ -10,10 +10,7 @@
   <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script type="text/javascript">
      (function(){
-        // -------------------------------------------------------------
-        // ধাপ ১: নিচে 'YOUR_PUBLIC_KEY' সরিয়ে আপনার আসল EmailJS Public Key বসাবেন
-        // -------------------------------------------------------------
-        emailjs.init({
+      emailjs.init({
           publicKey: "k3Gz4cI70F4UTep3c",
         });
      })();
@@ -588,11 +585,7 @@
         subject: subject,
         message: message
       };
-
-      // -------------------------------------------------------------
-      // ধাপ ২: নিচে 'YOUR_SERVICE_ID' এবং 'YOUR_TEMPLATE_ID' বসাবেন
-      // -------------------------------------------------------------
-      emailjs.send("service_oyptt6l", "template_qvj0msk", templateParams)
+     emailjs.send("service_oyptt6l", "template_qvj0msk", templateParams)
         .then(function(response) {
           status.style.color = "#4CAF50";
           status.innerText = "Email sent successfully!";
