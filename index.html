@@ -1,395 +1,931 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Super Ftp</title>
+
+    <title>ESER-ALL Portal</title>
+
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+
     <style>
+
         :root {
+
             --bg-color: #0f172a;
+
             --card-bg: #1e293b;
+
             --text-color: #f8fafc;
+
             --accent-color: #3b82f6;
+
             --accent-hover: #2563eb;
+
             --border-color: #334155;
+
         }
+
+
 
         .light-theme {
+
             --bg-color: #f1f5f9;
+
             --card-bg: #ffffff;
+
             --text-color: #0f172a;
+
             --accent-color: #2563eb;
+
             --accent-hover: #1d4ed8;
+
             --border-color: #e2e8f0;
+
         }
+
+
 
         * {
+
             box-sizing: border-box;
+
             margin: 0;
+
             padding: 0;
+
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
             transition: background-color 0.3s, color 0.3s;
+
         }
+
+
 
         body {
+
             background-color: var(--bg-color);
+
             color: var(--text-color);
+
             min-height: 100vh;
+
             display: flex;
+
             flex-direction: column;
+
             position: relative;
+
         }
+
+
 
         #particles-js {
+
             position: absolute;
+
             width: 100%;
+
             height: 100%;
+
             z-index: 0;
+
         }
+
+
 
         .container {
+
             max-width: 1200px;
+
             margin: 0 auto;
+
             padding: 20px;
+
             width: 100%;
+
             position: relative;
+
             z-index: 1;
+
         }
+
+
 
         header {
+
             display: flex;
+
             justify-content: space-between;
+
             align-items: center;
+
             padding: 20px 0;
+
             border-bottom: 1px solid var(--border-color);
+
             margin-bottom: 30px;
+
         }
+
+
 
         .logo {
+
             font-size: 1.8rem;
+
             font-weight: bold;
+
             color: var(--accent-color);
+
             display: flex;
+
             align-items: center;
+
             gap: 10px;
+
         }
+
+
 
         .controls {
+
             display: flex;
+
             gap: 15px;
+
             align-items: center;
+
         }
+
+
 
         .btn {
+
             background-color: var(--accent-color);
+
             color: white;
+
             border: none;
+
             padding: 10px 20px;
+
             border-radius: 8px;
+
             cursor: pointer;
+
             font-weight: 600;
+
             display: flex;
+
             align-items: center;
+
             gap: 8px;
+
             text-decoration: none;
+
         }
+
+
 
         .btn:hover {
+
             background-color: var(--accent-hover);
+
         }
+
+
 
         .grid {
+
             display: grid;
+
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+
             gap: 20px;
+
             margin-bottom: 40px;
+
         }
+
+
 
         .card {
+
             background-color: var(--card-bg);
+
             border: 1px solid var(--border-color);
+
             border-radius: 12px;
+
             padding: 20px;
+
             display: flex;
+
             flex-direction: column;
+
             align-items: center;
+
             text-align: center;
+
             text-decoration: none;
+
             color: var(--text-color);
+
             position: relative;
+
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+
         }
+
+
 
         .card:hover {
+
             transform: translateY(-5px);
+
             border-color: var(--accent-color);
+
         }
+
+
 
         .card i {
+
             font-size: 2.5rem;
+
             margin-bottom: 15px;
+
             color: var(--accent-color);
+
         }
+
+
 
         .card h3 {
+
             font-size: 1.2rem;
+
             margin-bottom: 10px;
+
         }
+
+
 
         .status-badge {
+
             position: absolute;
+
             top: 10px;
+
             right: 10px;
+
             font-size: 0.75rem;
+
             padding: 4px 8px;
+
             border-radius: 12px;
+
             font-weight: bold;
+
         }
+
+
 
         .status-online { background-color: #22c55e20; color: #22c55e; }
+
         .status-offline { background-color: #ef444420; color: #ef4444; }
+
         .status-checking { background-color: #eab30820; color: #eab308; }
 
+
+
         .section-title {
+
             margin: 30px 0 15px 0;
+
             font-size: 1.5rem;
+
             border-left: 4px solid var(--accent-color);
+
             padding-left: 10px;
+
         }
+
+
 
         #auth-container {
+
             max-width: 400px;
+
             margin: 100px auto;
+
             padding: 30px;
+
             background-color: var(--card-bg);
+
             border-radius: 12px;
+
             border: 1px solid var(--border-color);
+
             position: relative;
+
             z-index: 1;
+
         }
+
+
 
         .form-group {
+
             margin-bottom: 15px;
+
         }
+
+
 
         .form-group input {
+
             width: 100%;
+
             padding: 12px;
+
             border-radius: 6px;
+
             border: 1px solid var(--border-color);
+
             background-color: var(--bg-color);
+
             color: var(--text-color);
+
         }
+
+
 
         .hidden { display: none !important; }
+
+
+
+        /* Modal styling */
+
+        .modal {
+
+            position: fixed;
+
+            top: 0; left: 0; width: 100%; height: 100%;
+
+            background: rgba(0,0,0,0.7);
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            z-index: 100;
+
+        }
+
+
+
+        .modal-content {
+
+            background: var(--card-bg);
+
+            padding: 25px;
+
+            border-radius: 12px;
+
+            width: 100%;
+
+            max-width: 500px;
+
+            border: 1px solid var(--border-color);
+
+        }
+
+
+
+        .close-btn {
+
+            float: right;
+
+            cursor: pointer;
+
+            font-size: 1.5rem;
+
+        }
+
     </style>
+
 </head>
+
 <body oncontextmenu="return false;">
+
     <div id="particles-js"></div>
 
+
+
     <!-- Login Area -->
+
     <div id="auth-container">
+
         <h2 style="text-align: center; margin-bottom: 20px;">ESER-ALL Login</h2>
+
         <div class="form-group">
+
             <input type="email" id="email" placeholder="Email Address">
+
         </div>
+
         <div class="form-group">
+
             <input type="password" id="password" placeholder="Password">
+
         </div>
+
         <button class="btn" style="width: 100%; justify-content: center;" onclick="login()">Sign In</button>
+
         <button class="btn" style="width: 100%; justify-content: center; margin-top: 10px; background-color: #db4437;" onclick="googleLogin()">
+
             <i class="fab fa-google"></i> Login with Google
+
         </button>
+
     </div>
+
+
 
     <!-- Main Dashboard Area -->
+
     <div id="dashboard" class="container hidden">
+
         <header>
+
             <div class="logo">
+
                 <i class="fas fa-network-wired"></i> ESER-ALL
+
             </div>
+
             <div class="controls">
+
                 <button class="btn" onclick="toggleTheme()"><i class="fas fa-moon"></i></button>
+
+                <button class="btn" onclick="openContactModal()"><i class="fas fa-envelope"></i> Contact</button>
+
                 <button class="btn" style="background-color: #ef4444;" onclick="logout()"><i class="fas fa-sign-out-alt"></i></button>
+
             </div>
+
         </header>
 
+
+
         <!-- FTP Section -->
+
         <h2 class="section-title">FTP Servers</h2>
+
         <div class="grid">
+
             <a href="http://10.16.100.244" target="_blank" class="card" data-check="http://10.16.100.244">
+
                 <span class="status-badge status-checking">Checking</span>
+
                 <i class="fas fa-server"></i>
+
                 <h3>Sam FTP</h3>
+
             </a>
+
+            <a href="http://10.1.1.1" target="_blank" class="card" data-check="http://10.1.1.1">
+
+                <span class="status-badge status-checking">Checking</span>
+
+                <i class="fas fa-film"></i>
+
+                <h3>Crazy HD</h3>
+
+            </a>
+
             <a href="http://10.16.100.240" target="_blank" class="card" data-check="http://10.16.100.240">
+
                 <span class="status-badge status-checking">Checking</span>
+
                 <i class="fas fa-video"></i>
+
                 <h3>Ctg Movies</h3>
+
             </a>
+
             <a href="http://10.16.100.242" target="_blank" class="card" data-check="http://10.16.100.242">
+
                 <span class="status-badge status-checking">Checking</span>
+
                 <i class="fas fa-cloud-download-alt"></i>
+
                 <h3>Ghuri FTP</h3>
+
             </a>
+
             <a href="http://10.16.100.243" target="_blank" class="card" data-check="http://10.16.100.243">
+
                 <span class="status-badge status-checking">Checking</span>
+
                 <i class="fas fa-hdd"></i>
+
                 <h3>ICC FTP</h3>
+
             </a>
+
+            <!-- NEW FTP SERVER ENTRY ADDED HERE -->
+
             <a href="http://10.16.100.245" target="_blank" class="card" data-check="http://10.16.100.245">
+
                 <span class="status-badge status-checking">Checking</span>
+
                 <i class="fas fa-database"></i>
+
                 <h3>New FTP Server</h3>
+
             </a>
-            <a href="https://flixhub.net/" target="_blank" class="card" data-check="https://flixhub.net/">
-                <span class="status-badge status-checking">Checking</span>
-                <i class="fas fa-film"></i>
-                <h3>flixhub</h3>
-            </a>
-            <a href="http://10.20.30.40/" target="_blank" class="card" data-check="http://10.20.30.40/">
-                <span class="status-badge status-checking">Checking</span>
-                <i class="fas fa-play-circle"></i>
-                <h3>Bus Play</h3>
-            </a>
-            <a href="http://172.19.178.179/index.php" target="_blank" class="card" data-check="http://172.19.178.179/index.php">
-                <span class="status-badge status-checking">Checking</span>
-                <i class="fas fa-cloud"></i>
-                <h3>Cloud Media</h3>
-            </a>
-            <a href="https://movieboxhd.net/" target="_blank" class="card" data-check="https://movieboxhd.net/">
-                <span class="status-badge status-checking">Checking</span>
-                <i class="fas fa-box-open"></i>
-                <h3>MovieBox</h3>
-            </a>
-            <a href="https://movies.discoveryftp.net/m" target="_blank" class="card" data-check="https://movies.discoveryftp.net/m">
-                <span class="status-badge status-checking">Checking</span>
-                <i class="fas fa-film"></i>
-                <h3>Dflix Movies</h3>
-            </a>
-            <a href="https://discoveryftp.net/" target="_blank" class="card" data-check="https://discoveryftp.net/">
-                <span class="status-badge status-checking">Checking</span>
-                <i class="fas fa-compass"></i>
-                <h3>Discovery Ftp</h3>
-            </a>
-            <a href="http://10.10.10.3/" target="_blank" class="card" data-check="http://10.10.10.3/">
-                <span class="status-badge status-checking">Checking</span>
-                <i class="fas fa-globe"></i>
-                <h3>Movie World</h3>
-            </a>
-            <a href="http://172.27.27.84/" target="_blank" class="card" data-check="http://172.27.27.84/">
-                <span class="status-badge status-checking">Checking</span>
-                <i class="fas fa-photo-video"></i>
-                <h3>Wow Movie Zone</h3>
-            </a>
-            <a href="http://10.100.100.10/" target="_blank" class="card" data-check="http://10.100.100.10/">
-                <span class="status-badge status-checking">Checking</span>
-                <i class="fas fa-desktop"></i>
-                <h3>Show Time</h3>
-            </a>
+
         </div>
+
+
 
         <!-- TV Section -->
+
         <h2 class="section-title">Live TV Streams</h2>
+
         <div class="grid">
+
             <a href="http://10.16.100.244:8080" target="_blank" class="card" data-check="http://10.16.100.244:8080">
+
                 <span class="status-badge status-checking">Checking</span>
+
                 <i class="fas fa-tv"></i>
+
                 <h3>IPTV Stream 1</h3>
+
             </a>
+
         </div>
+
+
+
+        <!-- Government Services -->
+
+        <h2 class="section-title">BD Services</h2>
+
+        <div class="grid">
+
+            <a href="https://services.nidw.gov.bd" target="_blank" class="card">
+
+                <i class="fas fa-id-card"></i>
+
+                <h3>NID Services</h3>
+
+            </a>
+
+            <a href="https://bdris.gov.bd" target="_blank" class="card">
+
+                <i class="fas fa-certificate"></i>
+
+                <h3>Birth Registration</h3>
+
+            </a>
+
+            <a href="https://epassport.gov.bd" target="_blank" class="card">
+
+                <i class="fas fa-passport"></i>
+
+                <h3>e-Passport</h3>
+
+            </a>
+
+            <a href="https://pcc.police.gov.bd" target="_blank" class="card">
+
+                <i class="fas fa-user-shield"></i>
+
+                <h3>Police Clearance</h3>
+
+            </a>
+
+            <a href="https://incometax.gov.bd" target="_blank" class="card">
+
+                <i class="fas fa-file-invoice-dollar"></i>
+
+                <h3>e-TIN System</h3>
+
+            </a>
+
+        </div>
+
+
+
+        <!-- Education & Ticketing -->
+
+        <h2 class="section-title">Portals & Ticketing</h2>
+
+        <div class="grid">
+
+            <a href="https://gstadmission.ac.bd" target="_blank" class="card">
+
+                <i class="fas fa-university"></i>
+
+                <h3>GST Admission</h3>
+
+            </a>
+
+            <a href="https://duadmission.eis.du.ac.bd" target="_blank" class="card">
+
+                <i class="fas fa-graduation-cap"></i>
+
+                <h3>DU Admission</h3>
+
+            </a>
+
+            <a href="https://eticket.railway.gov.bd" target="_blank" class="card">
+
+                <i class="fas fa-train"></i>
+
+                <h3>BD Railway</h3>
+
+            </a>
+
+            <a href="https://shohoz.com" target="_blank" class="card">
+
+                <i class="fas fa-bus"></i>
+
+                <h3>Shohoz Tickets</h3>
+
+            </a>
+
+        </div>
+
     </div>
 
+
+
+    <!-- Contact Modal -->
+
+    <div id="contactModal" class="modal hidden">
+
+        <div class="modal-content">
+
+            <span class="close-btn" onclick="closeContactModal()">&times;</span>
+
+            <h3 style="margin-bottom: 15px;">Send Us a Message</h3>
+
+            <form id="contactForm">
+
+                <div class="form-group">
+
+                    <input type="text" id="contactName" placeholder="Your Name" required>
+
+                </div>
+
+                <div class="form-group">
+
+                    <input type="email" id="contactEmail" placeholder="Your Email" required>
+
+                </div>
+
+                <div class="form-group">
+
+                    <textarea id="contactMessage" rows="4" style="width:100%; padding: 10px; background: var(--bg-color); color: var(--text-color); border: 1px solid var(--border-color); border-radius: 6px;" placeholder="Message..." required></textarea>
+
+                </div>
+
+                <button type="submit" class="btn" style="width: 100%; justify-content: center;">Send Message</button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+
     <script>
+
         // Security Array Mapping
+
         const _0x3a4b = [
+
             'eser-all',
+
             'eser-all.firebaseapp.com',
+
             'http://eser-all-default-rtdb.firebaseio.com'
+
         ];
 
+
+
         // Firebase Initialization
+
         const firebaseConfig = {
+
             projectId: _0x3a4b[0],
+
             authDomain: _0x3a4b[1],
+
             databaseURL: _0x3a4b[2]
+
         };
+
         firebase.initializeApp(firebaseConfig);
 
+
+
         // Particle background initialization
+
         particlesJS('particles-js', {
+
             particles: {
+
                 number: { value: 50 },
+
                 color: { value: '#3b82f6' },
+
                 shape: { type: 'circle' },
+
                 opacity: { value: 0.5 },
+
                 size: { value: 3 },
+
                 line_linked: { enable: true, distance: 150, color: '#3b82f6', opacity: 0.2, width: 1 },
+
                 move: { enable: true, speed: 2 }
+
             }
+
         });
+
+
 
         // Auth Listeners
+
         firebase.auth().onAuthStateChanged((user) => {
+
             if (user) {
+
                 document.getElementById('auth-container').classList.add('hidden');
+
                 document.getElementById('dashboard').classList.remove('hidden');
+
                 runPingChecks();
+
             } else {
+
                 document.getElementById('auth-container').classList.remove('hidden');
+
                 document.getElementById('dashboard').classList.add('hidden');
+
             }
+
         });
 
+
+
         function login() {
+
             const email = document.getElementById('email').value;
+
             const password = document.getElementById('password').value;
+
             firebase.auth().signInWithEmailAndPassword(email, password).catch(err => alert(err.message));
+
         }
+
+
 
         function googleLogin() {
+
             const provider = new firebase.auth.GoogleAuthProvider();
+
             firebase.auth().signInWithPopup(provider).catch(err => alert(err.message));
+
         }
+
+
 
         function logout() {
+
             firebase.auth().signOut();
+
         }
+
+
 
         function toggleTheme() {
+
             document.body.classList.toggle('light-theme');
+
         }
 
+
+
         // Live Service Status Dynamic Checker
+
         function runPingChecks() {
+
             const cards = document.querySelectorAll('.card[data-check]');
+
             cards.forEach(card => {
+
                 const url = card.getAttribute('data-check');
+
                 const badge = card.querySelector('.status-badge');
+
                 
+
                 const img = new Image();
+
                 img.onload = () => {
+
                     badge.textContent = 'Online';
+
                     badge.className = 'status-badge status-online';
+
                 };
+
                 img.onerror = () => {
+
+                    // Modern fetch check fallback
+
                     fetch(url, { mode: 'no-cors', cache: 'no-cache' })
+
                         .then(() => {
+
                             badge.textContent = 'Online';
+
                             badge.className = 'status-badge status-online';
+
                         })
+
                         .catch(() => {
+
                             badge.textContent = 'Offline';
+
                             badge.className = 'status-badge status-offline';
+
                         });
+
                 };
+
                 img.src = url + '/favicon.ico?' + new Date().getTime();
+
             });
+
         }
+
+
+
+        // Contact Modal Control
+
+        function openContactModal() {
+
+            document.getElementById('contactModal').classList.remove('hidden');
+
+        }
+
+
+
+        function closeContactModal() {
+
+            document.getElementById('contactModal').classList.add('hidden');
+
+        }
+
+
+
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+
+            e.preventDefault();
+
+            alert('Message Sent!');
+
+            closeContactModal();
+
+        });
+
     </script>
+
 </body>
+
 </html>
