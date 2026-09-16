@@ -1,315 +1,311 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FTP Servers</title>
-  <style>
-    :root {
-      --bg-color: #0f172a;
-      --card-bg: #1e293b;
-      --accent-color: #38bdf8;
-      --text-color: #f8fafc;
-      --text-secondary: #94a3b8;
-    }
-
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background-color: var(--bg-color);
-      color: var(--text-color);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    header {
-      background-color: var(--card-bg);
-      padding: 1.5rem 2rem;
-      text-align: center;
-      border-bottom: 2px solid #334155;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    }
-
-    h1 {
-      margin: 0;
-      font-size: 1.8rem;
-      color: var(--accent-color);
-    }
-
-    #particles-js {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: 2rem auto;
-      padding: 0 1rem;
-      width: 100%;
-      box-sizing: border-box;
-    }
-
-    .grid-container {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .card {
-      background-color: var(--card-bg);
-      border-radius: 12px;
-      padding: 1.5rem;
-      text-align: center;
-      border: 1px solid #334155;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
-      border-color: var(--accent-color);
-    }
-
-    .card h3 {
-      margin-top: 0;
-      margin-bottom: 0.5rem;
-      font-size: 1.25rem;
-    }
-
-    .card p {
-      color: var(--text-secondary);
-      font-size: 0.85rem;
-      word-break: break-all;
-      margin-bottom: 1.5rem;
-    }
-
-    .btn {
-      display: inline-block;
-      padding: 0.6rem 1.2rem;
-      background-color: var(--accent-color);
-      color: #0f172a;
-      text-decoration: none;
-      font-weight: bold;
-      border-radius: 6px;
-      transition: background-color 0.2s;
-    }
-
-    .btn:hover {
-      background-color: #7dd3fc;
-    }
-  </style>
-
-  <!-- Firebase Scripts -->
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
-  
-  <!-- EmailJS Script -->
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
-  
-  <!-- Particles.js -->
-  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <meta charset="UTF-8">
+    <title>ESER-ALL Portal</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function() {
+            // Replace with your actual EmailJS Public Key
+            emailjs.init({ publicKey: "k3Gz4cI70F4UTep3c" });
+        })();
+    </script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { min-height: 100%; font-family: 'Segoe UI', Arial, sans-serif; }
+        body { background: #121212; color: #f0f0f0; transition: background .3s, color .3s; display: flex; flex-direction: column; justify-content: space-between; position: relative; }
+        body.light-mode { background: linear-gradient(-45deg,#ee7752,#e73c7e,#23a6d5,#23d5ab); background-size: 400% 400%; animation: gradientBG 15s ease infinite; color: #fff; }
+        @keyframes gradientBG { 0% { background-position: 0 50% } 50% { background-position: 100% 50% } 100% { background-position: 0 50% } }
+        #particles-js { position: fixed; width: 100%; height: 100%; z-index: 0; }
+        .theme-toggle { position: fixed; left: 20px; bottom: 20px; width: 42px; height: 42px; border-radius: 50%; border: 2px solid #fff; background: rgba(255,255,255,.1); color: #fff; font-size: 18px; display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 1000; }
+        .dashboard { position: relative; z-index: 1; padding: 30px 15px 10px; text-align: center; }
+        .main-header { font-size: 32px; font-weight: 800; margin-bottom: 25px; margin-top: 10px; letter-spacing: .5px; }
+        .section-title { font-size: 24px; margin: 30px 0 20px; display: flex; justify-content: center; align-items: center; gap: 10px; }
+        .section-title i { color: #38bdf8; }
+        .link-container { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 15px; max-width: 950px; margin: 0 auto 20px auto; }
+        .link-card { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 16px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15); border-radius: 12px; color: #fff; backdrop-filter: blur(6px); font-size: 14px; font-weight: 600; box-shadow: 0 8px 10px rgba(0,0,0,.4); position: relative; width: 160px; min-height: 110px; transition: transform .2s, background .2s; cursor: pointer; text-align: center; }
+        .link-card:hover { transform: translateY(-3px); background: rgba(255,255,255,.18); }
+        .link-card i.main-icon { font-size: 32px; margin-bottom: 8px; color: #38bdf8; transition: transform .2s ease; }
+        .link-card:hover i.main-icon { transform: scale(1.1); }
+        .link-card .card-title { width: 100%; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; text-overflow: ellipsis; word-break: break-word; line-height: 1.3; }
+        .status-badge { position: absolute; top: 6px; right: 6px; font-size: 9px; padding: 2px 5px; border-radius: 10px; font-weight: 700; display: flex; align-items: center; gap: 3px; }
+        .status-badge.online { background: rgba(76,175,80,.25); color: #4CAF50; border: 1px solid #4CAF50; }
+        .status-badge.offline { background: rgba(244,67,54,.25); color: #f44336; border: 1px solid #f44336; }
+        .status-badge.checking { background: rgba(255,193,7,.25); color: #ffc107; border: 1px solid #ffc107; }
+        .email-modal, .user-login-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,.85); display: flex; justify-content: center; align-items: center; z-index: 999; }
+        .modal-content { background: #1e1e1e; color: #fff; padding: 20px; border-radius: 10px; width: 320px; border: 1px solid #333; text-align: center; position: relative; }
+        .modal-content input, .modal-content textarea { width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #444; background: #2a2a2a; color: #fff; border-radius: 4px; outline: 0; font-family: inherit; }
+        .modal-content textarea { resize: vertical; min-height: 80px; }
+        .modal-content button { padding: 8px 12px; margin-top: 5px; cursor: pointer; border: none; border-radius: 4px; font-weight: 700; background: #4CAF50; color: #fff; width: 100%; }
+        .close-btn { position: absolute; top: 10px; right: 12px; font-size: 16px; color: #fff; cursor: pointer; }
+        .divider { display: flex; align-items: center; text-align: center; margin: 15px 0; color: #888; font-size: 12px; }
+        .divider::after, .divider::before { content: ''; flex: 1; border-bottom: 1px solid #444; }
+        .divider:not(:empty)::before { margin-right: .5em; }
+        .divider:not(:empty)::after { margin-left: .5em; }
+        .google-btn { background: #fff !important; color: #333 !important; display: flex; align-items: center; justify-content: center; gap: 10px; border: 1px solid #ccc !important; }
+        .logout-btn { position: fixed; right: 20px; bottom: 20px; padding: 10px 18px; border-radius: 20px; border: none; background: #e11d48; color: #fff; font-size: 14px; font-weight: 700; cursor: pointer; z-index: 1000; box-shadow: 0 4px 10px rgba(225,29,72,.3); }
+        .developer-footer { position: relative; z-index: 1; text-align: center; padding: 15px 10px; font-size: 14px; background: rgba(0,0,0,.4); backdrop-filter: blur(4px); margin-top: 30px; }
+        .developer-footer span { font-weight: 700; color: #00e676; }
+    </style>
 </head>
-<body>
-
-  <div id="particles-js"></div>
-
-  <header>
-    <h1>FTP Servers</h1>
-  </header>
-
-  <main class="container">
-    <div class="grid-container">
-      
-      <div class="card">
-        <div>
-          <h3>Sam FTP</h3>
-          <p>http://172.16.50.4/</p>
-        </div>
-        <a href="http://172.16.50.4/" target="_blank" class="btn">Connect</a>
-      </div>
-
-      <div class="card">
-        <div>
-          <h3>Ctg Movies</h3>
-          <p>https://ctgmovies.com/</p>
-        </div>
-        <a href="https://ctgmovies.com/" target="_blank" class="btn">Connect</a>
-      </div>
-
-      <div class="card">
-        <div>
-          <h3>Ghuri FTP</h3>
-          <p>http://103.96.104.6//</p>
-        </div>
-        <a href="http://103.96.104.6//" target="_blank" class="btn">Connect</a>
-      </div>
-
-      <div class="card">
-        <div>
-          <h3>ICC FTP</h3>
-          <p>http://10.16.100.244/dashboard.php?...</p>
-        </div>
-        <a href="http://10.16.100.244/dashboard.php?..." target="_blank" class="btn">Connect</a>
-      </div>
-
-      <div class="card">
-        <div>
-          <h3>flixhub</h3>
-          <p>https://flixhub.net/</p>
-        </div>
-        <a href="https://flixhub.net/" target="_blank" class="btn">Connect</a>
-      </div>
-
-      <div class="card">
-        <div>
-          <h3>Bus Play</h3>
-          <p>http://10.20.30.40/</p>
-        </div>
-        <a href="http://10.20.30.40/" target="_blank" class="btn">Connect</a>
-      </div>
-
-      <div class="card">
-        <div>
-          <h3>Cloud Media</h3>
-          <p>http://172.19.178.179/index.php</p>
-        </div>
-        <a href="http://172.19.178.179/index.php" target="_blank" class="btn">Connect</a>
-      </div>
-
-      <div class="card">
-        <div>
-          <h3>MovieBox</h3>
-          <p>https://movieboxhd.net/</p>
-        </div>
-        <a href="https://movieboxhd.net/" target="_blank" class="btn">Connect</a>
-      </div>
-
-      <div class="card">
-        <div>
-          <h3>Dflix Movies</h3>
-          <p>https://movies.discoveryftp.net/m</p>
-        </div>
-        <a href="https://movies.discoveryftp.net/m" target="_blank" class="btn">Connect</a>
-      </div>
-
-      <div class="card">
-        <div>
-          <h3>Discovery Ftp</h3>
-          <p>https://discoveryftp.net/</p>
-        </div>
-        <a href="https://discoveryftp.net/" target="_blank" class="btn">Connect</a>
-      </div>
-
-      <div class="card">
-        <div>
-          <h3>Movie World</h3>
-          <p>http://10.10.10.3/</p>
-        </div>
-        <a href="http://10.10.10.3/" target="_blank" class="btn">Connect</a>
-      </div>
-
-      <div class="card">
-        <div>
-          <h3>Wow Movie Zone</h3>
-          <p>http://172.27.27.84/</p>
-        </div>
-        <a href="http://172.27.27.84/" target="_blank" class="btn">Connect</a>
-      </div>
-
-      <div class="card">
-        <div>
-          <h3>Show Time</h3>
-          <p>http://10.100.100.10/</p>
-        </div>
-        <a href="http://10.100.100.10/" target="_blank" class="btn">Connect</a>
-      </div>
-
+<body oncontextmenu="return false;">
+    <div id="particles-js"></div>
+    <div class="theme-toggle" id="btnThemeToggle">
+        <i class="fas fa-moon" id="themeIcon"></i>
     </div>
-  </main>
-
-  <script>
-    // 1. Firebase Configuration (Unchanged)
-    const firebaseConfig = {
-      apiKey: "AIzaSyDB4r_a5gPtKhlzM0qqmYHBb6HA_I2SmHQ",
-      authDomain: "eser-all.firebaseapp.com",
-      databaseURL: "http://eser-all-default-rtdb.firebaseio.com",
-      projectId: "eser-all",
-      storageBucket: "eser-all.appspot.com",
-      appId: "1:741870576674:web:2a5094bd05f44f0b98d67b"
-    };
     
-    // Initialize Firebase
-    firebase.initializeApp(firebaseConfig);
+    <div class="user-login-modal" id="userLoginModal">
+        <div class="modal-content" id="loginBox">
+            <h3 style="margin-bottom:15px"><i class="fas fa-shield-alt" style="color:#38bdf8"></i> Secure Login</h3>
+            <input type="email" id="userInputEmail" placeholder="Email Address" autocomplete="off">
+            <input type="password" id="userInputPass" placeholder="Password" autocomplete="off">
+            <button id="btnLogin">Login</button>
+            <div class="divider">OR</div>
+            <button class="google-btn" id="btnGoogleLogin">
+                <i class="fab fa-google" style="color:#ea4335;font-size:16px"></i> Sign in with Google
+            </button>
+            <div id="loginError" style="color:#f44336;font-size:12px;margin-top:10px;display:none"></div>
+        </div>
+    </div>
 
-    // 2. EmailJS Initialization (Unchanged)
-    (function(){
-      emailjs.init("k3Gz4cI70F4UTep3c");
-    })();
+    <div class="email-modal" id="emailModal" style="display:none">
+        <div class="modal-content">
+            <span class="close-btn" id="btnCloseEmail"><i class="fas fa-times"></i></span>
+            <h3 style="margin-bottom:15px"><i class="fas fa-envelope" style="color:#38bdf8"></i> Send Email</h3>
+            <form id="emailForm">
+                <input type="email" id="senderEmail" placeholder="Your Email Address" required>
+                <input type="text" id="emailSubject" placeholder="Subject" required>
+                <textarea id="emailMessage" placeholder="Type your message here..." required></textarea>
+                <button type="submit" id="sendBtn"><i class="fas fa-paper-plane"></i> Send Mail</button>
+            </form>
+            <div id="emailStatus" style="font-size:12px;margin-top:12px;display:none"></div>
+        </div>
+    </div>
 
-    // 3. Particles.js Initialization
-    particlesJS("particles-js", {
-      "particles": {
-        "number": {
-          "value": 80,
-          "density": {
-            "enable": true,
-            "value_area": 800
-          }
-        },
-        "color": {
-          "value": "#38bdf8"
-        },
-        "shape": {
-          "type": "circle"
-        },
-        "opacity": {
-          "value": 0.5,
-          "random": false
-        },
-        "size": {
-          "value": 3,
-          "random": true
-        },
-        "line_linked": {
-          "enable": true,
-          "distance": 150,
-          "color": "#38bdf8",
-          "opacity": 0.4,
-          "width": 1
-        },
-        "move": {
-          "enable": true,
-          "speed": 3,
-          "direction": "none",
-          "random": false,
-          "straight": false,
-          "out_mode": "out",
-          "bounce": false
+    <div class="dashboard" id="mainDashboard" style="display:none">
+        <div class="main-header">ESER-ALL Portal</div>
+        <div class="section-title"><i class="fas fa-server"></i> FTP Servers</div>
+        <div class="link-container" id="ftp-all-section"></div>
+        <div class="section-title"><i class="fas fa-tv"></i> Live TV</div>
+        <div class="link-container" id="tv-all-section"></div>
+        <div class="section-title"><i class="fas fa-landmark"></i> সরকারি সেবা (Government Services)</div>
+        <div class="link-container" id="gov-section"></div>
+        <div class="section-title"><i class="fas fa-graduation-cap"></i> শিক্ষা ও ভর্তি (Education & Admissions)</div>
+        <div class="link-container" id="edu-section"></div>
+        <div class="section-title"><i class="fas fa-ticket-alt"></i> Online Ticket</div>
+        <div class="link-container" id="ticket-section"></div>
+        <div class="section-title"><i class="fas fa-envelope"></i> যোগাযোগ (Contact Us)</div>
+        <div class="link-container" id="contact-section"></div>
+    </div>
+
+    <button class="logout-btn" id="btnLogout" style="display:none">
+        <i class="fas fa-sign-out-alt"></i> Logout
+    </button>
+
+    <footer class="developer-footer">Developed by <span>Antu</span></footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+    <script>
+        // Firebase Configuration (Replace with direct configuration object)
+        const firebaseConfig = {
+            apiKey: "AIzaSyDB4r_a5gPtKhlzM0qqmYHBb6HA_I2SmHQ",
+            authDomain: "eser-all.firebaseapp.com",
+            databaseURL: "http://eser-all-default-rtdb.firebaseio.com",
+            projectId: "eser-all",
+            storageBucket: "eser-all.appspot.com",
+            messagingSenderId: "741870576674",
+            appId: "1:741870576674:web:2a5094bd05f44f0b98d67b"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        // Data Arrays
+        const ftpList = [
+            { id: "ftp1", title: "Sam FTP", url: "http://172.16.50.4/" },
+            { id: "ftp2", title: "Crazy HD", url: "http://crazyhd.com/" },
+            { id: "ftp3", title: "Ctg Movies", url: "https://ctgmovies.com/" },
+            { id: "ftp4", title: "Ghuri FTP", url: "http://103.96.104.6//" },
+            { id: "ftp5", title: "ICC FTP", url: "http://10.16.100.244/dashboard.php" }
+        ];
+
+        const tvList = [
+            { id: "tv1", title: "Live TV 1", url: "http://172.28.28.54/" },
+            { id: "tv2", title: "Live TV 2", url: "http://172.19.178.180/" }
+        ];
+
+        const govList = [
+            { title: "NID / ভোটার আবেদন", url: "http://services.nidw.gov.bd", icon: "fa-id-card" },
+            { title: "জন্ম নিবন্ধন ও সংশোধন", url: "http://bdris.gov.bd", icon: "fa-certificate" },
+            { title: "পাসপোর্টের আবেদন", url: "http://epassport.gov.bd", icon: "fa-passport" },
+            { title: "পুলিশ ক্লিয়ারেন্স আবেদন", url: "http://pcc.police.gov.bd", icon: "fa-user-shield" },
+            { title: "টিন (e-TIN) সার্টিফিকেট", url: "http://incometax.gov.bd", icon: "fa-file-invoice-dollar" }
+        ];
+
+        const eduList = [
+            { title: "জিএসটি/গুচ্ছ বিশ্ববিদ্যালয়", url: "http://gstadmission.ac.bd", icon: "fa-university" },
+            { title: "ঢাকা বিশ্ববিদ্যালয়", url: "http://duadmission.eis.du.ac.bd", icon: "fa-graduation-cap" }
+        ];
+
+        const ticketList = [
+            { title: "বাংলাদেশ রেলওয়ে টিকিট", url: "https://eticket.railway.gov.bd/", icon: "fa-train" },
+            { title: "Shohoz Bus Ticket", url: "https://www.shohoz.com/bus-tickets", icon: "fa-bus" }
+        ];
+
+        function createCard(title, url, icon, id = null) {
+            let badge = id ? `<div class="status-badge checking" id="status-${id}"><i class="fas fa-spinner fa-spin"></i></div>` : '';
+            return `<div class="link-card" onclick="window.open('${url}', '_blank')">${badge}<i class="fas ${icon} main-icon"></i><div class="card-title">${title}</div></div>`;
         }
-      },
-      "interactivity": {
-        "detect_on": "canvas",
-        "events": {
-          "onhover": {
-            "enable": true,
-            "mode": "repulse"
-          },
-          "onclick": {
-            "enable": true,
-            "mode": "push"
-          },
-          "resize": true
+
+        function renderDashboard() {
+            const ftpSec = document.getElementById('ftp-all-section');
+            const tvSec = document.getElementById('tv-all-section');
+            const govSec = document.getElementById('gov-section');
+            const eduSec = document.getElementById('edu-section');
+            const ticketSec = document.getElementById('ticket-section');
+            const contactSec = document.getElementById('contact-section');
+
+            ftpSec.innerHTML = tvSec.innerHTML = govSec.innerHTML = eduSec.innerHTML = ticketSec.innerHTML = contactSec.innerHTML = '';
+
+            ftpList.forEach(item => ftpSec.innerHTML += createCard(item.title, item.url, 'fa-folder-open', item.id));
+            tvList.forEach(item => tvSec.innerHTML += createCard(item.title, item.url, 'fa-tv', item.id));
+            govList.forEach(item => govSec.innerHTML += createCard(item.title, item.url, item.icon));
+            eduList.forEach(item => eduSec.innerHTML += createCard(item.title, item.url, item.icon));
+            ticketList.forEach(item => ticketSec.innerHTML += createCard(item.title, item.url, item.icon));
+
+            contactSec.innerHTML = '<div class="link-card" id="btnOpenMail"><i class="fas fa-paper-plane main-icon"></i><div class="card-title">ইমেইল পাঠান (Send Mail)</div></div>';
+
+            document.getElementById('btnOpenMail').onclick = function() {
+                document.getElementById("emailModal").style.display = "flex";
+                document.getElementById("emailStatus").style.display = "none";
+                document.getElementById("emailForm").reset();
+            };
+
+            ftpList.concat(tvList).forEach(item => {
+                let badge = document.getElementById('status-' + item.id);
+                if (!badge) return;
+                let img = new Image();
+                let timer = setTimeout(() => {
+                    badge.className = 'status-badge offline';
+                    badge.innerHTML = 'Offline';
+                }, 3000);
+                img.onload = img.onerror = () => {
+                    clearTimeout(timer);
+                    badge.className = 'status-badge online';
+                    badge.innerHTML = 'Online';
+                };
+                img.src = item.url + '/favicon.ico?' + new Date().getTime();
+            });
         }
-      },
-      "retina_detect": true
-    });
-  </script>
+
+        // Dark/Light Theme Toggle
+        document.getElementById('btnThemeToggle').onclick = function() {
+            document.body.classList.toggle('light-mode');
+            const icon = document.getElementById('themeIcon');
+            icon.classList.toggle('fa-moon');
+            icon.classList.toggle('fa-sun');
+        };
+
+        // Modal Close
+        document.getElementById('btnCloseEmail').onclick = function() {
+            document.getElementById("emailModal").style.display = "none";
+        };
+
+        // Email Submission via EmailJS
+        document.getElementById("emailForm").onsubmit = function(e) {
+            e.preventDefault();
+            const btn = document.getElementById("sendBtn");
+            const status = document.getElementById("emailStatus");
+            const senderEmail = document.getElementById("senderEmail").value;
+            const subject = document.getElementById("emailSubject").value;
+            const message = document.getElementById("emailMessage").value;
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+
+            emailjs.send("service_oyptt6l", "template_qvj0msk", {
+                from_email: senderEmail,
+                user_email: senderEmail,
+                from_name: senderEmail,
+                subject: subject,
+                message: message,
+                reply_to: senderEmail
+            }).then(() => {
+                status.style.color = "#4CAF50";
+                status.innerText = "Email sent successfully!";
+                status.style.display = "block";
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Mail';
+                setTimeout(() => document.getElementById("emailModal").style.display = "none", 2000);
+            }, (err) => {
+                status.style.color = "#f44336";
+                status.innerText = "Failed: " + (err.text || err.message || "Error");
+                status.style.display = "block";
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-paper-plane"></i> Send Mail';
+            });
+        };
+
+        // Auth Logic
+        document.getElementById('btnLogin').onclick = function() {
+            const email = document.getElementById('userInputEmail').value;
+            const pass = document.getElementById('userInputPass').value;
+            const errDiv = document.getElementById('loginError');
+
+            auth.signInWithEmailAndPassword(email, pass).catch(err => {
+                errDiv.innerText = err.message;
+                errDiv.style.display = 'block';
+            });
+        };
+
+        document.getElementById('btnGoogleLogin').onclick = function() {
+            auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch(err => {
+                const errDiv = document.getElementById('loginError');
+                errDiv.innerText = err.message;
+                errDiv.style.display = 'block';
+            });
+        };
+
+        document.getElementById('btnLogout').onclick = function() {
+            auth.signOut();
+        };
+
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                document.getElementById('userLoginModal').style.display = 'none';
+                document.getElementById('mainDashboard').style.display = 'block';
+                document.getElementById('btnLogout').style.display = 'block';
+                renderDashboard();
+            } else {
+                document.getElementById('userLoginModal').style.display = 'flex';
+                document.getElementById('mainDashboard').style.display = 'none';
+                document.getElementById('btnLogout').style.display = 'none';
+            }
+        });
+
+        // Background Particles
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 180, density: { enable: true, value_area: 800 } },
+                color: { value: '#ffffff' },
+                shape: { type: 'circle' },
+                opacity: { value: 0.8, random: true },
+                size: { value: 4, random: true },
+                line_linked: { enable: true, distance: 140, color: '#ffffff', opacity: 0.6, width: 1.5 },
+                move: { enable: true, speed: 3, direction: 'none', random: false, straight: false, out_mode: 'out', bounce: false }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: { onhover: { enable: true, mode: 'repulse' }, onclick: { enable: true, mode: 'push' }, resize: true },
+                modes: { repulse: { distance: 100, duration: 0.4 }, push: { particles_nb: 4 } }
+            },
+            retina_detect: true
+        });
+    </script>
 </body>
 </html>
