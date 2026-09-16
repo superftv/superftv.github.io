@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ESER-ALL Portal</title>
+    <title>Super Ftp</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
     <style>
         :root {
             --bg-color: #0f172a;
@@ -187,32 +186,6 @@
         }
 
         .hidden { display: none !important; }
-
-        /* Modal styling */
-        .modal {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 100;
-        }
-
-        .modal-content {
-            background: var(--card-bg);
-            padding: 25px;
-            border-radius: 12px;
-            width: 100%;
-            max-width: 500px;
-            border: 1px solid var(--border-color);
-        }
-
-        .close-btn {
-            float: right;
-            cursor: pointer;
-            font-size: 1.5rem;
-        }
     </style>
 </head>
 <body oncontextmenu="return false;">
@@ -241,7 +214,6 @@
             </div>
             <div class="controls">
                 <button class="btn" onclick="toggleTheme()"><i class="fas fa-moon"></i></button>
-                <button class="btn" onclick="openContactModal()"><i class="fas fa-envelope"></i> Contact</button>
                 <button class="btn" style="background-color: #ef4444;" onclick="logout()"><i class="fas fa-sign-out-alt"></i></button>
             </div>
         </header>
@@ -253,11 +225,6 @@
                 <span class="status-badge status-checking">Checking</span>
                 <i class="fas fa-server"></i>
                 <h3>Sam FTP</h3>
-            </a>
-            <a href="http://10.1.1.1" target="_blank" class="card" data-check="http://10.1.1.1">
-                <span class="status-badge status-checking">Checking</span>
-                <i class="fas fa-film"></i>
-                <h3>Crazy HD</h3>
             </a>
             <a href="http://10.16.100.240" target="_blank" class="card" data-check="http://10.16.100.240">
                 <span class="status-badge status-checking">Checking</span>
@@ -274,11 +241,55 @@
                 <i class="fas fa-hdd"></i>
                 <h3>ICC FTP</h3>
             </a>
-            <!-- NEW FTP SERVER ENTRY ADDED HERE -->
             <a href="http://10.16.100.245" target="_blank" class="card" data-check="http://10.16.100.245">
                 <span class="status-badge status-checking">Checking</span>
                 <i class="fas fa-database"></i>
                 <h3>New FTP Server</h3>
+            </a>
+            <a href="https://flixhub.net/" target="_blank" class="card" data-check="https://flixhub.net/">
+                <span class="status-badge status-checking">Checking</span>
+                <i class="fas fa-film"></i>
+                <h3>flixhub</h3>
+            </a>
+            <a href="http://10.20.30.40/" target="_blank" class="card" data-check="http://10.20.30.40/">
+                <span class="status-badge status-checking">Checking</span>
+                <i class="fas fa-play-circle"></i>
+                <h3>Bus Play</h3>
+            </a>
+            <a href="http://172.19.178.179/index.php" target="_blank" class="card" data-check="http://172.19.178.179/index.php">
+                <span class="status-badge status-checking">Checking</span>
+                <i class="fas fa-cloud"></i>
+                <h3>Cloud Media</h3>
+            </a>
+            <a href="https://movieboxhd.net/" target="_blank" class="card" data-check="https://movieboxhd.net/">
+                <span class="status-badge status-checking">Checking</span>
+                <i class="fas fa-box-open"></i>
+                <h3>MovieBox</h3>
+            </a>
+            <a href="https://movies.discoveryftp.net/m" target="_blank" class="card" data-check="https://movies.discoveryftp.net/m">
+                <span class="status-badge status-checking">Checking</span>
+                <i class="fas fa-film"></i>
+                <h3>Dflix Movies</h3>
+            </a>
+            <a href="https://discoveryftp.net/" target="_blank" class="card" data-check="https://discoveryftp.net/">
+                <span class="status-badge status-checking">Checking</span>
+                <i class="fas fa-compass"></i>
+                <h3>Discovery Ftp</h3>
+            </a>
+            <a href="http://10.10.10.3/" target="_blank" class="card" data-check="http://10.10.10.3/">
+                <span class="status-badge status-checking">Checking</span>
+                <i class="fas fa-globe"></i>
+                <h3>Movie World</h3>
+            </a>
+            <a href="http://172.27.27.84/" target="_blank" class="card" data-check="http://172.27.27.84/">
+                <span class="status-badge status-checking">Checking</span>
+                <i class="fas fa-photo-video"></i>
+                <h3>Wow Movie Zone</h3>
+            </a>
+            <a href="http://10.100.100.10/" target="_blank" class="card" data-check="http://10.100.100.10/">
+                <span class="status-badge status-checking">Checking</span>
+                <i class="fas fa-desktop"></i>
+                <h3>Show Time</h3>
             </a>
         </div>
 
@@ -290,72 +301,6 @@
                 <i class="fas fa-tv"></i>
                 <h3>IPTV Stream 1</h3>
             </a>
-        </div>
-
-        <!-- Government Services -->
-        <h2 class="section-title">BD Services</h2>
-        <div class="grid">
-            <a href="https://services.nidw.gov.bd" target="_blank" class="card">
-                <i class="fas fa-id-card"></i>
-                <h3>NID Services</h3>
-            </a>
-            <a href="https://bdris.gov.bd" target="_blank" class="card">
-                <i class="fas fa-certificate"></i>
-                <h3>Birth Registration</h3>
-            </a>
-            <a href="https://epassport.gov.bd" target="_blank" class="card">
-                <i class="fas fa-passport"></i>
-                <h3>e-Passport</h3>
-            </a>
-            <a href="https://pcc.police.gov.bd" target="_blank" class="card">
-                <i class="fas fa-user-shield"></i>
-                <h3>Police Clearance</h3>
-            </a>
-            <a href="https://incometax.gov.bd" target="_blank" class="card">
-                <i class="fas fa-file-invoice-dollar"></i>
-                <h3>e-TIN System</h3>
-            </a>
-        </div>
-
-        <!-- Education & Ticketing -->
-        <h2 class="section-title">Portals & Ticketing</h2>
-        <div class="grid">
-            <a href="https://gstadmission.ac.bd" target="_blank" class="card">
-                <i class="fas fa-university"></i>
-                <h3>GST Admission</h3>
-            </a>
-            <a href="https://duadmission.eis.du.ac.bd" target="_blank" class="card">
-                <i class="fas fa-graduation-cap"></i>
-                <h3>DU Admission</h3>
-            </a>
-            <a href="https://eticket.railway.gov.bd" target="_blank" class="card">
-                <i class="fas fa-train"></i>
-                <h3>BD Railway</h3>
-            </a>
-            <a href="https://shohoz.com" target="_blank" class="card">
-                <i class="fas fa-bus"></i>
-                <h3>Shohoz Tickets</h3>
-            </a>
-        </div>
-    </div>
-
-    <!-- Contact Modal -->
-    <div id="contactModal" class="modal hidden">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeContactModal()">&times;</span>
-            <h3 style="margin-bottom: 15px;">Send Us a Message</h3>
-            <form id="contactForm">
-                <div class="form-group">
-                    <input type="text" id="contactName" placeholder="Your Name" required>
-                </div>
-                <div class="form-group">
-                    <input type="email" id="contactEmail" placeholder="Your Email" required>
-                </div>
-                <div class="form-group">
-                    <textarea id="contactMessage" rows="4" style="width:100%; padding: 10px; background: var(--bg-color); color: var(--text-color); border: 1px solid var(--border-color); border-radius: 6px;" placeholder="Message..." required></textarea>
-                </div>
-                <button type="submit" class="btn" style="width: 100%; justify-content: center;">Send Message</button>
-            </form>
         </div>
     </div>
 
@@ -432,7 +377,6 @@
                     badge.className = 'status-badge status-online';
                 };
                 img.onerror = () => {
-                    // Modern fetch check fallback
                     fetch(url, { mode: 'no-cors', cache: 'no-cache' })
                         .then(() => {
                             badge.textContent = 'Online';
@@ -446,21 +390,6 @@
                 img.src = url + '/favicon.ico?' + new Date().getTime();
             });
         }
-
-        // Contact Modal Control
-        function openContactModal() {
-            document.getElementById('contactModal').classList.remove('hidden');
-        }
-
-        function closeContactModal() {
-            document.getElementById('contactModal').classList.add('hidden');
-        }
-
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            alert('Message Sent!');
-            closeContactModal();
-        });
     </script>
 </body>
 </html>
