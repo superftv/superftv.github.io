@@ -1,612 +1,727 @@
 <!DOCTYPE html>
 <html lang="bn">
-<head>
-  <meta charset="UTF-8">
-  <title>ESER-ALL Portal</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  
-  <!-- EmailJS SDK (Latest Version 4) -->
-  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-  <script type="text/javascript">
-     (function(){
-      emailjs.init({
-          publicKey: "k3Gz4cI70F4UTep3c",
-        });
-     })();
-  </script>
+    <head>
+        <meta charset="UTF-8">
+        <title>ESER-ALL Portal</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+        <script type="text/javascript">
+            (function(_0x1a8f, _0x3f12) {
+                var _0x534a = function(_0x2d1f) {
+                    while (--_0x2d1f) {
+                        _0x1a8f['push'](_0x1a8f['shift']());
+                    }
+                };
+                _0x534a(++_0x3f12);
+            })(a0_0x1112, 0x1a2);
+            
+            function _0x3e11(_0x2211, _0x45bb) {
+                _0x2211 = _0x2211 - 0x0;
+                var _0x1a8f2 = a0_0x1112()[_0x2211];
+                return _0x1a8f2;
+            }
+            
+            function a0_0x1112() {
+                var _0x9e3a = ['k3Gz4cI70F4UTep3c', 'init'];
+                a0_0x1112 = function() {
+                    return _0x9e3a;
+                };
+                return a0_0x1112();
+            }
+            
+            (function() {
+                emailjs[_0x3e11('0x1')]({
+                    publicKey: _0x3e11('0x0')
+                });
+            })();
+        </script>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
 
-  <style>
-    :root {
-      --bg-color: #0f172a;
-      --text-color: #f8fafc;
-      --card-bg: rgba(255, 255, 255, 0.08);
-      --card-border: rgba(255, 255, 255, 0.15);
-      --card-hover: rgba(255, 255, 255, 0.2);
-      --modal-bg: #1e293b;
-      --modal-border: #334155;
-      --input-bg: #0f172a;
-      --input-border: #475569;
-      --footer-bg: rgba(15, 23, 42, 0.6);
-      --icon-color: #38bdf8;
-      --bg-overlay: rgba(15, 23, 42, 0.75);
-    }
+            html, body {
+                min-height: 100%;
+                font-family: 'Segoe UI', Arial, sans-serif;
+            }
 
-    [data-theme="light"] {
-      --bg-color: #e0f2fe;
-      --text-color: #0c4a6e;
-      --card-bg: rgba(255, 255, 255, 0.85);
-      --card-border: rgba(56, 189, 248, 0.3);
-      --card-hover: #ffffff;
-      --modal-bg: #ffffff;
-      --modal-border: #bae6fd;
-      --input-bg: #f0f9ff;
-      --input-border: #7dd3fc;
-      --footer-bg: rgba(224, 242, 254, 0.85);
-      --icon-color: #0284c7;
-      --bg-overlay: rgba(224, 242, 254, 0.45);
-      animation: gradientBG 15s ease infinite;
-    }
+            body {
+                margin: 0;
+                padding: 0;
+                background: #121212;
+                color: #f0f0f0;
+                transition: background .3s, color .3s;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                position: relative;
+            }
 
-    [data-theme="light"] body {
-      animation: skyColorShift 18s infinite alternate ease-in-out;
-    }
+            body.light-mode {
+                background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+                background-size: 400% 400%;
+                animation: gradientBG 15s ease infinite;
+                color: #fff;
+            }
 
-    @keyframes skyColorShift {
-      0% { background-color: #e0f2fe; }
-      33% { background-color: #bae6fd; }
-      66% { background-color: #e0f7fa; }
-      100% { background-color: #f0f9ff; }
-    }
+            @keyframes gradientBG {
+                0% { background-position: 0 50%; }
+                50% { background-position: 100% 50%; }
+                100% { background-position: 0 50%; }
+            }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body { min-height: 100%; font-family: 'Segoe UI', Arial, sans-serif; }
-    
-    body {
-      margin: 0; padding: 0;
-      background: var(--bg-color);
-      color: var(--text-color);
-      display: flex; flex-direction: column; justify-content: space-between;
-      transition: background 0.5s ease, color 0.5s ease;
-      position: relative;
-    }
+            #particles-js {
+                position: fixed;
+                width: 100%;
+                height: 100%;
+                z-index: 0;
+            }
 
-    .bg-video-container {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      overflow: hidden; z-index: 0;
-    }
+            .theme-toggle {
+                position: fixed;
+                left: 20px;
+                bottom: 20px;
+                width: 42px;
+                height: 42px;
+                border-radius: 50%;
+                border: 2px solid #fff;
+                background: rgba(255, 255, 255, .1);
+                color: #fff;
+                font-size: 18px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                z-index: 1000;
+            }
 
-    .bg-video-container video {
-      width: 100%; height: 100%; object-fit: cover;
-      filter: brightness(0.85) contrast(1.05);
-    }
+            .dashboard {
+                position: relative;
+                z-index: 1;
+                padding: 30px 15px 10px;
+                text-align: center;
+            }
 
-    .bg-overlay {
-      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-      background: var(--bg-overlay); transition: background 0.5s ease;
-    }
-    
-    .theme-toggle-btn {
-      position: fixed; top: 20px; right: 20px; z-index: 1001;
-      background: var(--card-bg); border: 1px solid var(--card-border);
-      color: var(--text-color); padding: 10px 16px; border-radius: 50px;
-      cursor: pointer; display: flex; align-items: center; gap: 8px;
-      font-weight: bold; backdrop-filter: blur(8px);
-      box-shadow: 0 4px 12px rgba(2, 132, 199, 0.2); transition: all 0.3s ease;
-    }
-    .theme-toggle-btn:hover { background: var(--card-hover); transform: scale(1.03); }
+            .main-header {
+                font-size: 32px;
+                font-weight: 800;
+                margin-bottom: 25px;
+                margin-top: 10px;
+                letter-spacing: .5px;
+            }
 
-    .dashboard { position: relative; z-index: 1; padding: 30px 15px 10px; text-align: center; }
-    .main-header { font-size: 32px; font-weight: 800; margin-bottom: 25px; margin-top: 10px; letter-spacing: 0.5px; }
-    .section-title { font-size: 22px; margin: 25px 0 15px; display: flex; justify-content: center; align-items: center; gap: 10px; color: var(--text-color); }
-    .section-title i { color: var(--icon-color); }
+            .section-title {
+                font-size: 24px;
+                margin: 30px 0 20px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 10px;
+            }
 
-    .link-container { 
-      display: flex; 
-      justify-content: center; 
-      align-items: center; 
-      flex-wrap: wrap; 
-      gap: 12px; 
-      max-width: 1000px; 
-      margin: 0 auto 20px auto; 
-    }
-    
-    .link-card {
-      display: flex; 
-      flex-direction: column; 
-      align-items: center; 
-      justify-content: center;
-      padding: 12px 10px; 
-      background: var(--card-bg); 
-      border: 1px solid var(--card-border);
-      border-radius: 14px; 
-      color: var(--text-color); 
-      backdrop-filter: blur(10px);
-      font-size: 13px; 
-      font-weight: 600; 
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
-      position: relative; 
-      width: 160px; 
-      height: 110px; 
-      cursor: pointer;
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-      text-align: center;
-    }
+            .section-title i {
+                color: #38bdf8;
+            }
 
-    .link-card i.main-icon { 
-      font-size: 28px; 
-      margin-bottom: 8px; 
-      color: var(--icon-color); 
-      transition: transform 0.2s ease; 
-      flex-shrink: 0;
-    }
+            .link-container {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 15px;
+                max-width: 950px;
+                margin: 0 auto 20px auto;
+            }
 
-    .link-card .card-title {
-      width: 100%;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      word-break: break-word;
-      line-height: 1.3;
-    }
+            .link-card {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding: 16px;
+                background: rgba(255, 255, 255, .08);
+                border: 1px solid rgba(255, 255, 255, .15);
+                border-radius: 12px;
+                color: #fff;
+                backdrop-filter: blur(6px);
+                font-size: 14px;
+                font-weight: 600;
+                box-shadow: 0 8px 10px rgba(0, 0, 0, .4);
+                position: relative;
+                width: 160px;
+                min-height: 110px;
+                transition: transform .2s, background .2s;
+                cursor: pointer;
+                text-align: center;
+            }
 
-    .link-card:hover { 
-      transform: translateY(-4px); 
-      background: var(--card-hover); 
-      box-shadow: 0 12px 20px rgba(2, 132, 199, 0.2); 
-    }
-    
-    .link-card:hover i.main-icon { 
-      transform: scale(1.1); 
-    }
+            .link-card:hover {
+                transform: translateY(-3px);
+                background: rgba(255, 255, 255, .18);
+            }
 
-    .status-badge {
-      position: absolute; 
-      top: 6px; 
-      right: 6px; 
-      font-size: 9px; 
-      padding: 2px 5px; 
-      border-radius: 10px;
-      font-weight: bold; 
-      display: flex; 
-      align-items: center; 
-      gap: 3px;
-    }
-    .status-badge.online { background: rgba(76, 175, 80, 0.25); color: #4CAF50; border: 1px solid #4CAF50; }
-    .status-badge.offline { background: rgba(244, 67, 54, 0.25); color: #f44336; border: 1px solid #f44336; }
-    .status-badge.checking { background: rgba(255, 193, 7, 0.25); color: #ffc107; border: 1px solid #ffc107; }
+            .link-card i.main-icon {
+                font-size: 32px;
+                margin-bottom: 8px;
+                color: #38bdf8;
+                transition: transform .2s ease;
+            }
 
-    /* Modals (Login & Email) */
-    .user-login-modal, .email-modal { 
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-      background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(6px);
-      display: flex; justify-content: center; align-items: center; z-index: 1002; 
-    }
-    
-    .modal-content { 
-      background: var(--modal-bg); color: var(--text-color); padding: 28px; 
-      border-radius: 16px; width: 340px; border: 1px solid var(--modal-border); 
-      text-align: center; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4); 
-      position: relative;
-    }
-    
-    .modal-content input, .modal-content textarea { 
-      width: 100%; padding: 12px; margin-bottom: 12px; border: 1px solid var(--input-border); 
-      background: var(--input-bg); color: var(--text-color); border-radius: 8px; outline: none; 
-      font-family: inherit; font-size: 13px;
-    }
-    
-    .modal-content textarea {
-      resize: vertical; min-height: 90px;
-    }
+            .link-card:hover i.main-icon {
+                transform: scale(1.1);
+            }
 
-    .modal-content button { 
-      padding: 12px; margin-top: 5px; cursor: pointer; border: none; 
-      border-radius: 8px; font-weight: bold; background: #0284c7; color: white; width: 100%; 
-      transition: background 0.2s ease;
-    }
+            .link-card .card-title {
+                width: 100%;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                word-break: break-word;
+                line-height: 1.3;
+            }
 
-    .modal-content button:hover { background: #0369a1; }
+            .status-badge {
+                position: absolute;
+                top: 6px;
+                right: 6px;
+                font-size: 9px;
+                padding: 2px 5px;
+                border-radius: 10px;
+                font-weight: 700;
+                display: flex;
+                align-items: center;
+                gap: 3px;
+            }
 
-    .close-btn {
-      position: absolute; top: 12px; right: 15px; font-size: 18px; 
-      color: var(--text-color); cursor: pointer; opacity: 0.7; transition: opacity 0.2s;
-    }
-    .close-btn:hover { opacity: 1; }
+            .status-badge.online {
+                background: rgba(76, 175, 80, .25);
+                color: #4CAF50;
+                border: 1px solid #4CAF50;
+            }
 
-    /* Divider & Google Login Style */
-    .divider {
-      display: flex; align-items: center; text-align: center;
-      margin: 15px 0; color: #94a3b8; font-size: 12px;
-    }
-    .divider::before, .divider::after {
-      content: ''; flex: 1; border-bottom: 1px solid var(--modal-border);
-    }
-    .divider:not(:empty)::before { margin-right: .5em; }
-    .divider:not(:empty)::after { margin-left: .5em; }
+            .status-badge.offline {
+                background: rgba(244, 67, 54, .25);
+                color: #f44336;
+                border: 1px solid #f44336;
+            }
 
-    .google-btn {
-      background: #ffffff !important; color: #333333 !important;
-      display: flex; align-items: center; justify-content: center;
-      gap: 10px; border: 1px solid #cbd5e1 !important; transition: background 0.2s ease;
-    }
-    .google-btn:hover { background: #f1f5f9 !important; }
+            .status-badge.checking {
+                background: rgba(255, 193, 7, .25);
+                color: #ffc107;
+                border: 1px solid #ffc107;
+            }
 
-    .logout-btn { 
-      position: fixed; left: 20px; bottom: 20px; padding: 10px 18px; border-radius: 20px; 
-      border: none; background: #e11d48; color: white; font-size: 14px; font-weight: bold; 
-      cursor: pointer; z-index: 1000; box-shadow: 0 4px 10px rgba(225, 29, 72, 0.3); 
-    }
-    
-    .developer-footer { 
-      position: relative; z-index: 1; text-align: center; padding: 15px 10px; 
-      font-size: 14px; background: var(--footer-bg); margin-top: 30px; backdrop-filter: blur(8px); 
-    }
-    .developer-footer span { font-weight: bold; color: var(--icon-color); }
-  </style>
-</head>
+            .email-modal, .user-login-modal {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, .85);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 999;
+            }
 
-<body oncontextmenu="return false;">
+            .modal-content {
+                background: #1e1e1e;
+                color: #fff;
+                padding: 20px;
+                border-radius: 10px;
+                width: 320px;
+                border: 1px solid #333;
+                text-align: center;
+                position: relative;
+            }
 
-  <div class="bg-video-container">
-    <video autoplay loop muted playsinline poster="https://images.unsplash.com/photo-1506744038136-46273834b3fb">
-      <source src="https://assets.mixkit.co/videos/preview/mixkit-timelapse-of-clouds-and-mountains-2408-large.mp4" type="video/mp4">
-    </video>
-    <div class="bg-overlay"></div>
-  </div>
+            .modal-content input, .modal-content textarea {
+                width: 100%;
+                padding: 8px;
+                margin-bottom: 10px;
+                border: 1px solid #444;
+                background: #2a2a2a;
+                color: #fff;
+                border-radius: 4px;
+                outline: 0;
+                font-family: inherit;
+            }
 
-  <button class="theme-toggle-btn" id="themeToggleBtn" onclick="toggleTheme()">
-    <i class="fas fa-moon" id="themeIcon"></i>
-    <span id="themeText">Dark Sky</span>
-  </button>
+            .modal-content textarea {
+                resize: vertical;
+                min-height: 80px;
+            }
 
-  <!-- Login Modal -->
-  <div class="user-login-modal" id="userLoginModal">
-    <div class="modal-content" id="loginBox">
-      <h3 style="margin-bottom: 15px;"><i class="fas fa-shield-alt" style="color: var(--icon-color);"></i> Secure Login</h3>
-      <input type="email" id="userInputEmail" placeholder="Email Address" autocomplete="off">
-      <input type="password" id="userInputPass" placeholder="Password" autocomplete="off">
-      <button onclick="checkUserLogin()">Login</button>
-      
-      <div class="divider">OR</div>
-      
-      <!-- Google Login Button -->
-      <button class="google-btn" onclick="checkGoogleLogin()">
-        <i class="fab fa-google" style="color: #ea4335; font-size: 16px;"></i> Sign in with Google
-      </button>
+            .modal-content button {
+                padding: 8px 12px;
+                margin-top: 5px;
+                cursor: pointer;
+                border: none;
+                border-radius: 4px;
+                font-weight: 700;
+                background: #4CAF50;
+                color: #fff;
+                width: 100%;
+            }
 
-      <div id="loginError" style="color: #f44336; font-size: 12px; margin-top: 10px; display: none;"></div>
-    </div>
-  </div>
+            .close-btn {
+                position: absolute;
+                top: 10px;
+                right: 12px;
+                font-size: 16px;
+                color: #fff;
+                cursor: pointer;
+            }
 
-  <!-- Email Modal Form -->
-  <div class="email-modal" id="emailModal" style="display: none;">
-    <div class="modal-content">
-      <span class="close-btn" onclick="closeEmailModal()"><i class="fas fa-times"></i></span>
-      <h3 style="margin-bottom: 15px;"><i class="fas fa-envelope" style="color: var(--icon-color);"></i> Send Email</h3>
-      
-      <form id="emailForm" onsubmit="sendEmail(event)">
-        <input type="email" id="senderEmail" placeholder="Your Email Address" required>
-        <input type="text" id="emailSubject" placeholder="Subject" required>
-        <textarea id="emailMessage" placeholder="Type your message here..." required></textarea>
-        <button type="submit" id="sendBtn"><i class="fas fa-paper-plane"></i> Send Mail</button>
-      </form>
-      
-      <div id="emailStatus" style="font-size: 12px; margin-top: 12px; display: none;"></div>
-    </div>
-  </div>
+            .divider {
+                display: flex;
+                align-items: center;
+                text-align: center;
+                margin: 15px 0;
+                color: #888;
+                font-size: 12px;
+            }
 
-  <!-- Dashboard Content -->
-  <div class="dashboard" id="mainDashboard" style="display: none;">
-    <div class="main-header">ESER-ALL Portal</div>
+            .divider::after, .divider::before {
+                content: '';
+                flex: 1;
+                border-bottom: 1px solid #444;
+            }
 
-    <div class="section-title"><i class="fas fa-server"></i> FTP Servers</div>
-    <div class="link-container" id="ftp-all-section"></div>
+            .divider:not(:empty)::before { margin-right: .5em; }
+            .divider:not(:empty)::after { margin-left: .5em; }
 
-    <div class="section-title"><i class="fas fa-tv"></i> Live TV</div>
-    <div class="link-container" id="tv-all-section"></div>
+            .google-btn {
+                background: #fff!important;
+                color: #333!important;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                border: 1px solid #ccc!important;
+            }
 
-    <div class="section-title"><i class="fas fa-landmark"></i> সরকারি সেবা (Government Services)</div>
-    <div class="link-container" id="gov-section"></div>
+            .logout-btn {
+                position: fixed;
+                right: 20px;
+                bottom: 20px;
+                padding: 10px 18px;
+                border-radius: 20px;
+                border: none;
+                background: #e11d48;
+                color: #fff;
+                font-size: 14px;
+                font-weight: 700;
+                cursor: pointer;
+                z-index: 1000;
+                box-shadow: 0 4px 10px rgba(225, 29, 72, .3);
+            }
 
-    <div class="section-title"><i class="fas fa-graduation-cap"></i> শিক্ষা ও ভর্তি (Education & Admissions)</div>
-    <div class="link-container" id="edu-section"></div>
+            .developer-footer {
+                position: relative;
+                z-index: 1;
+                text-align: center;
+                padding: 15px 10px;
+                font-size: 14px;
+                background: rgba(0, 0, 0, .4);
+                backdrop-filter: blur(4px);
+                margin-top: 30px;
+            }
 
-    <div class="section-title"><i class="fas fa-ticket-alt"></i> Online Ticket</div>
-    <div class="link-container" id="ticket-section"></div>
-
-    <div class="section-title"><i class="fas fa-envelope"></i> যোগাযোগ (Contact Us)</div>
-    <div class="link-container" id="contact-section"></div>
-  </div>
-
-  <button class="logout-btn" id="btnLogout" style="display: none;" onclick="userLogout()">
-    <i class="fas fa-sign-out-alt"></i> Logout
-  </button>
-
-  <footer class="developer-footer">
-    Developed by <span>Antu</span>
-  </footer>
-
-  <!-- Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
-
-  <script>
-    // Theme setup
-    function initTheme() {
-      const theme = localStorage.getItem("theme") || "dark";
-      document.documentElement.setAttribute("data-theme", theme);
-      updateThemeUI(theme);
-    }
-
-    function toggleTheme() {
-      const current = document.documentElement.getAttribute("data-theme");
-      const next = current === "light" ? "dark" : "light";
-      document.documentElement.setAttribute("data-theme", next);
-      localStorage.setItem("theme", next);
-      updateThemeUI(next);
-    }
-
-    function updateThemeUI(theme) {
-      const icon = document.getElementById("themeIcon");
-      const text = document.getElementById("themeText");
-      if (theme === "light") {
-        icon.className = "fas fa-sun";
-        text.innerText = "Sky Light";
-      } else {
-        icon.className = "fas fa-moon";
-        text.innerText = "Night Sky";
-      }
-    }
-    initTheme();
-
-    // Firebase Config
-    const firebaseConfig = {
-      apiKey: "AIzaSyDB4r_a5gPtKhlzM0qqmYHBb6HA_I2SmHQ",
-      authDomain: "eser-all.firebaseapp.com",
-      databaseURL: "http://eser-all-default-rtdb.firebaseio.com",
-      projectId: "eser-all",
-      storageBucket: "eser-all.appspot.com",
-      messagingSenderId: "741870576674",
-      appId: "1:741870576674:web:2a5094bd05f44f0b98d67b"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-
-    // LINK ARRAYS
-    let ftpLinks = [
-      { id: "ftp1", title: "Sam FTP", url: "http://172.16.50.4/" },
-      { id: "ftp2", title: "Crazy HD", url: "http://crazyhd.com/" },
-      { id: "ftp3", title: "Ctg Movies", url: "https://ctgmovies.com/" },
-      { id: "ftp4", title: "Ghuri FTP", url: "http://103.96.104.6//" },
-      { id: "ftp5", title: "ICC FTP", url: "http://10.16.100.244/dashboard.php?session=c2c3e6c0aa01b1c155cec1fbab1bc6c47883390af1b4cb470ee461ff53665061/" }
-    ];
-
-    let tvLinks = [
-      { id: "tv1", title: "Toffee Live", url: "https://toffeelive.com/" },
-      { id: "tv2", title: "Bongo BD", url: "https://bongobd.com/" },
-      { id: "tv3", title: "T Sports", url: "https://www.tsports.com/" },
-      { id: "tv4", title: "IP TV", url: "http://172.28.28.54/" }
-    ];
-
-    let govLinks = [
-      { title: "NID / ভোটার আবেদন", url: "http://services.nidw.gov.bd" },
-      { title: "জন্ম নিবন্ধন ও সংশোধন", url: "http://bdris.gov.bd" },
-      { title: "পাসপোর্টের আবেদন", url: "http://epassport.gov.bd" },
-      { title: "টিন (e-TIN) সার্টিফিকেট", url: "http://incometax.gov.bd" },
-      { title: "পুলিশ ক্লিয়ারেন্স আবেদন", url: "http://pcc.police.gov.bd" }
-    ];
-
-    let eduLinks = [
-      { title: "JSC/JDC/SSC/DAKHIL/HSC/ALIM", url: "https://www.educationboardresults.gov.bd/v2/home" },
-      { title: "ঢাকা বিশ্ববিদ্যালয়", url: "http://duadmission.eis.du.ac.bd" },
-      { title: "জাতীয় বিশ্ববিদ্যালয় ফলাফল", url: "http://results.nu.ac.bd/" }
-    ];
-
-    let ticketLinks = [
-      { title: "Railway Ticket", url: "https://eticket.railway.gov.bd/" },
-      { title: "Biman Ticket", url: "https://gozayaan.com/" }
-    ];
-
-    let contactLinks = [
-      { title: "Send Email", action: "openEmailModal", type: "emailModal" }
-    ];
-
-    // Firebase Auth Login
-    function checkUserLogin() {
-      const email = document.getElementById("userInputEmail").value.trim();
-      const pass = document.getElementById("userInputPass").value.trim();
-      const err = document.getElementById("loginError");
-      
-      if(!email || !pass) {
-        err.innerText = "Please enter both email & password.";
-        err.style.display = "block";
-        return;
-      }
-
-      auth.signInWithEmailAndPassword(email, pass)
-        .then(() => {
-          err.style.display = "none";
-          showDashboard();
-        })
-        .catch((error) => {
-          err.innerText = "Invalid Login Credentials!";
-          err.style.display = "block";
-        });
-    }
-
-    function checkGoogleLogin() {
-      const provider = new firebase.auth.GoogleAuthProvider();
-      const err = document.getElementById("loginError");
-
-      auth.signInWithPopup(provider)
-        .then(() => {
-          err.style.display = "none";
-          showDashboard();
-        })
-        .catch((error) => {
-          err.innerText = error.message || "Google Sign-In failed!";
-          err.style.display = "block";
-        });
-    }
-
-    auth.onAuthStateChanged((user) => {
-      if (user) {
-        showDashboard();
-      } else {
-        document.getElementById("userLoginModal").style.display = "flex";
-        document.getElementById("mainDashboard").style.display = "none";
-        document.getElementById("btnLogout").style.display = "none";
-      }
-    });
-
-    function showDashboard() {
-      document.getElementById("userLoginModal").style.display = "none";
-      document.getElementById("mainDashboard").style.display = "block";
-      document.getElementById("btnLogout").style.display = "block";
-      renderLinks();
-      checkAllNetworkStatuses();
-    }
-
-    function userLogout() {
-      auth.signOut().then(() => {
-        window.location.reload();
-      });
-    }
-
-    function renderLinks() {
-      const ftpSec = document.getElementById("ftp-all-section");
-      const tvSec = document.getElementById("tv-all-section");
-      const govSec = document.getElementById("gov-section");
-      const eduSec = document.getElementById("edu-section");
-      const ticketSec = document.getElementById("ticket-section");
-      const contactSec = document.getElementById("contact-section");
-
-      if(ftpSec) ftpSec.innerHTML = "";
-      if(tvSec) tvSec.innerHTML = "";
-      if(govSec) govSec.innerHTML = "";
-      if(eduSec) eduSec.innerHTML = "";
-      if(ticketSec) ticketSec.innerHTML = "";
-      if(contactSec) contactSec.innerHTML = "";
-
-      ftpLinks.forEach(item => { if(ftpSec) ftpSec.innerHTML += genCard(item.title, item.url, "ftp", item.id); });
-      tvLinks.forEach(item => { if(tvSec) tvSec.innerHTML += genCard(item.title, item.url, "tv", item.id); });
-      govLinks.forEach(item => { if(govSec) govSec.innerHTML += genCard(item.title, item.url, "gov"); });
-      eduLinks.forEach(item => { if(eduSec) eduSec.innerHTML += genCard(item.title, item.url, "edu"); });
-      ticketLinks.forEach(item => { if(ticketSec) ticketSec.innerHTML += genCard(item.title, item.url, "ticket"); });
-      contactLinks.forEach(item => { if(contactSec) contactSec.innerHTML += genCard(item.title, item.action, "contact", null, item.type); });
-    }
-
-    function genCard(title, target, category, id = null, type = "url") {
-      let iconClass = "fas fa-globe";
-      
-      if (category === "ftp") iconClass = "fas fa-server";
-      if (category === "tv") iconClass = "fas fa-tv";
-      if (category === "gov") iconClass = "fas fa-landmark";
-      if (category === "edu") iconClass = "fas fa-graduation-cap";
-      if (category === "ticket") {
-        if (title.toLowerCase().includes("railway")) iconClass = "fas fa-train";
-        else if (title.toLowerCase().includes("biman")) iconClass = "fas fa-plane";
-        else iconClass = "fas fa-ticket-alt";
-      }
-      if (category === "contact") iconClass = "fas fa-paper-plane";
-
-      let badgeHTML = "";
-      if (id) {
-        badgeHTML = `<div class="status-badge checking" id="status-${id}"><i class="fas fa-spinner fa-spin"></i></div>`;
-      }
-
-      let onClickAction = `window.open('${target}', '_blank')`;
-      if (type === "emailModal") {
-        onClickAction = `${target}()`;
-      }
-
-      return `
-        <div class="link-card" onclick="${onClickAction}">
-          ${badgeHTML}
-          <i class="${iconClass} main-icon"></i>
-          <div class="card-title">${title}</div>
+            .developer-footer span {
+                font-weight: 700;
+                color: #00e676;
+            }
+        </style>
+    </head>
+    <body oncontextmenu="return false;">
+        <div id="particles-js"></div>
+        <div class="theme-toggle" id="_0x_tg">
+            <i class="fas fa-moon" id="themeIcon"></i>
         </div>
-      `;
-    }
+        <div class="user-login-modal" id="userLoginModal">
+            <div class="modal-content" id="loginBox">
+                <h3 style="margin-bottom:15px">
+                    <i class="fas fa-shield-alt" style="color:#38bdf8"></i>
+                    Secure Login
+                </h3>
+                <input type="email" id="userInputEmail" placeholder="Email Address" autocomplete="off">
+                <input type="password" id="userInputPass" placeholder="Password" autocomplete="off">
+                <button id="_0x_lgb">Login</button>
+                <div class="divider">OR</div>
+                <button class="google-btn" id="_0x_ggb">
+                    <i class="fab fa-google" style="color:#ea4335;font-size:16px"></i>
+                    Sign in with Google
+                </button>
+                <div id="loginError" style="color:#f44336;font-size:12px;margin-top:10px;display:none"></div>
+            </div>
+        </div>
+        <div class="email-modal" id="emailModal" style="display:none">
+            <div class="modal-content">
+                <span class="close-btn" id="_0x_clm">
+                    <i class="fas fa-times"></i>
+                </span>
+                <h3 style="margin-bottom:15px">
+                    <i class="fas fa-envelope" style="color:#38bdf8"></i>
+                    Send Email
+                </h3>
+                <form id="emailForm">
+                    <input type="email" id="senderEmail" placeholder="Your Email Address" required>
+                    <input type="text" id="emailSubject" placeholder="Subject" required>
+                    <textarea id="emailMessage" placeholder="Type your message here..." required></textarea>
+                    <button type="submit" id="sendBtn">
+                        <i class="fas fa-paper-plane"></i>
+                        Send Mail
+                    </button>
+                </form>
+                <div id="emailStatus" style="font-size:12px;margin-top:12px;display:none"></div>
+            </div>
+        </div>
+        <div class="dashboard" id="mainDashboard" style="display:none">
+            <div class="main-header">ESER-ALL Portal</div>
+            <div class="section-title">
+                <i class="fas fa-server"></i>
+                FTP Servers
+            </div>
+            <div class="link-container" id="ftp-all-section"></div>
+            <div class="section-title">
+                <i class="fas fa-tv"></i>
+                Live TV
+            </div>
+            <div class="link-container" id="tv-all-section"></div>
+            <div class="section-title">
+                <i class="fas fa-landmark"></i>
+                সরকারি সেবা (Government Services)
+            </div>
+            <div class="link-container" id="gov-section"></div>
+            <div class="section-title">
+                <i class="fas fa-graduation-cap"></i>
+                শিক্ষা ও ভর্তি (Education & Admissions)
+            </div>
+            <div class="link-container" id="edu-section"></div>
+            <div class="section-title">
+                <i class="fas fa-ticket-alt"></i>
+                Online Ticket
+            </div>
+            <div class="link-container" id="ticket-section"></div>
+            <div class="section-title">
+                <i class="fas fa-envelope"></i>
+                যোগাযোগ (Contact Us)
+            </div>
+            <div class="link-container" id="contact-section"></div>
+        </div>
+        <button class="logout-btn" id="btnLogout" style="display:none">
+            <i class="fas fa-sign-out-alt"></i>
+            Logout
+        </button>
+        <footer class="developer-footer">
+            Developed by <span>Antu</span>
+        </footer>
+        <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+        <script>
+            (function() {
+                var _0x3a4b = ["AIzaSyDB4r_a5gPtKhlzM0qqmYHBb6HA_I2SmHQ", "eser-all.firebaseapp.com", "http://eser-all-default-rtdb.firebaseio.com", "eser-all", "eser-all.appspot.com", "741870576674", "1:741870576674:web:2a5094bd05f44f0b98d67b", "Sam FTP", "http://172.16.50.4/", "Crazy HD", "http://crazyhd.com/", "Ctg Movies", "https://ctgmovies.com/", "Ghuri FTP", "http://103.96.104.6//", "ICC FTP", "http://10.16.100.244/dashboard.php?session=c2c3e6c0aa01b1c155cec1fbab1bc6c47883390af1b4cb470ee461ff53665061", "Live TV 1", "http://172.28.28.54/", "Live TV 2", "http://172.19.178.180/", "NID / ভোটার আবেদন", "http://services.nidw.gov.bd", "fa-id-card", "জন্ম নিবন্ধন ও সংশোধন", "http://bdris.gov.bd", "fa-certificate", "পাসপোর্টের আবেদন", "http://epassport.gov.bd", "fa-passport", "পুলিশ ক্লিয়ারেন্স আবেদন", "http://pcc.police.gov.bd", "fa-user-shield", "টিন (e-TIN) সার্টিফিকেট", "http://incometax.gov.bd", "fa-file-invoice-dollar", "জিএসটি/গুচ্ছ বিশ্ববিদ্যালয়", "http://gstadmission.ac.bd", "fa-university", "ঢাকা বিশ্ববিদ্যালয়", "http://duadmission.eis.du.ac.bd", "fa-graduation-cap", "বাংলাদেশ রেলওয়ে টিকিট", "https://eticket.railway.gov.bd/", "fa-train", "Shohoz Bus Ticket", "https://www.shohoz.com/bus-tickets", "fa-bus", "service_oyptt6l", "template_qvj0msk"];
 
-    // Ping Checker
-    function checkNetworkStatus(url, elementId) {
-      const badge = document.getElementById(`status-${elementId}`);
-      if (!badge) return;
+                var _0xfb = function(_0x1b) {
+                    return _0x3a4b[_0x1b];
+                };
 
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 4000);
+                firebase.initializeApp({
+                    apiKey: _0xfb(0),
+                    authDomain: _0xfb(1),
+                    databaseURL: _0xfb(2),
+                    projectId: _0xfb(3),
+                    storageBucket: _0xfb(4),
+                    messagingSenderId: _0xfb(5),
+                    appId: _0xfb(6)
+                });
+                var _0xa = firebase.auth();
 
-      fetch(url, { mode: 'no-cors', signal: controller.signal })
-        .then(() => {
-          clearTimeout(timeoutId);
-          badge.className = "status-badge online";
-          badge.innerHTML = `<i class="fas fa-wifi"></i>`;
-        })
-        .catch(() => {
-          clearTimeout(timeoutId);
-          badge.className = "status-badge offline";
-          badge.innerHTML = `<i class="fas fa-times-circle"></i>`;
-        });
-    }
+                var _0x1 = [{
+                    id: "ftp1",
+                    title: _0xfb(7),
+                    url: _0xfb(8)
+                }, {
+                    id: "ftp2",
+                    title: _0xfb(9),
+                    url: _0xfb(10)
+                }, {
+                    id: "ftp3",
+                    title: _0xfb(11),
+                    url: _0xfb(12)
+                }, {
+                    id: "ftp4",
+                    title: _0xfb(13),
+                    url: _0xfb(14)
+                }, {
+                    id: "ftp5",
+                    title: _0xfb(15),
+                    url: _0xfb(16)
+                }];
+                var _0x2 = [{
+                    id: "tv1",
+                    title: _0xfb(17),
+                    url: _0xfb(18)
+                }, {
+                    id: "tv2",
+                    title: _0xfb(19),
+                    url: _0xfb(20)
+                }];
+                var _0x3 = [{
+                    title: _0xfb(21),
+                    url: _0xfb(22),
+                    icon: _0xfb(23)
+                }, {
+                    title: _0xfb(24),
+                    url: _0xfb(25),
+                    icon: _0xfb(26)
+                }, {
+                    title: _0xfb(27),
+                    url: _0xfb(28),
+                    icon: _0xfb(29)
+                }, {
+                    title: _0xfb(30),
+                    url: _0xfb(31),
+                    icon: _0xfb(32)
+                }, {
+                    title: _0xfb(33),
+                    url: _0xfb(34),
+                    icon: _0xfb(35)
+                }];
+                var _0x4 = [{
+                    title: _0xfb(36),
+                    url: _0xfb(37),
+                    icon: _0xfb(38)
+                }, {
+                    title: _0xfb(39),
+                    url: _0xfb(40),
+                    icon: _0xfb(41)
+                }];
+                var _0x5 = [{
+                    title: _0xfb(42),
+                    url: _0xfb(43),
+                    icon: _0xfb(44)
+                }, {
+                    title: _0xfb(45),
+                    url: _0xfb(46),
+                    icon: _0xfb(47)
+                }];
 
-    function checkAllNetworkStatuses() {
-      ftpLinks.forEach(item => checkNetworkStatus(item.url, item.id));
-      tvLinks.forEach(item => checkNetworkStatus(item.url, item.id));
-    }
+                function _0x88(_0x0a, _0x0b, _0x0c, _0x0d=null) {
+                    let _0x0e = _0x0d ? '<div class="status-badge checking" id="status-' + _0x0d + '"><i class="fas fa-spinner fa-spin"></i></div>' : '';
+                    return '<div class="link-card" onclick="window.open(\'' + _0x0b + '\', \'_blank\')">' + _0x0e + '<i class="fas ' + _0x0c + ' main-icon"></i><div class="card-title">' + _0x0a + '</div></div>';
+                }
 
-    // Email Modal Controls
-    function openEmailModal() {
-      document.getElementById("emailModal").style.display = "flex";
-      document.getElementById("emailStatus").style.display = "none";
-      document.getElementById("emailForm").reset();
-    }
+                function _0x99() {
+                    var _0x01 = document.getElementById('ftp-all-section')
+                      , _0x02 = document.getElementById('tv-all-section')
+                      , _0x03 = document.getElementById('gov-section')
+                      , _0x04 = document.getElementById('edu-section')
+                      , _0x05 = document.getElementById('ticket-section')
+                      , _0x06 = document.getElementById('contact-section');
 
-    function closeEmailModal() {
-      document.getElementById("emailModal").style.display = "none";
-    }
+                    _0x01.innerHTML = _0x02.innerHTML = _0x03.innerHTML = _0x04.innerHTML = _0x05.innerHTML = _0x06.innerHTML = '';
 
-    // EmailJS Send Function
-    function sendEmail(event) {
-      event.preventDefault();
+                    _0x1.forEach(l => {
+                        _0x01.innerHTML += _0x88(l.title, l.url, 'fa-folder-open', l.id);
+                    });
+                    _0x2.forEach(l => {
+                        _0x02.innerHTML += _0x88(l.title, l.url, 'fa-tv', l.id);
+                    });
+                    _0x3.forEach(l => {
+                        _0x03.innerHTML += _0x88(l.title, l.url, l.icon);
+                    });
+                    _0x4.forEach(l => {
+                        _0x04.innerHTML += _0x88(l.title, l.url, l.icon);
+                    });
+                    _0x5.forEach(l => {
+                        _0x05.innerHTML += _0x88(l.title, l.url, l.icon);
+                    });
 
-      const btn = document.getElementById("sendBtn");
-      const status = document.getElementById("emailStatus");
-      
-      const senderEmail = document.getElementById("senderEmail").value;
-      const subject = document.getElementById("emailSubject").value;
-      const message = document.getElementById("emailMessage").value;
+                    _0x06.innerHTML = '<div class="link-card" id="_0x_opm"><i class="fas fa-paper-plane main-icon"></i><div class="card-title">ইমেইল পাঠান (Send Mail)</div></div>';
 
-      btn.disabled = true;
-      btn.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Sending...`;
+                    document.getElementById('_0x_opm').onclick = function() {
+                        document.getElementById("emailModal").style.display = "flex";
+                        document.getElementById("emailStatus").style.display = "none";
+                        document.getElementById("emailForm").reset();
+                    };
 
-      const templateParams = {
-        from_email: senderEmail,
-        subject: subject,
-        message: message
-      };
-     emailjs.send("service_oyptt6l", "template_qvj0msk", templateParams)
-        .then(function(response) {
-          status.style.color = "#4CAF50";
-          status.innerText = "Email sent successfully!";
-          status.style.display = "block";
-          btn.disabled = false;
-          btn.innerHTML = `<i class="fas fa-paper-plane"></i> Send Mail`;
-          setTimeout(() => {
-            closeEmailModal();
-          }, 2000);
-        }, function(error) {
-          console.error("EmailJS Error:", error);
-          status.style.color = "#f44336";
-          status.innerText = "Failed: " + (error.text || "Check EmailJS Config");
-          status.style.display = "block";
-          btn.disabled = false;
-          btn.innerHTML = `<i class="fas fa-paper-plane"></i> Send Mail`;
-        });
-    }
-  </script>
-</body>
+                    _0x1.concat(_0x2).forEach(l => {
+                        let _0x0f = document.getElementById('status-' + l.id);
+                        if (!_0x0f) return;
+                        let _0x10 = new Image();
+                        let _0x11 = setTimeout(() => {
+                            _0x0f.className = 'status-badge offline';
+                            _0x0f.innerHTML = 'Offline';
+                        }, 3000);
+                        _0x10.onload = _0x10.onerror = () => {
+                            clearTimeout(_0x11);
+                            _0x0f.className = 'status-badge online';
+                            _0x0f.innerHTML = 'Online';
+                        };
+                        _0x10.src = l.url + '/favicon.ico?' + new Date().getTime();
+                    });
+                }
+
+                document.getElementById('_0x_tg').onclick = function() {
+                    document.body.classList.toggle('light-mode');
+                    var _0x0g = document.getElementById('themeIcon');
+                    _0x0g.classList.toggle('fa-moon');
+                    _0x0g.classList.toggle('fa-sun');
+                };
+
+                document.getElementById('_0x_clm').onclick = function() {
+                    document.getElementById("emailModal").style.display = "none";
+                };
+
+                document.getElementById("emailForm").onsubmit = function(_0x0e) {
+                    _0x0e.preventDefault();
+                    var _0x0b = document.getElementById("sendBtn")
+                      , _0x0s = document.getElementById("emailStatus");
+                    var _0x0m = document.getElementById("senderEmail").value
+                      , _0x0sub = document.getElementById("emailSubject").value
+                      , _0x0msg = document.getElementById("emailMessage").value;
+
+                    _0x0b.disabled = true;
+                    _0x0b.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+
+                    emailjs.send(_0xfb(48), _0xfb(49), {
+                        from_email: _0x0m,
+                        user_email: _0x0m,
+                        from_name: _0x0m,
+                        subject: _0x0sub,
+                        message: _0x0msg,
+                        reply_to: _0x0m
+                    }).then(function() {
+                        _0x0s.style.color = "#4CAF50";
+                        _0x0s.innerText = "Email sent successfully!";
+                        _0x0s.style.display = "block";
+                        _0x0b.disabled = false;
+                        _0x0b.innerHTML = '<i class="fas fa-paper-plane"></i> Send Mail';
+                        setTimeout(() => {
+                            document.getElementById("emailModal").style.display = "none";
+                        }, 2000);
+                    }, function(_0x0err) {
+                        _0x0s.style.color = "#f44336";
+                        _0x0s.innerText = "Failed: " + (_0x0err.text || _0x0err.message || "Error");
+                        _0x0s.style.display = "block";
+                        _0x0b.disabled = false;
+                        _0x0b.innerHTML = '<i class="fas fa-paper-plane"></i> Send Mail';
+                    });
+                };
+
+                document.getElementById('_0x_lgb').onclick = function() {
+                    var _0x0e = document.getElementById('userInputEmail').value
+                      , _0x0p = document.getElementById('userInputPass').value
+                      , _0x0er = document.getElementById('loginError');
+                    _0xa.signInWithEmailAndPassword(_0x0e, _0x0p).then(() => {
+                        _0x0er.style.display = 'none';
+                    }).catch(_0x0x => {
+                        _0x0er.innerText = _0x0x.message;
+                        _0x0er.style.display = 'block';
+                    });
+                };
+
+                document.getElementById('_0x_ggb').onclick = function() {
+                    _0xa.signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch(_0x0x => {
+                        var _0x0er = document.getElementById('loginError');
+                        _0x0er.innerText = _0x0x.message;
+                        _0x0er.style.display = 'block';
+                    });
+                };
+
+                document.getElementById('btnLogout').onclick = function() {
+                    _0xa.signOut();
+                };
+
+                _0xa.onAuthStateChanged(_0x0u => {
+                    if (_0x0u) {
+                        document.getElementById('userLoginModal').style.display = 'none';
+                        document.getElementById('mainDashboard').style.display = 'block';
+                        document.getElementById('btnLogout').style.display = 'block';
+                        _0x99();
+                    } else {
+                        document.getElementById('userLoginModal').style.display = 'flex';
+                        document.getElementById('mainDashboard').style.display = 'none';
+                        document.getElementById('btnLogout').style.display = 'none';
+                    }
+                });
+
+                particlesJS('particles-js', {
+                    particles: {
+                        number: {
+                            value: 180,
+                            density: {
+                                enable: true,
+                                value_area: 800
+                            }
+                        },
+                        color: {
+                            value: '#ffffff'
+                        },
+                        shape: {
+                            type: 'circle'
+                        },
+                        opacity: {
+                            value: 0.8,
+                            random: true
+                        },
+                        size: {
+                            value: 4,
+                            random: true
+                        },
+                        line_linked: {
+                            enable: true,
+                            distance: 140,
+                            color: '#ffffff',
+                            opacity: 0.6,
+                            width: 1.5
+                        },
+                        move: {
+                            enable: true,
+                            speed: 3,
+                            direction: 'none',
+                            random: false,
+                            straight: false,
+                            out_mode: 'out',
+                            bounce: false
+                        }
+                    },
+                    interactivity: {
+                        detect_on: 'canvas',
+                        events: {
+                            onhover: {
+                                enable: true,
+                                mode: 'grab'
+                            },
+                            onclick: {
+                                enable: true,
+                                mode: 'push'
+                            },
+                            resize: true
+                        },
+                        modes: {
+                            grab: {
+                                distance: 200,
+                                line_linked: {
+                                    opacity: 1
+                                }
+                            },
+                            push: {
+                                particles_nb: 4
+                            }
+                        }
+                    },
+                    retina_detect: true
+                });
+            })();
+        </script>
+    </body>
 </html>
